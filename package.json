@@ -1,0 +1,39 @@
+{
+  "name": "NFood-backend",
+  "version": "1.0.0",
+  "description": "DUT 2022",
+  "main": "index.js",
+  "author": "Nam Le",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-server-express": "^3.4.0",
+    "app-root-path": "^3.0.0",
+    "bcrypt": "^5.0.1",
+    "bluebird": "^3.7.2",
+    "cloudinary": "^1.27.1",
+    "connect-redis": "^6.0.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "graphql": "^15.6.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.1",
+    "mongoose": "^6.0.12",
+    "multer": "^1.4.3",
+    "nodemailer": "^6.7.0",
+    "path": "^0.12.7",
+    "redis": "^3.1.2",
+    "twilio": "^3.70.0",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.14",
+    "prettier": "^2.4.1"
+  }
+}
