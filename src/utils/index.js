@@ -7,5 +7,6 @@ import smsUtils from './twilio';
 import redisUtils from './redis';
 import imageUtils from './image';
 import { upload } from './multer';
+import connectDb from './connectDb';
 
-export { logger, jwtUtils, bcryptUtils, emailUtils, randomUtils, smsUtils, redisUtils, imageUtils, upload };
+export { logger, jwtUtils, bcryptUtils, emailUtils, randomUtils, smsUtils, redisUtils, imageUtils, upload, connectDb };

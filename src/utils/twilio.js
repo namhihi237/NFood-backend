@@ -10,18 +10,19 @@ class SMSUtils {
   async sendCodePhoneActive(phoneNumber) {
     global.logger.info('SMSUtils::sendCodePhoneActive ' + phoneNumber);
     const code = randomUtils.randomNumber(4);
-
-    return this.client.messages
-      .create({
-        body: `Your code is ${code}`,
-        to: phoneNumber,
-        from: envVariable.TWILIO_PHONE_NUMBER,
-      })
-      .then(message => {
-        global.logger.info(message.sid);
-        return code;
-      })
-      .catch(err => global.logger.error(err));
+    try {
+      await this.client.messages
+        .create({
+          body: `Your code is ${code}`,
+          to: phoneNumber,
+          from: envVariable.TWILIO_PHONE_NUMBER,
+        });
+      return code;
+    } catch (error) {
+      console.log(error);
+      global.logger.error(error);
+      return null;
+    }
   }
 
   convertPhoneNumber(phoneNumber) {

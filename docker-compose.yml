@@ -1,0 +1,27 @@
+version: '3.3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: node-mysql-app
+    restart: always
+    depends_on:
+      - mysql
+    stdin_open: true
+    tty: true
+    ports:
+      - '8000:80'
+    expose:
+      - '8000'
+  redis:
+    image: redis:5.0.5
+    restart: always
+    ports:
+      - '6379:6379'
+    expose:
+      - '6379'
+    volumes:
+      - food-delivery:/var/lib/redis
+volumes:
+  food-delivery: {}

@@ -5,6 +5,10 @@
   "main": "index.js",
   "author": "Nam Le",
   "license": "MIT",
+  "scripts": {
+    "dev": "nodemon -r esm ./src/app.js",
+    "start": "node -r esm ./src/app.js"
+  },
   "dependencies": {
     "apollo-server-express": "^3.4.0",
     "app-root-path": "^3.0.0",
