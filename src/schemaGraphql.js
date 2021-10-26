@@ -3,14 +3,9 @@ import { gql } from 'apollo-server-express';
 export default gql`
   type User {
     id: ID!
-    email: String!
-    fullName: String!
     phoneNumber: String
-    image: String
     role: [String]
-    point: Int
     address: String
-    promoCode: String
   }
 
   type Query {
@@ -24,6 +19,7 @@ export default gql`
     login(phoneNumber: String!, password: String!): JWTResponse!
     getCodePhoneNumber(phoneNumber: String!): Boolean!
     activeCodeReset(phoneNumber: String!, code: String!): Boolean!
+    setNameBuyer(name: String!): Response!
   }
 
   type JWTResponse {
@@ -31,9 +27,15 @@ export default gql`
     token: String!
   }
 
+  type Response {
+    success: Boolean!
+    message: String!
+  }
+
   enum roleEnum {
     buyer
     shipper
     vendor
   }
+  
 `;

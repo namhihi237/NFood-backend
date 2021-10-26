@@ -215,6 +215,35 @@ const authenticationMutation = {
     return true;
   },
 
+  setNameBuyer: async (parent, args, context, info) => {
+    global.logger.info('authenticationMutation::setNameBuyer' + JSON.stringify(args));
+    let { name } = args;
+
+    // check has login
+    if (!context.user) {
+      throw new Error('Vui lòng đăng nhập');
+    }
+
+    // check required fields
+    if (!name) {
+      throw new Error('Nhập tên gọi của bạn');
+    }
+
+    // check if user is authenticated
+    const user = await Accounts.findOne({ where: { id: context.user.id } });
+    if (!user) {
+      throw new Error('Không tìm thấy người dùng');
+    }
+
+    // update name buyer
+    await Buyer.findOneAndUpdate({ accountId: user.id }, { name });
+
+    return {
+      success: true,
+      message: 'Cập nhật thành công'
+    }
+  }
+
 }
 
 export default authenticationMutation;

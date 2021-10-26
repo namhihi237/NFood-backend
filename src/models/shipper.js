@@ -1,9 +1,9 @@
-import { model, Schema } from 'mongoose';
+import mongoose from 'mongoose';
 
-const ShipperSchema = new Schema(
+const ShipperSchema = new mongoose.Schema(
   {
     accountId: {
-      type: model.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: 'Account',
     },
     name: {
@@ -43,5 +43,7 @@ const ShipperSchema = new Schema(
   },
   { timestamps: true }
 );
+// create index 2dsphere for location
+ShipperSchema.index({ location: '2dsphere' });
 
-export default model('shipper', ShipperSchema, 'shipper');
+export default mongoose.model('shipper', ShipperSchema, 'shipper');

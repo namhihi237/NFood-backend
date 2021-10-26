@@ -1,9 +1,9 @@
-import { model, Schema } from 'mongoose';
+import mongoose from 'mongoose';
 
-const VendorSchema = new Schema(
+const VendorSchema = new mongoose.Schema(
   {
     accountId: {
-      type: model.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: 'Account',
       required: true,
     },
@@ -44,4 +44,7 @@ const VendorSchema = new Schema(
   { timestamps: true }
 );
 
-export default model('vendor', VendorSchema, 'vendor');
+// create index 2dsphere for location
+VendorSchema.index({ location: '2dsphere' });
+
+export default mongoose.model('vendor', VendorSchema, 'vendor');
