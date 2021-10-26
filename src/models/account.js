@@ -10,11 +10,11 @@ const AccountSchema = new Schema(
       type: String,
       require: true
     },
-    role: {
+    role: [{
       type: String,
       enum: ['buyer', 'shipper', 'vendor'],
       required: true
-    },
+    }],
     isActive: {
       type: Boolean,
       default: false

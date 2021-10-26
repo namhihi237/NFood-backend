@@ -7,7 +7,7 @@ export default gql`
     fullName: String!
     phoneNumber: String
     image: String
-    role: String
+    role: [String]
     point: Int
     address: String
     promoCode: String
@@ -19,7 +19,7 @@ export default gql`
  
  
   type Mutation {
-    register(phoneNumber: String!, fullName: String!, password: String!, role: roleEnum!): User!
+    register(phoneNumber: String!, password: String!, role: roleEnum!): User!
     activePhoneNumber(phoneNumber: String!, code: String!): JWTResponse!
     login(phoneNumber: String!, password: String!): JWTResponse!
     getCodePhoneNumber(phoneNumber: String!): Boolean!
