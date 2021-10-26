@@ -5,7 +5,6 @@ const ShipperSchema = new Schema(
     accountId: {
       type: model.Types.ObjectId,
       ref: 'Account',
-      required: true,
     },
     name: {
       type: String,

@@ -1,5 +1,5 @@
 import { bcryptUtils, emailUtils, jwtUtils, smsUtils } from '../../../utils';
-import { Accounts, CodeResets } from "../../../models";
+import { Accounts, CodeResets, Buyer, Vendor, Shipper } from "../../../models";
 
 import _ from 'lodash';
 const LIMIT_TIME_SEND_SMS = 2 * 60 * 1000;
@@ -26,8 +26,17 @@ const authenticationMutation = {
 
     const hashPassword = await bcryptUtils.hashPassword(password);
 
-    // create user
+    // create account
     const newUser = await Accounts.create({ phoneNumber, password: hashPassword, role: [role] });
+
+    // create user by roleEnum
+    if (role === 'buyer') {
+      await Buyer.create({ accountId: newUser.id });
+    } else if (role === 'vendor') {
+      await Vendor.create({ accountId: newUser.id });
+    } else if (role === 'shipper') {
+      await Shipper.create({ accountId: newUser.id });
+    }
 
     // send sms active phone number
     const code = await smsUtils.sendCodePhoneActive(phoneNumber);
