@@ -1,1 +1,1 @@
-web: node -r esm app.js
+web: node -r esm src/app.js
