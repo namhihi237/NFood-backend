@@ -30,14 +30,13 @@ const vendorMutation = {
       }
       let vendor = await Vendor.findOne({ account: account._id });
       if (vendor) {
-        // update name buyer
         await Vendor.findOneAndUpdate({ accountId: context.user.id }, { name, address, image });
       } else {
         await Vendor.create({ accountId: context.user.id, name, address, image });
       }
 
       if (!account.role.includes('vendor')) {
-        await Accounts.findByIdAndUpdate(context.user.id, { isVendor: true, $push: { roles: 'vendor' } });
+        await Accounts.findByIdAndUpdate(context.user.id, { isVendor: true, $push: { role: 'vendor' } });
       }
 
       return {

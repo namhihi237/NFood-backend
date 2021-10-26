@@ -28,7 +28,7 @@ const buyerMutation = {
     await Buyer.findOneAndUpdate({ accountId: context.user.id }, { name });
 
     if (!account.role.includes('buyer')) {
-      await Accounts.findByIdAndUpdate(context.user.id, { isBuyer: true, $push: { roles: 'buyer' } });
+      await Accounts.findByIdAndUpdate(context.user.id, { isBuyer: true, $push: { role: 'buyer' } });
     }
 
     return {

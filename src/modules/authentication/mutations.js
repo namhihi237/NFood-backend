@@ -131,7 +131,7 @@ const authenticationMutation = {
     await Accounts.findByIdAndUpdate(user._id, { lastLogin: new Date() });
 
     // create token
-    const token = await jwtUtils.encodeToken(_.pick(user, ['id', 'phoneNumber']));
+    const token = await jwtUtils.encodeToken(_.pick(user, ['id', 'phoneNumber', 'role']));
 
     return { token, user };
   },
