@@ -20,6 +20,7 @@ export default gql`
     getCodePhoneNumber(phoneNumber: String!): Boolean!
     activeCodeReset(phoneNumber: String!, code: String!): Boolean!
     setNameBuyer(name: String!): Response!
+    activeVendor(name: String!, address: String!, image: String!): Response!
   }
 
   type JWTResponse {

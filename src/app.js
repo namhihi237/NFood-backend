@@ -61,9 +61,12 @@ export const startServer = async () => {
       let token = null,
         user = null;
       token = req.headers.authorization ? req.headers.authorization.split(' ')[1] : null;
+      // logger.info(`token: ${token}`);
       try {
         user = await jwtUtils.verify(token);
-      } catch (error) { }
+        // logger.info(`user: ${user}`);
+      } catch (error) {
+      }
 
       return { user: _.get(user, 'data') };
     }

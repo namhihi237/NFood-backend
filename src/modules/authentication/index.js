@@ -1,5 +1,5 @@
-import authenticationMutation from './resolvers/mutations';
+import authenticationMutation from './mutations';
 
-export { 
+export {
   authenticationMutation
 }

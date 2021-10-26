@@ -1,5 +1,5 @@
-import { bcryptUtils, emailUtils, jwtUtils, smsUtils } from '../../../utils';
-import { Accounts, CodeResets, Buyer, Vendor, Shipper } from "../../../models";
+import { bcryptUtils, emailUtils, jwtUtils, smsUtils } from '../../utils';
+import { Accounts, CodeResets, Buyer, Vendor, Shipper } from "../../models";
 
 import _ from 'lodash';
 const LIMIT_TIME_SEND_SMS = 2 * 60 * 1000;
@@ -131,7 +131,7 @@ const authenticationMutation = {
     await Accounts.findByIdAndUpdate(user._id, { lastLogin: new Date() });
 
     // create token
-    const token = await jwtUtils.encodeToken(_.pick(user, ['id']));
+    const token = await jwtUtils.encodeToken(_.pick(user, ['id', 'phoneNumber']));
 
     return { token, user };
   },
@@ -214,35 +214,6 @@ const authenticationMutation = {
 
     return true;
   },
-
-  setNameBuyer: async (parent, args, context, info) => {
-    global.logger.info('authenticationMutation::setNameBuyer' + JSON.stringify(args));
-    let { name } = args;
-
-    // check has login
-    if (!context.user) {
-      throw new Error('Vui lòng đăng nhập');
-    }
-
-    // check required fields
-    if (!name) {
-      throw new Error('Nhập tên gọi của bạn');
-    }
-
-    // check if user is authenticated
-    const user = await Accounts.findOne({ where: { id: context.user.id } });
-    if (!user) {
-      throw new Error('Không tìm thấy người dùng');
-    }
-
-    // update name buyer
-    await Buyer.findOneAndUpdate({ accountId: user.id }, { name });
-
-    return {
-      success: true,
-      message: 'Cập nhật thành công'
-    }
-  }
 
 }
 

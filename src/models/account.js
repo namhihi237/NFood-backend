@@ -32,8 +32,19 @@ const AccountSchema = new Schema(
     },
     googleId: {
       type: String
+    },
+    isBuyer: {
+      type: Boolean,
+      default: false
+    },
+    isShipper: {
+      type: Boolean,
+      default: false
+    },
+    isVendor: {
+      type: Boolean,
+      default: false
     }
-
   },
   { timestamps: true }
 );
