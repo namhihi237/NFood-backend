@@ -8,9 +8,17 @@ export default gql`
     address: String
   }
 
+  type Category {
+    id: ID!
+    name: String
+  }
+
   type Query {
     getUser: User
+    getSignatureImage: String!
+    getAllCategory: [Category]!
   }
+
  
  
   type Mutation {
@@ -21,6 +29,8 @@ export default gql`
     activeCodeReset(phoneNumber: String!, code: String!): Boolean!
     setNameBuyer(name: String!): Response!
     activeVendor(name: String!, address: String!, image: String!): Response!
+    createCategory(name: String!): Category!
+    toggleCategory(id: ID!): Boolean!
   }
 
   type JWTResponse {

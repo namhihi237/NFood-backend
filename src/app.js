@@ -11,9 +11,9 @@ import typeDefs from './schemaGraphql';
 import resolvers from './modules';
 import { envVariable } from './configs';
 import { logger, jwtUtils, connectDb } from './utils';
-
 const pathServer = '/api/v1/graphql';
-
+import { Accounts } from "./models";
+import { log } from 'console';
 // setup session storage
 // const redisClient = redis.createClient({
 //   host: '127.0.0.1',
@@ -46,8 +46,6 @@ export const startServer = async () => {
   app.use(express.static(path.join(process.cwd(), 'public')));
   app.use(cookieParser());
 
-  // app.use('/api/v1/images', imageRouter);
-
   app.get('/', (req, res) => {
     res.send('Welcome to NFoodFast');
   });
@@ -64,15 +62,15 @@ export const startServer = async () => {
     context: async ({ req }) => {
       let token = null,
         user = null;
-      token = req.headers.authorization ? req.headers.authorization.split(' ')[1] : null;
-      // logger.info(`token: ${token}`);
+      token = req.headers.authorization ? req.headers.authorization : null;
       try {
         user = await jwtUtils.verify(token);
-        // logger.info(`user: ${user}`);
+
+        user = await Accounts.findById(user.data.id, { id: 1, phoneNumber: 1, role: 1 });
       } catch (error) {
       }
 
-      return { user: _.get(user, 'data') };
+      return { user };
     }
   });
 
