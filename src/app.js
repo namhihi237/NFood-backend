@@ -11,7 +11,6 @@ import typeDefs from './schemaGraphql';
 import resolvers from './modules';
 import { envVariable } from './configs';
 import { logger, jwtUtils, connectDb } from './utils';
-
 const pathServer = '/api/v1/graphql';
 
 // setup session storage
@@ -45,8 +44,6 @@ export const startServer = async () => {
   app.use(express.urlencoded({ extended: false, limit: '20mb', parameterLimit: 100 }));
   app.use(express.static(path.join(process.cwd(), 'public')));
   app.use(cookieParser());
-
-  // app.use('/api/v1/images', imageRouter);
 
   app.get('/', (req, res) => {
     res.send('Welcome to NFoodFast');

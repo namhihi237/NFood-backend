@@ -10,7 +10,9 @@ export default gql`
 
   type Query {
     getUser: User
+    getSignatureImage: String!
   }
+
  
  
   type Mutation {
