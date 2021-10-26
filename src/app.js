@@ -48,6 +48,10 @@ export const startServer = async () => {
 
   // app.use('/api/v1/images', imageRouter);
 
+  app.get('/', (req, res) => {
+    res.send('Welcome to NFoodFast');
+  });
+
   // view engine setup
   app.set('views', path.join(process.cwd(), 'views'));
   app.set('view engine', 'ejs');
