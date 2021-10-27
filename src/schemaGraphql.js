@@ -31,6 +31,7 @@ export default gql`
     activeVendor(name: String!, address: String!, image: String!): Response!
     createCategory(name: String!): Category!
     toggleCategory(id: ID!): Boolean!
+    updateCategory(id: ID!, name: String!): Boolean!
   }
 
   type JWTResponse {

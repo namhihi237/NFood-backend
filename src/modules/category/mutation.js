@@ -67,8 +67,34 @@ const categoryMutation = {
     const category = await Category.findByIdAndUpdate(id, { isActive: !isExists.isActive });
 
     return !category.isActive;
+  },
+
+  updateCategory: async (parent, args, context, info) => {
+    global.logger.info('=======authenticationMutation::updateCategory=======');
+
+    const { id, name } = args;
+
+    // check login
+    if (!context.user) {
+      throw new Error('Bạn chưa đăng nhập');
+    }
+
+    // check role is vendor
+    if (!context.user.role.includes('vendor')) {
+      throw new Error('Bạn không có quyền thực hiện hành động này');
+    }
+
+    let vendor = await Vendor.findOne({ accountId: context.user.id });
+
+    // check if category exists
+    let isExists = await Category.findOne({ _id: id, vendorId: vendor.id });
+    if (!isExists) {
+      throw new Error('Danh mục không tồn tại');
+    }
+
+    await Category.findByIdAndUpdate(id, { name });
+
+    return true;
   }
-
-}
-
+};
 export default categoryMutation;
