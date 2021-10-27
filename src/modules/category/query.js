@@ -18,7 +18,7 @@ const categoryQuery = {
       throw new Error('Bạn chưa đăng ký làm nhà cung cấp');
     }
 
-    return Category.find({ vendorId: vendor.id });
+    return Category.find({ vendorId: vendor._id });
   }
 }
 
