@@ -11,6 +11,7 @@ export default gql`
   type Category {
     id: ID!
     name: String
+    items: [Item]
   }
 
   type Item {

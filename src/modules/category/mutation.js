@@ -30,12 +30,12 @@ const categoryMutation = {
     }
 
     // check if category exists
-    let isExists = await Category.findOne({ name, vendorId: vendor.id });
+    let isExists = await Category.findOne({ name, vendorId: vendor._id });
     if (isExists) {
       throw new Error('Danh mục đã tồn tại');
     }
 
-    const category = await Category.create({ name, vendorId: vendor.id });
+    const category = await Category.create({ name, vendorId: vendor._id });
 
     return category;
   },
@@ -59,7 +59,7 @@ const categoryMutation = {
     let vendor = await Vendor.findOne({ accountId: context.user.id });
 
     // check if category exists
-    let isExists = await Category.findOne({ _id: id, vendorId: vendor.id });
+    let isExists = await Category.findOne({ _id: id, vendorId: vendor._id });
     if (!isExists) {
       throw new Error('Danh mục không tồn tại');
     }
@@ -87,7 +87,7 @@ const categoryMutation = {
     let vendor = await Vendor.findOne({ accountId: context.user.id });
 
     // check if category exists
-    let isExists = await Category.findOne({ _id: id, vendorId: vendor.id });
+    let isExists = await Category.findOne({ _id: id, vendorId: vendor._id });
     if (!isExists) {
       throw new Error('Danh mục không tồn tại');
     }
@@ -115,7 +115,7 @@ const categoryMutation = {
     let vendor = await Vendor.findOne({ accountId: context.user.id });
 
     // check if category exists
-    let isExists = await Category.findOne({ _id: id, vendorId: vendor.id });
+    let isExists = await Category.findOne({ _id: id, vendorId: vendor._id });
     if (!isExists) {
       throw new Error('Danh mục không tồn tại');
     }

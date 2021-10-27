@@ -1,5 +1,6 @@
 import { bcryptUtils, emailUtils, jwtUtils, smsUtils } from '../../utils';
 import { Accounts, CodeResets, Buyer, Vendor, Shipper, Category, Item } from "../../models";
+import mongoose from 'mongoose';
 
 import _ from 'lodash';
 
@@ -20,7 +21,28 @@ const itemQuery = {
       throw new Error('Bạn chưa có cửa hàng');
     }
 
-    return await Item.find({ vendorId: vendor.id });
+    return Item.aggregate([
+      {
+        $match: {
+          vendorId: mongoose.Types.ObjectId(vendor._id)
+        },
+      },
+      {
+        $lookup: {
+          from: 'category',
+          localField: 'categoryId',
+          foreignField: '_id',
+          as: 'category'
+        }
+      },
+      {
+        $unwind: {
+          path: '$category',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+    ]);
+
   }
 };
 

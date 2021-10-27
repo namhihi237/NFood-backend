@@ -30,7 +30,7 @@ const itemMutation = {
       throw new Error('Bạn chưa mở cửa hàng');
     }
     // check name exist
-    let item = await Item.findOne({ name, vendorId: vendor.id });
+    let item = await Item.findOne({ name, vendorId: vendor._id });
 
     if (item) {
       throw new Error('Sản phẩm đã tồn tại');
@@ -44,7 +44,7 @@ const itemMutation = {
     }
 
     // create item
-    return Item.create({ name, price, description, image, vendorId: vendor.id, categoryId });
+    return Item.create({ name, price, description, image, vendorId: vendor._id, categoryId });
 
   },
 
@@ -73,14 +73,45 @@ const itemMutation = {
     const vendor = await Vendor.findOne({ accountId: context.user.id });
 
     // check vendor
-    if (JSON.stringify(item.vendorId) != JSON.stringify(vendor.id)) {
+    if (JSON.stringify(item.vendorId) != JSON.stringify(vendor._id)) {
       throw new Error('Bạn không có quyền thực hiện hành động này');
     }
 
     await Item.findByIdAndUpdate(id, { isActive: !item.isActive });
 
     return !item.isActive;
-  }
+  },
+
+
+  deleteItem: async (root, args, context, info) => {
+    global.logger.info('=========itemMutation::deleteItem========', JSON.stringify(args));
+
+    let { id } = args;
+
+    // check login
+    if (!context.user) {
+      throw new Error('Bạn chưa đăng nhập');
+    }
+
+    // check item status
+    let item = await Item.findOne({ id });
+
+    if (!item) {
+      throw new Error('Sản phẩm không tồn tại');
+    }
+
+    // check vendor
+    const vendor = await Vendor.findOne({ accountId: context.user.id });
+
+    if (JSON.stringify(item.vendorId) != JSON.stringify(vendor._id)) {
+      throw new Error('Bạn không có quyền thực hiện hành động này');
+    }
+
+    await Item.findByIdAndDelete(id);
+
+    return true;
+
+  },
 };
 
 export default itemMutation;
