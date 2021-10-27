@@ -20,6 +20,7 @@ export default gql`
     category: Category
     image: String
     price: Int
+    isActive: Boolean
   }
 
   type Query {
@@ -44,6 +45,7 @@ export default gql`
     createItem(name: String!, price: Int!, image: String!, categoryId: ID!, description: String): Item!
     updateItem(id: ID!, name: String, price: Int, image: String, categoryId: ID, description: String): Boolean!
     deleteItem(id: ID!): Boolean!
+    toggleItemStatus(id: ID!): Boolean!
 
   }
 
