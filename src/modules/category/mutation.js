@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 const categoryMutation = {
   createCategory: async (parent, args, context, info) => {
-    global.logger.info('=======authenticationMutation::createCategory=======');
+    global.logger.info('=======categoryMutation::createCategory=======');
 
     const { name } = args;
 
@@ -41,7 +41,7 @@ const categoryMutation = {
   },
 
   toggleCategory: async (parent, args, context, info) => {
-    global.logger.info('=======authenticationMutation::toggleCategory=======');
+    global.logger.info('=======categoryMutation::toggleCategory=======');
 
     const { id } = args;
 
@@ -70,7 +70,7 @@ const categoryMutation = {
   },
 
   updateCategory: async (parent, args, context, info) => {
-    global.logger.info('=======authenticationMutation::updateCategory=======');
+    global.logger.info('=======categoryMutation::updateCategory=======');
 
     const { id, name } = args;
 
@@ -93,6 +93,34 @@ const categoryMutation = {
     }
 
     await Category.findByIdAndUpdate(id, { name });
+
+    return true;
+  },
+
+  deleteCategory: async (parent, args, context, info) => {
+    global.logger.info('=======categoryMutation::deleteCategory=======');
+
+    const { id } = args;
+
+    // check login
+    if (!context.user) {
+      throw new Error('Bạn chưa đăng nhập');
+    }
+
+    // check role is vendor
+    if (!context.user.role.includes('vendor')) {
+      throw new Error('Bạn không có quyền thực hiện hành động này');
+    }
+
+    let vendor = await Vendor.findOne({ accountId: context.user.id });
+
+    // check if category exists
+    let isExists = await Category.findOne({ _id: id, vendorId: vendor.id });
+    if (!isExists) {
+      throw new Error('Danh mục không tồn tại');
+    }
+
+    await Category.findByIdAndDelete(id);
 
     return true;
   }

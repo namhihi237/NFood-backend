@@ -32,6 +32,7 @@ export default gql`
     createCategory(name: String!): Category!
     toggleCategory(id: ID!): Boolean!
     updateCategory(id: ID!, name: String!): Boolean!
+    deleteCategory(id: ID!): Boolean!
   }
 
   type JWTResponse {
