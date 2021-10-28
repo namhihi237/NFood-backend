@@ -21,7 +21,7 @@ const itemQuery = {
       throw new Error('Bạn chưa có cửa hàng');
     }
 
-    return Item.aggregate([
+    let a = await Item.aggregate([
       {
         $match: {
           vendorId: mongoose.Types.ObjectId(vendor._id)
@@ -41,8 +41,13 @@ const itemQuery = {
           preserveNullAndEmptyArrays: true
         }
       },
-    ]);
+    ]); 
 
+    a = JSON.parse(JSON.stringify(a));
+
+    console.log(a);
+
+    return a;
   }
 };
 

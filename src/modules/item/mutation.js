@@ -2,6 +2,7 @@ import { bcryptUtils, emailUtils, jwtUtils, smsUtils } from '../../utils';
 import { Accounts, CodeResets, Buyer, Vendor, Shipper, Category, Item } from "../../models";
 
 import _ from 'lodash';
+import mongoose from 'mongoose';
 
 const itemMutation = {
   createItem: async (root, args, context, info) => {
@@ -112,6 +113,65 @@ const itemMutation = {
     return true;
 
   },
+
+  // update item
+  updateItem: async (root, args, context, info) => {
+    global.logger.info('=========itemMutation::updateItem========', JSON.stringify(args));
+
+    let { id , name, categoryId} = args;
+
+    // check login
+    if (!context.user) {
+      throw new Error('Bạn chưa đăng nhập');
+    }
+
+    // check id valid
+    if (!mongoose.Types.ObjectId.isValid(id)) { 
+      throw new Error('Sản phẩm không tồn tại');
+    }
+
+    // check item exist
+    let item = await Item.findOne({ id });
+
+    if (!item) {
+      throw new Error('Sản phẩm không tồn tại');
+    }
+
+    // check vendor
+    const vendor = await Vendor.findOne({ accountId: context.user.id });
+
+    if (JSON.stringify(item.vendorId) != JSON.stringify(vendor._id)) {
+      throw new Error('Bạn không có quyền thực hiện hành động này');
+    }
+
+    // check name exist
+    let itemExist = await Item.findOne({ name, vendorId: vendor._id });
+
+    if (itemExist && itemExist._id != id) {
+      throw new Error('Sản phẩm đã tồn tại');
+    }
+
+    // check category exist
+    let category = await Category.findOne({ id: categoryId });
+
+    if (!category) {
+      throw new Error('Danh mục không tồn tại');
+    }
+
+    console.log(args);
+   // delete attribute empty string
+    for (let key in args) {
+      if (!args[key] && key != "description") {
+        delete args[key];
+      }
+    }
+    console.log(args);
+
+    // update item
+    await Item.findByIdAndUpdate(id, args);
+
+    return Item.findById(id);
+  }
 };
 
 export default itemMutation;

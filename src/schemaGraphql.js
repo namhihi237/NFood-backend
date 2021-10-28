@@ -2,20 +2,20 @@ import { gql } from 'apollo-server-express';
 
 export default gql`
   type User {
-    id: ID!
+    _id: ID!
     phoneNumber: String
     role: [String]
     address: String
   }
 
   type Category {
-    id: ID!
+    _id: ID!
     name: String
     items: [Item]
   }
 
   type Item {
-    id: ID!
+    _id: ID!
     name: String
     description: String
     category: Category
@@ -44,7 +44,7 @@ export default gql`
     updateCategory(id: ID!, name: String!): Boolean!
     deleteCategory(id: ID!): Boolean!
     createItem(name: String!, price: Int!, image: String!, categoryId: ID!, description: String): Item!
-    updateItem(id: ID!, name: String, price: Int, image: String, categoryId: ID, description: String): Boolean!
+    updateItem(id: ID!, name: String, price: Int, image: String, categoryId: ID, description: String): Item!
     deleteItem(id: ID!): Boolean!
     toggleItemStatus(id: ID!): Boolean!
 
