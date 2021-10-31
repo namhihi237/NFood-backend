@@ -6,6 +6,9 @@ export default gql`
     phoneNumber: String
     role: [String]
     address: String
+    isVendor: Boolean
+    isBuyer: Boolean
+    isShipper: Boolean
   }
 
   type Category {
