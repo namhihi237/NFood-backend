@@ -28,7 +28,8 @@ const vendorMutation = {
       if (account.isVendor) {
         throw new Error('Bạn đã có cửa hàng');
       }
-      let vendor = await Vendor.findOne({ account: account._id });
+
+      let vendor = await Vendor.findOne({ accountId: account._id });
       if (vendor) {
         await Vendor.findOneAndUpdate({ accountId: context.user.id }, { name, address, image });
       } else {
