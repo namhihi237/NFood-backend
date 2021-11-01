@@ -35,9 +35,9 @@ const vendorMutation = {
       } else {
         await Vendor.create({ accountId: context.user.id, name, address, image });
       }
-
+      await Accounts.findByIdAndUpdate(context.user.id, { isVendor: true, });
       if (!account.role.includes('vendor')) {
-        await Accounts.findByIdAndUpdate(context.user.id, { isVendor: true, $push: { role: 'vendor' } });
+        await Accounts.findByIdAndUpdate(context.user.id, { $push: { role: 'vendor' } });
       }
 
       return {
