@@ -1,4 +1,4 @@
-import { authenticationMutation } from './authentication';
+import { authenticationMutation, authenticationQuery } from './authentication';
 import { buyerMutation } from './buyer';
 import { vendorMutation } from './vendor';
 import { ImageQuery } from './image';
@@ -7,11 +7,12 @@ import { itemQuery, itemMutation } from './item';
 
 export default {
   Category,
-  
+
   Query: {
     ...ImageQuery,
     ...categoryQuery,
-    ...itemQuery
+    ...itemQuery,
+    ...authenticationQuery,
   },
 
   Mutation: {

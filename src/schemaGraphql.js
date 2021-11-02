@@ -5,10 +5,13 @@ export default gql`
     _id: ID!
     phoneNumber: String
     role: [String]
+    name: String
     address: String
+    image: String
     isVendor: Boolean
     isBuyer: Boolean
     isShipper: Boolean
+    coordinates: [Int]
   }
 
   type Category {
@@ -28,7 +31,7 @@ export default gql`
   }
 
   type Query {
-    getUser: User
+    getUser(role: roleEnum!): User
     getSignatureImage: String!
     getAllCategory: [Category]!
     getAllItem: [Item]!
