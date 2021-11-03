@@ -17,6 +17,7 @@ export default gql`
   type Category {
     _id: ID!
     name: String
+    isActive: Boolean
     items: [Item]
   }
 
