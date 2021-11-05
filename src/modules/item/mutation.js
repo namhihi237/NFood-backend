@@ -118,7 +118,7 @@ const itemMutation = {
   updateItem: async (root, args, context, info) => {
     global.logger.info('=========itemMutation::updateItem========', JSON.stringify(args));
 
-    let { id , name, categoryId} = args;
+    let { id , name} = args;
 
     // check login
     if (!context.user) {
@@ -131,7 +131,7 @@ const itemMutation = {
     }
 
     // check item exist
-    let item = await Item.findOne({ id });
+    let item = await Item.findById({ id });
 
     if (!item) {
       throw new Error('Sản phẩm không tồn tại');
@@ -152,11 +152,11 @@ const itemMutation = {
     }
 
     // check category exist
-    let category = await Category.findOne({ id: categoryId });
+    // let category = await Category.findById(categoryId);
 
-    if (!category) {
-      throw new Error('Danh mục không tồn tại');
-    }
+    // if (!category) {
+    //   throw new Error('Danh mục không tồn tại');
+    // }
 
     console.log(args);
    // delete attribute empty string

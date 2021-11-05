@@ -51,7 +51,7 @@ export default gql`
     updateCategory(id: ID!, name: String!): Boolean!
     deleteCategory(id: ID!): Boolean!
     createItem(name: String!, price: Int!, image: String!, categoryId: ID!, description: String): Item!
-    updateItem(id: ID!, name: String, price: Int, image: String, categoryId: ID, description: String): Item!
+    updateItem(id: ID!, name: String, price: Int, image: String, description: String): Item!
     deleteItem(id: ID!): Boolean!
     toggleItemStatus(id: ID!): Boolean!
 
