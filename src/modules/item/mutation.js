@@ -6,7 +6,7 @@ import mongoose from 'mongoose';
 
 const itemMutation = {
   createItem: async (root, args, context, info) => {
-    global.logger.info('=========itemMutation::createItem========', JSON.stringify(args));
+    global.logger.info('=========itemMutation::createItem========' +  JSON.stringify(args));
 
     let { name, description, image, categoryId, price } = args;
 
