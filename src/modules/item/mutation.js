@@ -6,7 +6,7 @@ import mongoose from 'mongoose';
 
 const itemMutation = {
   createItem: async (root, args, context, info) => {
-    global.logger.info('=========itemMutation::createItem========' +  JSON.stringify(args));
+    global.logger.info('=========itemMutation::createItem========' + JSON.stringify(args));
 
     let { name, description, image, categoryId, price } = args;
 
@@ -116,9 +116,9 @@ const itemMutation = {
 
   // update item
   updateItem: async (root, args, context, info) => {
-    global.logger.info('=========itemMutation::updateItem========', JSON.stringify(args));
+    global.logger.info('=========itemMutation::updateItem========' + JSON.stringify(args));
 
-    let { id , name} = args;
+    let { id, name } = args;
 
     // check login
     if (!context.user) {
@@ -126,12 +126,12 @@ const itemMutation = {
     }
 
     // check id valid
-    if (!mongoose.Types.ObjectId.isValid(id)) { 
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       throw new Error('Sản phẩm không tồn tại');
     }
 
     // check item exist
-    let item = await Item.findById({ id });
+    let item = await Item.findById(id);
 
     if (!item) {
       throw new Error('Sản phẩm không tồn tại');
@@ -159,7 +159,7 @@ const itemMutation = {
     // }
 
     console.log(args);
-   // delete attribute empty string
+    // delete attribute empty string
     for (let key in args) {
       if (!args[key] && key != "description") {
         delete args[key];
