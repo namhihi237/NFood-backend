@@ -8,7 +8,8 @@ class HereUtils {
       timeout: 10000,
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json"
+        Accept: "application/json",
+        "Accept-Encoding": "gzip, deflate, br",
       }
     });
   }
@@ -22,13 +23,13 @@ class HereUtils {
 
   async getGeoLocation(address) {
     console.log(this.convertToURLParameter(address));
-    let res = await this.geocoder.get("geocode", {
-      params: {
-        apiKey: HERE_API_KEY,
-        q: this.convertToURLParameter(address),
-      }
-    });
-    return res.data.items[0].position;
+    let res = await this.geocoder.get(`geocode?apiKey=${HERE_API_KEY}&q=${this.convertToURLParameter(address)}`);
+
+    if (res.data.items.length > 0) {
+      return res.data.items.slice(-1)[0].position;
+    } else {
+      return null;
+    }
   }
 }
 
