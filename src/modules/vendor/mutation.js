@@ -1,8 +1,6 @@
-import { bcryptUtils, emailUtils, jwtUtils, smsUtils } from '../../utils';
+import { bcryptUtils, emailUtils, jwtUtils, smsUtils, hereUtils } from '../../utils';
 import { Accounts, CodeResets, Buyer, Vendor, Shipper } from "../../models";
 import _ from 'lodash';
-import { hereUtils } from "../../utils";
-import { add } from 'winston';
 
 const vendorMutation = {
   activeVendor: async (parent, args, context, info) => {

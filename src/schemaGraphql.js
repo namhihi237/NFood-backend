@@ -11,7 +11,7 @@ export default gql`
     isVendor: Boolean
     isBuyer: Boolean
     isShipper: Boolean
-    coordinates: [Int]
+    coordinates: [Float]
   }
 
   type Category {
@@ -27,7 +27,7 @@ export default gql`
     description: String
     category: Category
     image: String
-    price: Int
+    price: Float
     isActive: Boolean
   }
 
@@ -50,10 +50,11 @@ export default gql`
     toggleCategory(id: ID!): Boolean!
     updateCategory(id: ID!, name: String!): Boolean!
     deleteCategory(id: ID!): Boolean!
-    createItem(name: String!, price: Int!, image: String!, categoryId: ID!, description: String): Item!
-    updateItem(id: ID!, name: String, price: Int, image: String, description: String): Item!
+    createItem(name: String!, price: Float!, image: String!, categoryId: ID!, description: String): Item!
+    updateItem(id: ID!, name: String, price: Float, image: String, description: String): Item!
     deleteItem(id: ID!): Boolean!
     toggleItemStatus(id: ID!): Boolean!
+    updateGPSAddressBuyer(latitude: Float!, longitude: Float!): String!
 
   }
 
@@ -72,5 +73,4 @@ export default gql`
     shipper
     vendor
   }
-  
 `;

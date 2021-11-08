@@ -33,7 +33,7 @@ class HereUtils {
   }
 
   // get address from lat lng
-  async getAddress(lat, lng) {
+  async getAddressFromLatLng(lat, lng) {
     let res = await this.geocoder.get(`revgeocode?apiKey=${HERE_API_KEY}&at=${lat},${lng}&lang=vi`);
     if (res.data.items.length > 0) {
       return res.data.items.slice(-1)[0].address.label;
