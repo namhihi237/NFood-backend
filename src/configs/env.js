@@ -18,4 +18,5 @@ export const envVariable = {
   EMAIL_PASSWORD: process.env.EMAIL_PASSWORD || 'namvippro23799@',
   clientUrl: NODE_ENV == 'stg' ? process.env.CLIENT_URL : 'http://localhost/',
   expireTime: process.env.expireTime || 30 * 24 * 60 * 60 * 1000,
+  HERE_API_KEY: process.env.HERE_API_KEY || 'LGvxySLz8X9PIDMLkB9wvBuzY_6wB3M2stKDZdYxe6Q',
 };

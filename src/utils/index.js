@@ -8,5 +8,6 @@ import redisUtils from './redis';
 import imageUtils from './image';
 import { upload } from './multer';
 import connectDb from './connectDb';
+import hereUtils from './here';
 
-export { logger, jwtUtils, bcryptUtils, emailUtils, randomUtils, smsUtils, redisUtils, imageUtils, upload, connectDb };
+export { logger, jwtUtils, bcryptUtils, emailUtils, randomUtils, smsUtils, redisUtils, imageUtils, upload, connectDb, hereUtils };
