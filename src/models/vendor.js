@@ -44,13 +44,13 @@ const VendorSchema = new mongoose.Schema(
       type: [{
         day: {
           type: String,
-          enum: ['Thứ 2', 'Thứ 3', 'Thú 4', 'Thứ 5', 'Thú 6', 'Thú 7', 'Chủ nhật'],
+          enum: ['2', '3', '4', '5', '6', '7', '8'],
         },
         open: {
-          type: String,
+          type: Number,
         },
         close: {
-          type: String,
+          type: Number,
         },
       }],
     },
