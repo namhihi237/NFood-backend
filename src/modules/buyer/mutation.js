@@ -37,6 +37,8 @@ const buyerMutation = {
       await Accounts.findByIdAndUpdate(context.user.id, { isBuyer: true, $push: { role: 'buyer' } });
     }
 
+    await Accounts.findByIdAndUpdate(context.user.id, { isBuyer: true });
+
     return {
       success: true,
       message: 'Bạn đã đăng ký thành công, tiến hành mua hàng thôi nào.'
