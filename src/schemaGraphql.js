@@ -21,6 +21,22 @@ export default gql`
     items: [Item]
   }
 
+  type Vendor {
+    _id: ID!
+    name: String
+    phoneNumber: String
+    rating: Float
+    image: String
+    distance: Float
+    address: String
+    menu: [Category]
+  }
+
+  type resultVendor {
+    items: [Vendor!]
+    total: Int!
+  }
+
   type Item {
     _id: ID!
     name: String
@@ -36,6 +52,8 @@ export default gql`
     getSignatureImage: String!
     getAllCategory: [Category]!
     getAllItem: [Item]!
+    vendors(latitude: Float, longitude: Float, distance: Float, offset: Int, limit: Int): resultVendor!
+    vendor(id: ID!): Vendor!
   }
  
   type Mutation {

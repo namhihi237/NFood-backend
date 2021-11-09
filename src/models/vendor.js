@@ -39,7 +39,21 @@ const VendorSchema = new mongoose.Schema(
     numberOfReviews: {
       type: Number,
       default: 0,
-    }
+    },
+    timeOpen: {
+      type: [{
+        day: {
+          type: String,
+          enum: ['Thứ 2', 'Thứ 3', 'Thú 4', 'Thứ 5', 'Thú 6', 'Thú 7', 'Chủ nhật'],
+        },
+        open: {
+          type: String,
+        },
+        close: {
+          type: String,
+        },
+      }],
+    },
   },
   { timestamps: true }
 );
