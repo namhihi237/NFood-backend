@@ -71,8 +71,8 @@ const vendorQuery = {
     logger.info('total: ' + JSON.stringify(total));
 
     return {
-      items: vendors, total: total[0]?.total || 0
-    }
+      items: vendors, total: total[0] ? total[0].total : 0
+    };
   },
 
   // get detail of vendor
