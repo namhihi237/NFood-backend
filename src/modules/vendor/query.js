@@ -1,6 +1,6 @@
-import { bcryptUtils, emailUtils, jwtUtils, smsUtils } from '../../utils';
+import { bcryptUtils, emailUtils, jwtUtils, logger, smsUtils } from '../../utils';
 import { Accounts, CodeResets, Buyer, Vendor, Shipper, Category } from "../../models";
-
+import mongoose from 'mongoose';
 import _ from 'lodash';
 
 const vendorQuery = {
@@ -14,10 +14,19 @@ const vendorQuery = {
       throw new Error('Bạn chưa đăng nhập');
     }
 
+    let account = await Accounts.findById(context.user.id);
+
     if (!latitude || !longitude) {
       // get location from buyer
-      const buyer = await Buyer.findOne({ accountId: context.user.id }, { location: 1 });
-      if (buyer.location) {
+      const buyer = await Buyer.findOne({ accountId: account._id }, { location: 1 });
+
+      if (!buyer) {
+        throw new Error('Bạn chưa là người mua');
+      }
+
+      logger.info('buyer: ' + buyer);
+      if (buyer.location && buyer.location.coordinates && buyer.location.coordinates.length > 0) {
+        logger.info('buyer.location: ' + buyer.location);
         latitude = buyer.location.coordinates[1];
         longitude = buyer.location.coordinates[0];
       }
@@ -40,6 +49,9 @@ const vendorQuery = {
         }
       }
     ]);
+
+    global.logger.info('vendorQuery::' + vendors.length);
+
     let total = await Vendor.aggregate([
       {
         $geoNear: {
@@ -56,9 +68,10 @@ const vendorQuery = {
       }
     ]);
 
+    logger.info('total: ' + JSON.stringify(total));
 
     return {
-      items: vendors, total: total[0].total
+      items: vendors, total: total[0]?.total || 0
     }
   },
 
