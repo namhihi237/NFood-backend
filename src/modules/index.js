@@ -4,9 +4,10 @@ import { vendorMutation, vendorQuery } from './vendor';
 import { ImageQuery } from './image';
 import { categoryMutation, categoryQuery, Category } from './category';
 import { itemQuery, itemMutation } from './item';
-
+import { Cart, cartMutation} from "./cart";
 export default {
   Category,
+  Cart,
 
   Query: {
     ...ImageQuery,
@@ -21,6 +22,7 @@ export default {
     ...buyerMutation,
     ...vendorMutation,
     ...categoryMutation,
-    ...itemMutation
+    ...itemMutation,
+    ...cartMutation
   }
 };

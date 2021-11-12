@@ -5,6 +5,7 @@ import Shipper from './shipper';
 import Vendor from './vendor';
 import Category from './category';
 import Item from './item';
+import Cart from './cart';
 
 export {
   Accounts,
@@ -13,5 +14,6 @@ export {
   Shipper,
   Vendor,
   Category,
-  Item
+  Item,
+  Cart
 }
