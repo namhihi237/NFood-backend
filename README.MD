@@ -22,6 +22,11 @@ For development, you will only need Node.js and a node global package, Yarn, ins
       $ sudo apt install nodejs
       $ sudo apt install npm
 
+  Install mongodb
+      $ sudo apt update && sudo apt upgrade -y
+      $ sudo apt install mongodb
+      $ 
+
 - #### Other Operating Systems
   You can find more information about the installation on the [official Node.js website](https://nodejs.org/) and the [official NPM website](https://npmjs.org/).
 
