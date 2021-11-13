@@ -2,7 +2,7 @@ module.exports = {
   apps: [{
     name: 'food',
     append_env_to_name: true,
-    script: 'index.js',
+    script: './src/index.js',
     instances: 4,
     autorestart: true,
     max_memory_restart: '1G',
