@@ -18,7 +18,7 @@ module.exports = {
   deploy: {
     production: {
       user: 'doan', // user để ssh
-      host: '13.76.139.61', // IP của server này (theo sơ đồ)
+      host: '52.230.65.6', // IP của server này (theo sơ đồ)
       ref: 'origin/master', // branch để pull source
       repo: 'git@github.com:namhihi237/NFood-backend.git', // repo của project
       path: '/home/doan/backend', // sẽ deploy vào thư mục này
@@ -26,3 +26,5 @@ module.exports = {
     },
   }
 };
+//pm2 deploy ecosystem.config.js production setup
+//pm2 deploy ecosystem.config.js production
