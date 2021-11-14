@@ -74,7 +74,9 @@ add file `.env` then config like .env.example.
 
 ## deploy
 
-    # config ref :  https://chungtran4078.github.io/deploy-nodejs-app-using-nginx-pm2/
+    # config ref :  
+        - https://chungtran4078.github.io/deploy-nodejs-app-using-nginx-pm2/
+        - https://khanh.website/2020/05/17/huong-dan-host-node-js-voi-pm2-nginx-va-kich-hoat-https-bang-certbot-tren-ubuntu/ 
 
     $ Update file `ecosystem.config.js`
 

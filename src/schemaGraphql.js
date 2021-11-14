@@ -29,6 +29,7 @@ export default gql`
     image: String
     distance: Float
     address: String
+    numberOfReview: Int
     menu: [Category]
   }
 

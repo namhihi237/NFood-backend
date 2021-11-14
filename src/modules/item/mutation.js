@@ -64,7 +64,7 @@ const itemMutation = {
     }
 
     // check item exist
-    let item = await Item.findOne({ id });
+    let item = await Item.findOne({ _id: id });
 
     if (!item) {
       throw new Error('Sản phẩm không tồn tại');
@@ -94,7 +94,7 @@ const itemMutation = {
     }
 
     // check item status
-    let item = await Item.findOne({ id });
+    let item = await Item.findOne({ _id: id });
 
     if (!item) {
       throw new Error('Sản phẩm không tồn tại');
@@ -157,15 +157,12 @@ const itemMutation = {
     //   throw new Error('Danh mục không tồn tại');
     // }
 
-    console.log(args);
     // delete attribute empty string
     for (let key in args) {
       if (!args[key] && key != "description") {
         delete args[key];
       }
     }
-    console.log(args);
-
     // update item
     await Item.findByIdAndUpdate(id, args);
 
