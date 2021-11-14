@@ -7,7 +7,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon -r esm ./src/app.js",
-    "start": "node -r esm ./src/app.js"
+    "start": "node -r esm ./src/app.js",
+    "deploy": "pm2 deploy ecosystem.config.js production"
   },
   "dependencies": {
     "apollo-server-express": "^3.4.0",
