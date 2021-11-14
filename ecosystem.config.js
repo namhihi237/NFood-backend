@@ -3,7 +3,7 @@ module.exports = {
     name: 'food',
     append_env_to_name: true,
     script: './src/index.js',
-    instances: 4,
+    instances: 3,
     autorestart: true,
     max_memory_restart: '1G',
     env: { // common env variable
