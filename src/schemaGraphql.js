@@ -50,6 +50,7 @@ export default gql`
 
   type Cart {
     _id: ID!
+    vendorId: ID
     item: Item
     quantity: Int
     createdAt: String
@@ -62,6 +63,7 @@ export default gql`
     getAllItem: [Item]!
     vendors(latitude: Float, longitude: Float, distance: Float, offset: Int, limit: Int): resultVendor!
     vendor(id: ID!): Vendor!
+    carts: [Cart]
   }
  
   type Mutation {
