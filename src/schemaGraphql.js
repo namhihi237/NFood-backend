@@ -69,6 +69,7 @@ export default gql`
     vendors(latitude: Float, longitude: Float, distance: Float, offset: Int, limit: Int): resultVendor!
     vendor(id: ID!): Vendor!
     carts: resultCart!
+    getQuantityOfCart: Int!
   }
  
   type Mutation {

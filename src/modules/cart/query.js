@@ -51,6 +51,26 @@ const cartQuery = {
     }
 
     return { carts, vendor };
+  },
+
+  getQuantityOfCart: async (parent, args, context, info) => {
+    global.logger.info('cartQuery::getQuantityOfCart---' + JSON.stringify(args));
+
+    // check login 
+    if (!context.user) {
+      throw new Error('Bạn chưa đăng nhập');
+    }
+
+    // get cart items
+    const carts = await Cart.find({ userId: context.user.id });
+
+    let quantity = 0;
+
+    carts.forEach(cart => {
+      quantity += cart.quantity;
+    });
+
+    return quantity;
   }
 
 };
