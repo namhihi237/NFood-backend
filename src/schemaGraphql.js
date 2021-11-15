@@ -56,6 +56,11 @@ export default gql`
     createdAt: String
   }
 
+  type resultCart {
+    carts: [Cart!]
+    vendor: Vendor
+  }
+
   type Query {
     getUser(role: roleEnum!): User
     getSignatureImage: String!
@@ -63,7 +68,7 @@ export default gql`
     getAllItem: [Item]!
     vendors(latitude: Float, longitude: Float, distance: Float, offset: Int, limit: Int): resultVendor!
     vendor(id: ID!): Vendor!
-    carts: [Cart]
+    carts: resultCart!
   }
  
   type Mutation {

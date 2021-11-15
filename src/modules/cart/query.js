@@ -42,7 +42,15 @@ const cartQuery = {
       },
     ]);
 
-    return carts;
+    // get vendor info
+    let vendor = null;
+    if (carts.length > 0) {
+      const vendorId = carts[0].vendorId;
+
+      vendor = await Vendor.findById(vendorId);
+    }
+
+    return { carts, vendor };
   }
 
 };
