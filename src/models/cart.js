@@ -19,6 +19,9 @@ const CartSchema = new mongoose.Schema(
     vendorId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Vendor',
+    },
+    note: {
+      type: String,
     }
   },
   { timestamps: true }

@@ -32,9 +32,10 @@ const cartMutation = {
 
       if (cart) {
         const quantity = cart.quantity + args.quantity;
-        cart = await Cart.findOneAndUpdate({ _id: cart._id }, { quantity }, { new: true });
+        const note = cart.note + " "+ args.note;
+        cart = await Cart.findOneAndUpdate({ _id: cart._id }, { quantity, note}, { new: true });
       } else {
-        cart = await Cart.create({ userId: context.user.id, itemId: args.itemId, quantity: args.quantity, vendorId: args.vendorId });
+        cart = await Cart.create({ userId: context.user.id, itemId: args.itemId, quantity: args.quantity, vendorId: args.vendorId, note: args.note });
       }
 
     } else {
@@ -42,7 +43,7 @@ const cartMutation = {
       await Cart.deleteMany({ userId: context.user.id });
 
       // create new cart
-      cart = await Cart.create({ userId: context.user.id, itemId: args.itemId, quantity: args.quantity, vendorId: args.vendorId });
+      cart = await Cart.create({ userId: context.user.id, itemId: args.itemId, quantity: args.quantity, vendorId: args.vendorId, note: args.note });
     }
 
     return cart;
