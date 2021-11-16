@@ -32,8 +32,8 @@ const cartMutation = {
 
       if (cart) {
         const quantity = cart.quantity + args.quantity;
-        const note = cart.note + " "+ args.note;
-        cart = await Cart.findOneAndUpdate({ _id: cart._id }, { quantity, note}, { new: true });
+        const note = cart.note + " " + args.note;
+        cart = await Cart.findOneAndUpdate({ _id: cart._id }, { quantity, note }, { new: true });
       } else {
         cart = await Cart.create({ userId: context.user.id, itemId: args.itemId, quantity: args.quantity, vendorId: args.vendorId, note: args.note });
       }
@@ -47,6 +47,51 @@ const cartMutation = {
     }
 
     return cart;
+  },
+
+  removeFromCart: async (path, args, context, info) => {
+    global.logger.info('cartMutation::removeFromCart---' + JSON.stringify(args));
+
+    // check login
+    if (!context.user) {
+      throw new Error('Bạn chưa đăng nhập');
+    }
+
+    // check item exist in cart
+    let cart = await Cart.findOne({ _id: args.id, userId: context.user.id });
+
+    if (!cart) {
+      throw new Error('Không tim thấy món trong giỏ hàng');
+    }
+
+    // remove item from cart
+    await Cart.findByIdAndRemove(cart._id);
+
+    return true;
+  },
+
+  updateQuantityInCart: async (path, args, context, info) => {
+    global.logger.info('cartMutation::updateQuantityInCart---' + JSON.stringify(args));
+
+    // check login
+    if (!context.user) {
+      throw new Error('Bạn chưa đăng nhập');
+    }
+
+    // check item exist in cart
+    let cart = await Cart.findOne({ _id: args.id, userId: context.user.id });
+
+    if (!cart) {
+      throw new Error('Không tim thấy món trong giỏ hàng');
+    }
+
+    // update quantity
+
+    cart = await Cart.findOneAndUpdate({ _id: cart._id }, { quantity: args.quantity }, { new: true });
+
+    return cart;
+
+
   }
 };
 export default cartMutation;

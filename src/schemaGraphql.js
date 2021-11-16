@@ -90,6 +90,8 @@ export default gql`
     toggleItemStatus(id: ID!): Boolean!
     updateGPSAddressBuyer(latitude: Float!, longitude: Float!): String!
     addToCart(itemId: ID!, quantity: Int!, vendorId: ID!, note: String): Cart!
+    removeFromCart(id: ID!): Boolean!
+    updateQuantityInCart(id: ID!, quantity: Int!): Cart!
 
   }
 
