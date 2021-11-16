@@ -5,6 +5,7 @@ import { ImageQuery } from './image';
 import { categoryMutation, categoryQuery, Category } from './category';
 import { itemQuery, itemMutation } from './item';
 import { Cart, cartMutation, cartQuery } from "./cart";
+import { orderMutation, orderQuery } from "./order";
 export default {
   Category,
   Cart,
@@ -15,7 +16,8 @@ export default {
     ...itemQuery,
     ...authenticationQuery,
     ...vendorQuery,
-    ...cartQuery
+    ...cartQuery,
+    ...orderQuery,
   },
 
   Mutation: {
@@ -24,6 +26,7 @@ export default {
     ...vendorMutation,
     ...categoryMutation,
     ...itemMutation,
-    ...cartMutation
+    ...cartMutation,
+    ...orderMutation
   }
 };

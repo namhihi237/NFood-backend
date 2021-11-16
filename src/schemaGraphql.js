@@ -61,6 +61,34 @@ export default gql`
     vendor: Vendor
   }
 
+  type Order {
+    _id: ID!
+    invoiceNumber: String!
+    subTotal: Float!
+    shipping: Float!
+    discount: Float!
+    total: Float!
+    orderItems: [OrderItem]!
+    address: String!
+    phoneNumber: String!
+    name: String!
+    deliveryTime: String
+    note: String!
+    status: String!
+    paymentStatus: String!
+    orderStatus: String!
+    createdAt: String
+  }
+
+  type OrderItem {
+    _id: ID!
+    price: Float!
+    quantity: Int!
+    name: String!
+    image: String
+    note: String
+  }
+
   type Query {
     getUser(role: roleEnum!): User
     getSignatureImage: String!
@@ -92,7 +120,7 @@ export default gql`
     addToCart(itemId: ID!, quantity: Int!, vendorId: ID!, note: String): Cart!
     removeFromCart(id: ID!): Boolean!
     updateQuantityInCart(id: ID!, quantity: Int!): Cart!
-
+    checkout: Order!
   }
 
   type JWTResponse {
