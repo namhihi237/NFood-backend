@@ -32,7 +32,7 @@ const cartMutation = {
 
       if (cart) {
         const quantity = cart.quantity + args.quantity;
-        const note = cart.note + " " + args.note;
+        const note = args.note;
         cart = await Cart.findOneAndUpdate({ _id: cart._id }, { quantity, note }, { new: true });
       } else {
         cart = await Cart.create({ userId: context.user.id, itemId: args.itemId, quantity: args.quantity, vendorId: args.vendorId, note: args.note });

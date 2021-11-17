@@ -1,5 +1,5 @@
 import { bcryptUtils, emailUtils, jwtUtils, smsUtils } from '../../utils';
-import { Accounts, CodeResets, Buyer, Vendor, Shipper, Category , Item} from "../../models";
+import { Accounts, CodeResets, Buyer, Vendor, Shipper, Category, Item } from "../../models";
 import mongoose from "mongoose";
 
 import _ from 'lodash';
@@ -124,21 +124,21 @@ const categoryMutation = {
     // start transaction
     const session = await mongoose.startSession();
 
-   try {
-     await session.withTransaction(async () => {
-       // delete category
-       await Category.findByIdAndDelete(id);
+    try {
+      await session.withTransaction(async () => {
+        // delete category
+        await Category.findByIdAndDelete(id);
 
-       // delete items
-       await Item.deleteMany({ categoryId: id });
-     });
-   } catch (error) {
-     // rollback transaction
-     await session.abortTransaction();
-     // end session
+        // delete items
+        await Item.deleteMany({ categoryId: id });
+      });
+    } catch (error) {
+      // rollback transaction
+      await session.abortTransaction();
+      // end session
       session.endSession();
-     throw new Error(error);
-   }
+      throw new Error(error);
+    }
 
     return true;
   }

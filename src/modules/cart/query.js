@@ -17,7 +17,7 @@ const cartQuery = {
     const carts = await Cart.aggregate([
       {
         $match: {
-          userId: mongoose.Types.ObjectId(context.user._id),
+          userId: mongoose.Types.ObjectId(context.user.id),
         }
       },
       {

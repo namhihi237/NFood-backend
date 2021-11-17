@@ -72,8 +72,7 @@ export default gql`
     address: String!
     phoneNumber: String!
     name: String!
-    deliveryTime: String
-    note: String!
+    deliveryDate: String
     status: String!
     paymentStatus: String!
     orderStatus: String!
@@ -120,7 +119,7 @@ export default gql`
     addToCart(itemId: ID!, quantity: Int!, vendorId: ID!, note: String): Cart!
     removeFromCart(id: ID!): Boolean!
     updateQuantityInCart(id: ID!, quantity: Int!): Cart!
-    checkout: Order!
+   checkout(method: methodEnum!, note: String, voucherCode: String ): Order!
   }
 
   type JWTResponse {
@@ -137,5 +136,10 @@ export default gql`
     buyer
     shipper
     vendor
+  }
+
+  enum methodEnum {
+    COD
+    ONLINE
   }
 `;

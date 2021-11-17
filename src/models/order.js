@@ -15,7 +15,6 @@ const OrderSchema = new mongoose.Schema(
     shipperId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Shipper',
-      required: true,
     },
     name: {
       type: String,

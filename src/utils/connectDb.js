@@ -10,7 +10,7 @@ export default async (uri) => {
 
     //set debug mongoose
     mongoose.set("debug", (collectionName, method, query, doc) => {
-      global.logger.info(`${collectionName}.${method} :: ${JSON.stringify({ query, doc })}`);
+      global.logger.info(`${collectionName}.${method} :: ${JSON.stringify({ query })}`);
     });
 
     const db = mongoose.connection;
