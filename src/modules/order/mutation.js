@@ -3,6 +3,8 @@ import { Accounts, CodeResets, Buyer, Vendor, Shipper, Category, Item, Cart, Ord
 import _ from 'lodash';
 import mongoose from 'mongoose';
 
+const LIMIT_DISTANCE_FREE_SHIPPING = 2; //km
+
 const orderMutation = {
   checkout: async (path, args, context, info) => {
     global.logger.info(`orderMutation::checkout=====` + JSON.stringify(args));
@@ -88,6 +90,8 @@ const orderMutation = {
       } else if (method === 'ONLINE') {
         // no implement yet
       }
+
+      await Cart.deleteMany({ userId: account._id }, { session });
 
       await session.commitTransaction();
       session.endSession();

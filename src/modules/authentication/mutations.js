@@ -41,6 +41,8 @@ const authenticationMutation = {
     // send sms active phone number
     const code = await smsUtils.sendCodePhoneActive(phoneNumber);
     if (code) {
+      // delete old code reset
+      await CodeResets.deleteMany({ phoneNumber });
       await CodeResets.create({ phoneNumber, code });
     }
 
@@ -88,7 +90,7 @@ const authenticationMutation = {
     await Accounts.findByIdAndUpdate(user._id, { isActive: true });
 
     // delete code reset
-    await CodeResets.findByIdAndDelete(codeReset._id);
+    await CodeResets.deleteMany({ phoneNumber });
 
     // create token
     const token = await jwtUtils.encodeToken({ id: user.id });
@@ -153,6 +155,11 @@ const authenticationMutation = {
 
     if (!user) {
       throw new Error('Số điện thoại không tồn tại trong hệ thống');
+    }
+
+    // check if user is active
+    if (user.isActive) {
+      throw new Error('Số điện thoại đã được xác thực');
     }
 
     // check if phone has been sent before
