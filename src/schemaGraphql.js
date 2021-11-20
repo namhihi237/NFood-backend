@@ -97,6 +97,7 @@ export default gql`
     vendor(id: ID!): Vendor!
     carts: resultCart!
     getQuantityOfCart: Int!
+    calculateShipping(vendorId: ID!): Float! 
   }
  
   type Mutation {

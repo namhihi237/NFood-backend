@@ -1,3 +1,3 @@
 import { envVariable } from './env';
-
-export { envVariable };
+import constants from './constants';
+export { envVariable, constants };
