@@ -15,6 +15,7 @@
     "app-root-path": "^3.0.0",
     "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
+    "bee-queue": "^1.4.0",
     "bluebird": "^3.7.2",
     "cloudinary": "^1.27.1",
     "connect-redis": "^6.0.0",

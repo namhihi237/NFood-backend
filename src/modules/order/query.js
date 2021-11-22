@@ -50,12 +50,12 @@ const orderQuery = {
 
     // calculate shipping
     let shipping = 0;
-
+    console.log('vendors.length: ' + vendors[0].distance);
     if (vendors.length > 0) {
       const distance = vendors[0].distance;
       if (distance < constants.MAX_DISTANCE_FOR_FREE_SHIPPING) {// < 2km free shipping
         shipping = 0;
-      } else if (distance > constants.MAX_DISTANCE_FOR_SHIPPING && distance < 10000) { // 2-10km shipping 2000d/km
+      } else if (distance > constants.MAX_DISTANCE_FOR_FREE_SHIPPING && distance < 10000) { // 2-10km shipping 2000d/km
         shipping = Math.ceil(parseFloat((distance - constants.MAX_DISTANCE_FOR_FREE_SHIPPING) / 1000).toFixed(1)) * constants.SHIPPING_RATES;
       } else if (distance > 10000) { // >10km shipping 3000d/km
         shipping = Math.ceil(parseFloat((distance - constants.MAX_DISTANCE_FOR_FREE_SHIPPING) / 1000).toFixed(1)) * constants.SHIPPING_RATES_OVER_10KM;

@@ -2,10 +2,11 @@ import { bcryptUtils, emailUtils, jwtUtils, logger, smsUtils } from '../../utils
 import { Accounts, CodeResets, Buyer, Vendor, Shipper, Category } from "../../models";
 import mongoose from 'mongoose';
 import _ from 'lodash';
+import queue from 'bee-queue';
 
 const vendorQuery = {
   vendors: async (parent, args, context, info) => {
-    global.logger.info('vendorQuery::vendors::' + JSON.stringify(args));
+    global.logger.info('vendorQuery::vendors::===============' + JSON.stringify(args));
 
     let { latitude, longitude } = args;
 
