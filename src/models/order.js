@@ -63,6 +63,12 @@ const OrderSchema = new mongoose.Schema(
     deliveryDate: {
       type: Date,
     },
+    estimatedDeliveryTime: {
+      type: Date,
+    },
+    pickUpTime: {
+      type: Date,
+    },
     orderItems: {
       type: [
         {
