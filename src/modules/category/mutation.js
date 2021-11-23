@@ -50,7 +50,6 @@ const categoryMutation = {
     if (!context.user) {
       throw new Error('Bạn chưa đăng nhập');
     }
-    console.log('context.user', context.user);
 
     // check role is vendor
     if (!context.user.role.includes('vendor')) {

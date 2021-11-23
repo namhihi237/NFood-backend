@@ -6,13 +6,13 @@ const { combine, timestamp, printf } = format;
 const myFormat = printf(({ level, message, timestamp }) => {
   switch (level) {
     case 'info':
-      return `${level}]: ${timestamp}  ${message}`;
+      return `\x1b[32m[${level}]\x1b[37m: ${timestamp}  ${message}`;
     case 'debug':
-      return `\x1b[35m[${level}]: ${timestamp}  ${message}`;
+      return `\x1b[35m[${level}]\x1b[37m: ${timestamp}  ${message}`;
     case 'warn':
-      return `\x1b[33m[${level}]: ${timestamp}  ${message}`;
+      return `\x1b[33m[${level}]\x1b[37m: ${timestamp}  ${message}`;
     case 'error':
-      return `\x1b[31m[${level}]: ${timestamp}  ${message}`;
+      return `\x1b[31m[${level}]\x1b[37m: ${timestamp}  ${message}`;
   }
 });
 
@@ -37,7 +37,7 @@ const logger = winston.createLogger({
 });
 
 logger.configure({
-  level: 'info',
+  level: 'debug',
   transports: [new winston.transports.Console(options.console), new DailyRotateFile(options.file)]
 });
 

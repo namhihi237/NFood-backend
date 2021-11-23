@@ -10,7 +10,7 @@ export default async (uri) => {
 
     //set debug mongoose
     mongoose.set("debug", (collectionName, method, query, doc) => {
-      global.logger.info(`${collectionName}.${method} :: ${JSON.stringify({ query })}`);
+      global.logger.debug(`${collectionName}.${method} :: ${JSON.stringify({ query })}`);
     });
 
     const db = mongoose.connection;
@@ -18,6 +18,6 @@ export default async (uri) => {
       global.logger.info(`Connected to database uri: ${uri}`);
     });
   } catch (error) {
-    global.logger.error(`Connect to database faild: ${{ error }}`);
+    global.logger.error(`Connect to database failed: ${{ error }}`);
   }
 };

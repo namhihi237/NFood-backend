@@ -22,7 +22,6 @@ class HereUtils {
 
   //  get lat lng from address
   async getGeoLocation(address) {
-    console.log(this.convertToURLParameter(address));
     let res = await this.geocoder.get(`geocode?apiKey=${HERE_API_KEY}&q=${this.convertToURLParameter(address)}`);
 
     if (res.data.items.length > 0) {

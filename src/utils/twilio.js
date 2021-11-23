@@ -19,7 +19,6 @@ class SMSUtils {
         });
       return code;
     } catch (error) {
-      console.log(error);
       global.logger.error(error);
       return null;
     }

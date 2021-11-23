@@ -50,7 +50,6 @@ const orderQuery = {
 
     // calculate shipping
     let shipping = 0;
-    console.log('vendors.length: ' + vendors[0].distance);
     if (vendors.length > 0) {
       const distance = vendors[0].distance;
       if (distance < constants.MAX_DISTANCE_FOR_FREE_SHIPPING) {// < 2km free shipping
