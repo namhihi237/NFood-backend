@@ -91,7 +91,7 @@ const orderMutation = {
         order = order[0];
 
       } else if (method === 'ONLINE') {
-        // no implement yet
+        throw new Error('Not implemented')
       }
 
       await Cart.deleteMany({ userId: account._id }, { session });
