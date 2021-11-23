@@ -67,6 +67,9 @@ const orderMutation = {
       await session.startTransaction();
 
       let order = null;
+
+      const invoiceNumber = await generateInvoiceNumber();
+
       if (method === 'COD') {
         global.logger.info('cartMutation::checkout::order::COD' + JSON.stringify({ total, shipping, discount, subTotal }));
 
@@ -76,7 +79,7 @@ const orderMutation = {
           name: buyer.name,
           address: buyer.address,
           phoneNumber: account.phoneNumber,
-          invoiceNumber: 'AAA',
+          invoiceNumber,
           discount,
           shipping,
           subTotal,
@@ -104,6 +107,35 @@ const orderMutation = {
       throw error;
     }
   }
+};
+
+// generate invoice number from order
+const generateInvoiceNumber = async () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1;
+
+
+  // get last order
+  const lastOrder = await Order.findOne({}).sort({ createdAt: -1 });
+  let invoiceNumber = null;
+  if (!lastOrder) {
+    return `${year}${month}-${'1'.startsWith(4)}`;
+  }
+
+  const lastInvoiceNumber = lastOrder.invoiceNumber;
+  const lastInvoiceNumberSplit = lastInvoiceNumber.split('-');
+  const lastInvoiceNumberYear = lastInvoiceNumberSplit[0];
+  const lastInvoiceNumberMonth = lastInvoiceNumberSplit[1];
+  const lastInvoiceNumberNumber = lastInvoiceNumberSplit[2];
+
+  // increment invoice number by lastInvoiceNumber
+  if (lastInvoiceNumberYear === year && lastInvoiceNumberMonth === month) {
+    invoiceNumber = `${year}${month}-${(parseInt(lastInvoiceNumberNumber) + 1).startsWith(4)}`;
+  } else {
+    invoiceNumber = `${year}${month}-${'1'.startsWith(4)}`;
+  }
+  return invoiceNumber;
 };
 
 export default orderMutation;
