@@ -115,25 +115,21 @@ const generateInvoiceNumber = async () => {
   const year = now.getFullYear();
   const month = now.getMonth() + 1;
 
+  // invoice number format: YYYYMM-6[number or anphabet]
+  let invoiceNumber = `${year}${month}-`;
 
-  // get last order
-  const lastOrder = await Order.findOne({}).sort({ createdAt: -1 });
-  let invoiceNumber = null;
-  if (!lastOrder) {
-    return `${year}${month}-${'1'.startsWith(4)}`;
+  // random 6 number or anphabet
+  const CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let random = '';
+  for (let i = 0; i < 6; i++) {
+    random += CHARACTERS.charAt(Math.floor(Math.random() * CHARACTERS.length));
   }
+  invoiceNumber += random;
 
-  const lastInvoiceNumber = lastOrder.invoiceNumber;
-  const lastInvoiceNumberSplit = lastInvoiceNumber.split('-');
-  const lastInvoiceNumberYear = lastInvoiceNumberSplit[0];
-  const lastInvoiceNumberMonth = lastInvoiceNumberSplit[1];
-  const lastInvoiceNumberNumber = lastInvoiceNumberSplit[2];
-
-  // increment invoice number by lastInvoiceNumber
-  if (lastInvoiceNumberYear === year && lastInvoiceNumberMonth === month) {
-    invoiceNumber = `${year}${month}-${(parseInt(lastInvoiceNumberNumber) + 1).startsWith(4)}`;
-  } else {
-    invoiceNumber = `${year}${month}-${'1'.startsWith(4)}`;
+  // check if invoice number is exist
+  const order = await Order.findOne({ invoiceNumber });
+  if (order) {
+    return generateInvoiceNumber();
   }
   return invoiceNumber;
 };
