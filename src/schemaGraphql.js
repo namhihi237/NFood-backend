@@ -123,6 +123,7 @@ export default gql`
     removeFromCart(id: ID!): Boolean!
     updateQuantityInCart(id: ID!, quantity: Int!): Cart!
     checkout(method: methodEnum!, note: String, voucherCode: String ): Order!
+    activeShipper(name: String!, image: String!): Response!
   }
 
   type JWTResponse {
