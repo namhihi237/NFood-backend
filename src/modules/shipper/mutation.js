@@ -38,6 +38,30 @@ const shipperMutation = {
       success: true,
       message: 'Bạn trở thành người giao hàng!'
     }
+  },
+
+  activeShippingOrder: async (parent, args, context, info) => {
+    global.logger.info('shipperMutation::activeShippingOrder' + JSON.stringify(args));
+
+    if (!context.user) {
+      throw new Error('Bạn chưa đăng nhập');
+    }
+
+    let account = await Accounts.findById(context.user.id);
+
+    if (!account) {
+      throw new Error('Tài khoản không tồn tại');
+    }
+
+    if (!account.isShipper) {
+      throw new Error('Bạn chưa đăng ký là người giao hàng');
+    }
+
+    let shipper = await Shipper.findOne({ accountId: account._id });
+
+    await Shipper.findOneAndUpdate({ accountId: account._id }, { isShippingOrder: !shipper.isShippingOrder });
+
+    return !shipper.isShippingOrder;
   }
 };
 

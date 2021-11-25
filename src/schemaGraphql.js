@@ -12,6 +12,8 @@ export default gql`
     isBuyer: Boolean
     isShipper: Boolean
     coordinates: [Float]
+    isReceiveOrder: Boolean
+    isShippingOrder: Boolean
   }
 
   type Category {
@@ -124,6 +126,7 @@ export default gql`
     updateQuantityInCart(id: ID!, quantity: Int!): Cart!
     checkout(method: methodEnum!, note: String, voucherCode: String ): Order!
     activeShipper(name: String!, image: String!): Response!
+    activeShippingOrder: Boolean!
   }
 
   type JWTResponse {
