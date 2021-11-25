@@ -73,7 +73,6 @@ export default gql`
     phoneNumber: String!
     name: String!
     deliveryDate: String
-    status: String!
     paymentStatus: String!
     orderStatus: String!
     createdAt: String
@@ -81,9 +80,11 @@ export default gql`
 
   type OrderItem {
     _id: ID!
+    buyerId: ID!
     price: Float!
     quantity: Int!
     name: String!
+    buyerName: String!
     image: String
     note: String
   }
@@ -98,6 +99,7 @@ export default gql`
     carts: resultCart!
     getQuantityOfCart: Int!
     calculateShipping(vendorId: ID!): Float! 
+    orders: [Order]!
   }
  
   type Mutation {

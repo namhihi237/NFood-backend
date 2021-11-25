@@ -2,8 +2,7 @@ import { bcryptUtils, emailUtils, jwtUtils, smsUtils } from '../../utils';
 import { Accounts, CodeResets, Buyer, Vendor, Shipper, Category, Item, Cart, Order } from "../../models";
 import _ from 'lodash';
 import mongoose from 'mongoose';
-
-const LIMIT_DISTANCE_FREE_SHIPPING = 2; //km
+import orderService from "./orderService";
 
 const orderMutation = {
   checkout: async (path, args, context, info) => {
@@ -38,7 +37,7 @@ const orderMutation = {
       });
 
       // calculate shipping fee
-      let shipping = 0;
+      let shipping = await orderService.calculateShippingCost(context.user._id, vendorId);
 
       // calculate discount
       let discount = 0;
@@ -56,7 +55,8 @@ const orderMutation = {
         orderItems.push({
           itemId: cartItem.item._id,
           buyerId: buyer._id,
-          name: buyer.name,
+          buyerName: buyer.name,
+          name: cartItem.item.name,
           quantity: cartItem.quantity,
           price: cartItem.item.price,
           note: cartItem.note,

@@ -85,6 +85,9 @@ const OrderSchema = new mongoose.Schema(
             ref: 'Buyer',
             required: true,
           },
+          buyerName: {
+            type: String,
+          },
           quantity: {
             type: Number,
             required: true,
