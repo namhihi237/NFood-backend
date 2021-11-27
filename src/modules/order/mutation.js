@@ -47,7 +47,7 @@ const orderMutation = {
 
       // calculate delivery time base on distance
       let now = new Date();
-      let deliveryDate = new Date(now.getTime() + (5 * 1000));
+      let estimatedDeliveryTime = new Date(now.getTime() + (5 * 1000));
 
 
       let orderItems = [];
@@ -84,7 +84,7 @@ const orderMutation = {
           shipping,
           subTotal,
           total,
-          deliveryDate,
+          estimatedDeliveryTime,
           orderItems,
         }], { session });
 
@@ -99,11 +99,16 @@ const orderMutation = {
       await session.commitTransaction();
       session.endSession();
 
+      // pút notification to shipper to accept shipping order
+      context.pubsub.publish('ORDER_SHIPPING', { orderShipping: order });
+
       return order;
 
     } catch (error) {
-      await session.abortTransaction();
-      session.endSession();
+      if (session) {
+        await session.abortTransaction();
+        session.endSession();
+      }
       throw error;
     }
   }

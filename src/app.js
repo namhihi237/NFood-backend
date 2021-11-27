@@ -1,4 +1,8 @@
 import { ApolloServer } from 'apollo-server-express';
+import { createServer } from "http";
+import { execute, subscribe } from 'graphql';
+import { SubscriptionServer } from 'subscriptions-transport-ws';
+import { makeExecutableSchema } from '@graphql-tools/schema';
 import express from 'express';
 import _ from 'lodash';
 import cors from 'cors';
@@ -11,9 +15,25 @@ import typeDefs from './schemaGraphql';
 import resolvers from './modules';
 import { envVariable } from './configs';
 import { logger, jwtUtils, connectDb } from './utils';
-const pathServer = '/api/v1/graphql';
 import { Accounts } from "./models";
-import { log } from 'console';
+
+import { RedisPubSub } from 'graphql-redis-subscriptions';
+const Redis = require('ioredis');
+const pathServer = '/api/v1/graphql';
+
+const options = {
+  host: '127.0.0.1',
+  port: 6379,
+  retryStrategy: times => {
+    return Math.min(times * 50, 2000);
+  }
+};
+
+const pubsub = new RedisPubSub({
+  publisher: new Redis(options),
+  subscriber: new Redis(options),
+});
+
 // setup session storage
 // const redisClient = redis.createClient({
 //   host: '127.0.0.1',
@@ -29,6 +49,8 @@ import { log } from 'console';
 
 export const startServer = async () => {
   const app = express();
+
+  const httpServer = createServer(app);
 
   // app.use(session({
   //   secret: 'z5l1c9dpSD', // random key
@@ -54,11 +76,51 @@ export const startServer = async () => {
   app.set('views', path.join(process.cwd(), 'views'));
   app.set('view engine', 'ejs');
 
-  const server = new ApolloServer({
+  const schema = makeExecutableSchema({
     typeDefs,
     resolvers,
+  });
+
+  const subscriptionServer = SubscriptionServer.create({
+    schema,
+    execute,
+    subscribe,
+    async onConnect(connectionParams, webSocket, context) {
+      console.log('Connected!');
+      let token = null,
+        user = null;
+      token = connectionParams.Authorization;
+      try {
+        user = await jwtUtils.verify(token);
+        user = await Accounts.findById(user.data.id, { id: 1, phoneNumber: 1, role: 1 });
+      } catch (error) {
+      }
+      logger.info("user:::connection:::" + JSON.stringify(user));
+
+      return { user, pubsub };
+    },
+    onDisconnect(webSocket, context) {
+      console.log('Disconnected!')
+    },
+  }, {
+    server: httpServer,
+    path: '/subscriptions',
+  });
+
+  const server = new ApolloServer({
+    schema,
+    plugins: [{
+      async serverWillStart() {
+        return {
+          async drainServer() {
+            subscriptionServer.close();
+          }
+        }
+      }
+    }],
     introspection: true,
     playground: true,
+    path: pathServer,
     context: async ({ req }) => {
       let token = null,
         user = null;
@@ -70,7 +132,7 @@ export const startServer = async () => {
       } catch (error) {
       }
 
-      return { user };
+      return { user, pubsub };
     }
   });
 
@@ -81,8 +143,8 @@ export const startServer = async () => {
 
   connectDb(envVariable.DATABASE_URL);
 
-  app.listen({ port: envVariable.PORT }, () => {
-    console.info(`Server run environment ${process.env.NODE_ENV || "dev"}`)
+  httpServer.listen({ port: envVariable.PORT }, () => {
+    logger.info(`Server run environment ${process.env.NODE_ENV || "dev"}`)
     logger.info(`🚀 Server ready at http://localhost:${envVariable.PORT}${server.graphqlPath}`);
   });
 };

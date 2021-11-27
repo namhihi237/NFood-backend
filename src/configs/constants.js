@@ -3,5 +3,6 @@ export default {
   NUMBERS: '0123456789',
   SHIPPING_RATES: 2000, // vietnam dong
   MAX_DISTANCE_FOR_FREE_SHIPPING: 2000, // in meters
-  SHIPPING_RATES_OVER_10KM: 3000, // vietnam dong
+  SHIPPING_RATES_OVER_10KM: 3000, // vietnam dong,
+
 }

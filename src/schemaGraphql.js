@@ -103,6 +103,10 @@ export default gql`
     calculateShipping(vendorId: ID!): Float! 
     orders: [Order]!
   }
+
+  type Subscription {
+    orderShipping: Order!
+  }
  
   type Mutation {
     register(phoneNumber: String!, password: String!, role: roleEnum!): User!
