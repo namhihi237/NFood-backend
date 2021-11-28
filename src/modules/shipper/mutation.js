@@ -62,6 +62,32 @@ const shipperMutation = {
     await Shipper.findOneAndUpdate({ accountId: account._id }, { isShippingOrder: !shipper.isShippingOrder });
 
     return !shipper.isShippingOrder;
+  },
+
+  updateLocationShipper: async (parent, args, context, info) => {
+    global.logger.info('shipperMutation::updateLocationShipper' + JSON.stringify(args));
+
+    if (!context.user) {
+      throw new Error('Bạn chưa đăng nhập');
+    }
+
+    let account = await Accounts.findById(context.user.id);
+
+    // set location 
+    let shipper = await Shipper.findOne({ accountId: account._id });
+
+    if (!shipper) {
+      throw new Error('Bạn chưa đăng ký là người giao hàng');
+    }
+
+    await Shipper.findOneAndUpdate({ accountId: account._id }, {
+      location: {
+        type: 'Point',
+        coordinates: [args.longitude, args.latitude]
+      }
+    });
+
+    return true;
   }
 };
 

@@ -131,6 +131,7 @@ export default gql`
     checkout(method: methodEnum!, note: String, voucherCode: String ): Order!
     activeShipper(name: String!, image: String!): Response!
     activeShippingOrder: Boolean!
+    updateLocationShipper(latitude: Float!, longitude: Float!): Boolean!
   }
 
   type JWTResponse {
