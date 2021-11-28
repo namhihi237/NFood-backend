@@ -7,6 +7,7 @@ import express from 'express';
 import _ from 'lodash';
 import cors from 'cors';
 import path from 'path';
+import helmet from 'helmet';
 import session from "express-session";
 // import redis from "redis";
 import conectRedis from 'connect-redis';
@@ -62,6 +63,7 @@ export const startServer = async () => {
   // }));
 
   //config routes api
+  app.use(helmet());
   app.use(cors());
   app.use(express.json());
   app.use(express.urlencoded({ extended: false, limit: '20mb', parameterLimit: 100 }));
