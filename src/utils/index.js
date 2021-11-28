@@ -9,5 +9,5 @@ import imageUtils from './image';
 import { upload } from './multer';
 import connectDb from './connectDb';
 import hereUtils from './here';
-
-export { logger, jwtUtils, bcryptUtils, emailUtils, randomUtils, smsUtils, redisUtils, imageUtils, upload, connectDb, hereUtils };
+import queue from './queue';
+export { logger, jwtUtils, queue, bcryptUtils, emailUtils, randomUtils, smsUtils, redisUtils, imageUtils, upload, connectDb, hereUtils };

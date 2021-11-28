@@ -54,6 +54,32 @@ class OrderService {
     }
     return shipping;
   }
+
+  // generate invoice number from order
+  async generateInvoiceNumber() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
+
+    // invoice number format: YYYYMM-6[number or anphabet]
+    let invoiceNumber = `${year}${month}-`;
+
+    // random 6 number or anphabet
+    const CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let random = '';
+    for (let i = 0; i < 6; i++) {
+      random += CHARACTERS.charAt(Math.floor(Math.random() * CHARACTERS.length));
+    }
+    invoiceNumber += random;
+
+    // check if invoice number is exist
+    const order = await Order.findOne({ invoiceNumber });
+    if (order) {
+      return generateInvoiceNumber();
+    }
+    return invoiceNumber;
+  }
+
 }
 
 export default new OrderService();

@@ -8,7 +8,7 @@ import orderService from "./orderService";
 const orderSubscribe = {
   orderShipping: {
     subscribe: (parent, args, { pubsub, user }) => {
-      return pubsub.asyncIterator('ORDER_SHIPPING');
+      return pubsub.asyncIterator(`ORDER_SHIPPING_${user._id}`);
     }
   },
 };

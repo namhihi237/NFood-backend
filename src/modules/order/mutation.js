@@ -1,4 +1,4 @@
-import { bcryptUtils, emailUtils, jwtUtils, smsUtils } from '../../utils';
+import { bcryptUtils, emailUtils, jwtUtils, queue } from '../../utils';
 import { Accounts, CodeResets, Buyer, Vendor, Shipper, Category, Item, Cart, Order } from "../../models";
 import _ from 'lodash';
 import mongoose from 'mongoose';
@@ -68,7 +68,7 @@ const orderMutation = {
 
       let order = null;
 
-      const invoiceNumber = await generateInvoiceNumber();
+      const invoiceNumber = await orderService.generateInvoiceNumber();
 
       if (method === 'COD') {
         global.logger.info('cartMutation::checkout::order::COD' + JSON.stringify({ total, shipping, discount, subTotal }));
@@ -100,43 +100,29 @@ const orderMutation = {
       session.endSession();
 
       // pút notification to shipper to accept shipping order
-      context.pubsub.publish('ORDER_SHIPPING', { orderShipping: order });
+      // context.pubsub.publish('ORDER_SHIPPING', { orderShipping: order });
+
+      const job = queue.queue.createJob(order._id);
+      job.save();
+
+      job.on('succeeded', (result) => {
+        global.logger.info(`Received result for job ${job.id}`);
+      });
+
+      job.on('failed', (error) => {
+        global.logger.error(`OrderJob::findShipperForOrder::failed id = ${job.id} -- ${error}`);
+      }
+      );
 
       return order;
 
     } catch (error) {
-      if (session) {
-        await session.abortTransaction();
-        session.endSession();
-      }
+      await session.abortTransaction();
+      session.endSession();
       throw error;
     }
   }
 };
 
-// generate invoice number from order
-const generateInvoiceNumber = async () => {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth() + 1;
-
-  // invoice number format: YYYYMM-6[number or anphabet]
-  let invoiceNumber = `${year}${month}-`;
-
-  // random 6 number or anphabet
-  const CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let random = '';
-  for (let i = 0; i < 6; i++) {
-    random += CHARACTERS.charAt(Math.floor(Math.random() * CHARACTERS.length));
-  }
-  invoiceNumber += random;
-
-  // check if invoice number is exist
-  const order = await Order.findOne({ invoiceNumber });
-  if (order) {
-    return generateInvoiceNumber();
-  }
-  return invoiceNumber;
-};
 
 export default orderMutation;
