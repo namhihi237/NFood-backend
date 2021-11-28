@@ -104,7 +104,7 @@ export const startServer = async () => {
     },
   }, {
     server: httpServer,
-    path: '/subscriptions',
+    path: pathServer,
   });
 
   const server = new ApolloServer({

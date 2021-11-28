@@ -75,6 +75,8 @@ export default gql`
     phoneNumber: String!
     name: String!
     deliveryDate: String
+    acceptedShippingAt: String
+    estimatedDeliveryTime: String
     paymentStatus: String!
     orderStatus: String!
     createdAt: String
@@ -132,6 +134,8 @@ export default gql`
     activeShipper(name: String!, image: String!): Response!
     activeShippingOrder: Boolean!
     updateLocationShipper(latitude: Float!, longitude: Float!): Boolean!
+    acceptShippingOrder(orderId: ID!): Order!
+
   }
 
   type JWTResponse {

@@ -121,6 +121,34 @@ const orderMutation = {
       session.endSession();
       throw error;
     }
+  },
+
+  acceptShippingOrder: async (path, args, context, info) => {
+    global.logger.info('orderQuery::acceptShippingOrder' + JSON.stringify(args));
+
+    const { orderId } = args;
+
+    if (!context.user) {
+      throw new Error('Bạn chưa đăng nhập');
+    }
+
+    const account = await Accounts.findOne({ _id: context.user._id });
+
+    const order = await Order.findOne({ _id: orderId });
+
+    if (!order) {
+      throw new Error('Không tìm thấy đơn hàng');
+    }
+
+    if (order.orderStatus !== 'Pending') {
+      throw new Error('Đơn hàng này không thể chấp nhận');
+    }
+
+    // update status of order
+    return await Order.findByIdAndUpdate({ _id: orderId }, { orderStatus: 'Processing', shipperId: account._id, acceptedShippingAt: new Date() }, {
+      new: true
+    });
+
   }
 };
 

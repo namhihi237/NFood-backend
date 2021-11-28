@@ -5,12 +5,13 @@ import { ImageQuery } from './image';
 import { categoryMutation, categoryQuery, Category } from './category';
 import { itemQuery, itemMutation } from './item';
 import { Cart, cartMutation, cartQuery } from "./cart";
-import { orderMutation, orderQuery, orderSubscribe } from "./order";
+import { orderMutation, orderQuery, orderSubscribe, Order } from "./order";
 import { shipperMutation } from './shipper';
 
 export default {
   Category,
   Cart,
+  Order,
 
   Query: {
     ...ImageQuery,
