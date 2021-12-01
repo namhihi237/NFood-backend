@@ -30,6 +30,8 @@ const orderMutation = {
       }
       const vendorId = _.uniq(_.map(cartItems, 'item.vendorId'))[0];
 
+      const vendor = await Vendor.findOne({ _id: vendorId });
+
       // calculate total price
       let subTotal = 0;
       cartItems.forEach(cartItem => {
@@ -86,6 +88,10 @@ const orderMutation = {
           total,
           estimatedDeliveryTime,
           orderItems,
+          location: {
+            type: 'Point',
+            coordinates: [vendor.location.coordinates[0], vendor.location.coordinates[1]]
+          }
         }], { session });
 
         order = order[0];
@@ -100,17 +106,17 @@ const orderMutation = {
       session.endSession();
 
       // push notification to shipper to accept shipping order
-      const job = queue.queue.createJob(order._id);
-      job.save();
+      // const job = queue.queue.createJob(order._id);
+      // job.save();
 
-      job.on('succeeded', (result) => {
-        global.logger.info(`Received result for job ${job.id}`);
-      });
+      // job.on('succeeded', (result) => {
+      //   global.logger.info(`Received result for job ${job.id}`);
+      // });
 
-      job.on('failed', (error) => {
-        global.logger.error(`OrderJob::findShipperForOrder::failed id = ${job.id} -- ${error}`);
-      }
-      );
+      // job.on('failed', (error) => {
+      //   global.logger.error(`OrderJob::findShipperForOrder::failed id = ${job.id} -- ${error}`);
+      // }
+      // );
 
       return order;
 
@@ -132,6 +138,12 @@ const orderMutation = {
 
     const account = await Accounts.findOne({ _id: context.user._id });
 
+    // check has order receiving
+    const shipper = await Shipper.findOne({ account: account._id });
+    if (shipper.isReceiveOrder) {
+      throw new Error('Bạn đang có đơn hàng đang cần giao');
+    }
+
     const order = await Order.findOne({ _id: orderId });
 
     if (!order) {
@@ -142,8 +154,11 @@ const orderMutation = {
       throw new Error('Đơn hàng này không thể chấp nhận');
     }
 
+    // update status shipper
+    await Shipper.findOneAndUpdate({ accountId: account._id }, { isReceiveOrder: true }, { new: true });
+
     // update status of order
-    return await Order.findByIdAndUpdate({ _id: orderId }, { orderStatus: 'Processing', shipperId: account._id, acceptedShippingAt: new Date() }, {
+    return await Order.findByIdAndUpdate({ _id: orderId }, { orderStatus: 'Processing', shipperId: shipper._id, acceptedShippingAt: new Date() }, {
       new: true
     });
 

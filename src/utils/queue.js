@@ -95,28 +95,29 @@ class BeeQueue {
     });
 
     global.logger.info('shippers:: ' + JSON.stringify(shippers));
-
-    if (shippers.length === 0) {
-      global.logger.info('sleep 30s===========================' + orderId);
-      // sleep for 30s and try again
-      function sleep(ms) {
-        return new Promise((resolve) => {
-          setTimeout(resolve, ms);
-        });
-      }
-
-      await sleep(30000);
-
-      return this.randomShipperForOrder(orderId);
-    }
-
     // random shipper
     const randomShipper = _.sample(shippers);
 
+    // shippers = []
+
+
     // push shipper to order subscription
     this.pubsub.publish(`ORDER_SHIPPING_${randomShipper.accountId}`, { orderShipping: order });
+
+    global.logger.info('sleep 30s===========================' + orderId);
+    // sleep for 30s and try again
+    await this.sleep(30000);
+
+    return this.randomShipperForOrder(orderId);
+  }
+
+  sleep(ms) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
   }
 
 }
+
 
 export default new BeeQueue();

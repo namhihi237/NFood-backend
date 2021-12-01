@@ -17,7 +17,7 @@ const orderQuery = {
     return await orderService.calculateShippingCost(context.user._id, args.vendorId);
   },
 
-  orders: async (path, args, context, info) => {
+  getVendorOrders: async (path, args, context, info) => {
     global.logger.info('orderQuery::orders' + JSON.stringify(args));
 
     // check login and role
@@ -33,6 +33,52 @@ const orderQuery = {
 
     return orders;
 
+  },
+
+  getOrderByDistances: async (parent, args, context, info) => {
+    global.logger.info('orderQuery::getOrderByDistances' + JSON.stringify(args));
+
+    // check login and role
+    if (!context.user) {
+      throw new Error('Bạn chưa đăng nhập');
+    }
+
+    const account = await Accounts.findOne({ _id: context.user._id });
+
+    const shipper = await Shipper.findOne({ accountId: account._id });
+    const maxDistance = shipper.maxReceiveOrderDistance;
+
+    global.logger.info('maxDistance: ' + maxDistance);
+
+    // get order by max distance
+    return Order.aggregate([
+      {
+        $geoNear: {
+          near: {
+            type: "Point",
+            coordinates: [shipper.location.coordinates[0], shipper.location.coordinates[1]]
+          },
+          distanceField: "distance",
+          maxDistance: maxDistance * 1000,
+          spherical: true
+        },
+      },
+      {
+        // lockup vendor
+        $lookup: {
+          from: "vendor",
+          localField: "vendorId",
+          foreignField: "_id",
+          as: "vendor"
+        },
+      },
+      {
+        $unwind: {
+          path: '$vendor',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+    ]);
   }
 };
 
