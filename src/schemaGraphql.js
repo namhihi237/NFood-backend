@@ -33,6 +33,7 @@ export default gql`
     address: String
     numberOfReviews: Int
     menu: [Category]
+    coordinates: [Float]
   }
 
   type resultVendor {
@@ -80,6 +81,8 @@ export default gql`
     paymentStatus: String!
     orderStatus: String!
     createdAt: String
+    vendorId: ID
+    vendor: Vendor
   }
 
   type OrderItem {

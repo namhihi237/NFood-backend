@@ -39,9 +39,9 @@ class BeeQueue {
   async randomShipperForOrder(orderId) {
     logger.info('randomShipperForOrder::orderId: ' + orderId);
 
-    const order = await Order.findOne({ _id: orderId });
+    let order = await Order.findOne({ _id: orderId });
 
-    const vendor = await Vendor.findById({ _id: order.vendorId });
+    let vendor = await Vendor.findById({ _id: order.vendorId });
 
     if (!order) {
       throw new Error('Không tìm thấy đơn hàng');
@@ -50,6 +50,15 @@ class BeeQueue {
     // check status of order is pending
     if (order.orderStatus !== 'Pending') {
       throw new Error('Đơn hàng đã được xử lý');
+    }
+
+    // add vendor for order
+    order = JSON.parse(JSON.stringify(order));
+    vendor = JSON.parse(JSON.stringify(vendor));
+
+    order = {
+      ...order,
+      vendor
     }
 
     // find shipper near to vendor

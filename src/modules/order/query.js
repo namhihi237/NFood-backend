@@ -30,7 +30,6 @@ const orderQuery = {
     const buyer = await Buyer.findOne({ accountId: account._id });
 
     const orders = await Order.find({ ownerId: buyer._id });
-    console.log(orders);
 
     return orders;
 
