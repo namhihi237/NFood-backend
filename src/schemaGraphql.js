@@ -33,6 +33,10 @@ export default gql`
     address: String
     numberOfReviews: Int
     menu: [Category]
+    location: Location
+  }
+
+  type Location {
     coordinates: [Float]
   }
 

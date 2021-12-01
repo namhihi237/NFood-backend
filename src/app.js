@@ -97,7 +97,6 @@ export const startServer = async () => {
         user = await Accounts.findById(user.data.id, { id: 1, phoneNumber: 1, role: 1 });
       } catch (error) {
       }
-      logger.info("user:::connection:::" + JSON.stringify(user));
 
       return { user, pubsub };
     },
