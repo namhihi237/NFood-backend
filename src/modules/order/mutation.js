@@ -99,9 +99,7 @@ const orderMutation = {
       await session.commitTransaction();
       session.endSession();
 
-      // pút notification to shipper to accept shipping order
-      // context.pubsub.publish('ORDER_SHIPPING', { orderShipping: order });
-
+      // push notification to shipper to accept shipping order
       const job = queue.queue.createJob(order._id);
       job.save();
 

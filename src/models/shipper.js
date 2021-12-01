@@ -43,6 +43,22 @@ const ShipperSchema = new mongoose.Schema(
     isShippingOrder: {
       type: Boolean,
       default: false,
+    },
+    isReceiveOrder: {
+      type: Boolean,
+      default: false,
+    },
+    isActive: {
+      type: Boolean,
+      default: true
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    maxReceiveOrderDistance: {
+      type: Number,
+      default: 10,
     }
   },
   { timestamps: true }

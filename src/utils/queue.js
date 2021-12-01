@@ -58,11 +58,15 @@ class BeeQueue {
 
     order = {
       ...order,
-      vendor
+      vendor: {
+        ...vendor,
+        coordinates: vendor.location.coordinates
+      }
     }
+    global.logger.info('randomShipperForOrder::order: ' + JSON.stringify(order));
 
     // find shipper near to vendor
-    const shippers = await Shipper.aggregate([
+    let shippers = await Shipper.aggregate([
       {
         $geoNear: {
           near: {
@@ -71,19 +75,29 @@ class BeeQueue {
           },
           distanceField: "distance",
           spherical: true,
+          maxDistance: 30000,
         }
       },
       {
         $match: {
-          isShippingOrder: true
+          isShippingOrder: true,
+          isActive: true,
+          isDeleted: false,
+          isReceiveOrder: false,
         }
       }
     ]);
+    logger.info('randomShipperForOrder::shippers: ' + JSON.stringify(shippers));
+
+    // remove shipper has distance > maxReceiveOrderDistance
+    shippers = shippers.filter(shipper => {
+      return shipper.maxReceiveOrderDistance * 1000 >= shipper.distance;
+    });
 
     global.logger.info('shippers:: ' + JSON.stringify(shippers));
 
     if (shippers.length === 0) {
-      global.logger.info('sleep 30s===========================');
+      global.logger.info('sleep 30s===========================' + orderId);
       // sleep for 30s and try again
       function sleep(ms) {
         return new Promise((resolve) => {
