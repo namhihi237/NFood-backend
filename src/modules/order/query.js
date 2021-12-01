@@ -64,6 +64,11 @@ const orderQuery = {
         },
       },
       {
+        $match: {
+          orderStatus: "Pending"
+        }
+      },
+      {
         // lockup vendor
         $lookup: {
           from: "vendor",
