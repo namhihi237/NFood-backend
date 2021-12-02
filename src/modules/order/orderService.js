@@ -5,9 +5,14 @@ import mongoose from 'mongoose';
 import { constants } from "../../configs";
 class OrderService {
   async calculateShippingCost(userId, vendorId) {
+    global.logger.info('OrderService::calculateShippingCost:: ' + JSON.stringify({ userId }) + ' ' + JSON.stringify({ vendorId }));
     const account = await Accounts.findOne({ _id: userId });
 
     const buyer = await Buyer.findOne({ accountId: account._id });
+
+    if (!buyer) {
+      throw new Error('bạn không phải là người mua hàng');
+    }
 
     let latitude, longitude;
     if (buyer.location && buyer.location.coordinates && buyer.location.coordinates.length > 0) {
