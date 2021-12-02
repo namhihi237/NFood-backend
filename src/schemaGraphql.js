@@ -143,6 +143,8 @@ export default gql`
     activeShippingOrder: Boolean!
     updateLocationShipper(latitude: Float!, longitude: Float!): Boolean!
     acceptShippingOrder(orderId: ID!): Order!
+    pickUpOrder(orderId: ID!): Boolean!
+    completeShippingOrder(orderId: ID!): Boolean!
 
   }
 

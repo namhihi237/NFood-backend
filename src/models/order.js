@@ -57,19 +57,19 @@ const OrderSchema = new mongoose.Schema(
     },
     orderStatus: {
       type: String,
-      enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'],
+      enum: ['Pending', 'Processing', 'Shipping', 'Delivered', 'Cancelled'],
       default: 'Pending',
     },
     acceptedShippingAt: {
       type: Date,
     },
-    deliveryDate: {
+    deliveredAt: {
       type: Date,
     },
     estimatedDeliveryTime: {
       type: Date,
     },
-    pickUpTime: {
+    pickedUpAt: {
       type: Date,
     },
     orderItems: {

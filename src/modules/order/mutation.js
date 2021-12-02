@@ -161,8 +161,75 @@ const orderMutation = {
     return await Order.findByIdAndUpdate({ _id: orderId }, { orderStatus: 'Processing', shipperId: shipper._id, acceptedShippingAt: new Date() }, {
       new: true
     });
+  },
 
-  }
+  pickUpOrder: async (path, args, context, info) => {
+    global.logger.info('orderQuery::pickUpOrder' + JSON.stringify(args));
+
+    const { orderId } = args;
+
+    if (!context.user) {
+      throw new Error('Bạn chưa đăng nhập');
+    }
+
+    const account = await Accounts.findOne({ _id: context.user._id });
+
+    const shipper = await Shipper.findOne({ account: account._id });
+
+    const order = await Order.findOne({ _id: orderId });
+
+    if (!order) {
+      throw new Error('Không tìm thấy đơn hàng');
+    }
+
+    if (order.orderStatus !== 'Processing') {
+      throw new Error('Đơn hàng này không thể chấp nhận');
+    }
+
+    if (order.shipperId !== shipper._id) {
+      throw new Error('Đơn hàng này không thuộc về bạn');
+    }
+
+    // update status order
+    await Order.findByIdAndUpdate({ _id: orderId }, { orderStatus: 'Shipping', pickedUpAt: new Date() });
+
+    return true;
+  },
+
+  completeShippingOrder: async (path, args, context, info) => {
+    global.logger.info('orderQuery::completeShippingOrder' + JSON.stringify(args));
+
+    const { orderId } = args;
+
+    if (!context.user) {
+      throw new Error('Bạn chưa đăng nhập');
+    }
+
+    const account = await Accounts.findOne({ _id: context.user._id });
+
+    const shipper = await Shipper.findOne({ account: account._id });
+
+    const order = await Order.findOne({ _id: orderId });
+
+    if (!order) {
+      throw new Error('Không tìm thấy đơn hàng');
+    }
+
+    if (order.orderStatus !== 'Shipping') {
+      throw new Error('Đơn hàng này không thể chấp nhận');
+    }
+
+    if (order.shipperId !== shipper._id) {
+      throw new Error('Đơn hàng này không thuộc về bạn');
+    }
+
+    // update status order
+    await Order.findByIdAndUpdate({ _id: orderId }, { orderStatus: 'Delivered', deliveredAt: new Date() });
+
+    return true;
+  },
+
+
 };
 
 
