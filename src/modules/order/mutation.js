@@ -158,9 +158,17 @@ const orderMutation = {
     await Shipper.findOneAndUpdate({ accountId: account._id }, { isReceiveOrder: true }, { new: true });
 
     // update status of order
-    return await Order.findByIdAndUpdate({ _id: orderId }, { orderStatus: 'Processing', shipperId: shipper._id, acceptedShippingAt: new Date() }, {
+    await Order.findByIdAndUpdate({ _id: orderId }, { orderStatus: 'Processing', shipperId: shipper._id, acceptedShippingAt: new Date() }, {
       new: true
     });
+
+    // return order with vendor
+    return Order.aggregate([
+      { $match: { _id: orderId } },
+      { $lookup: { from: 'vendor', localField: 'vendorId', foreignField: '_id', as: 'vendor' } },
+      { $unwind: { path: '$vendor', preserveNullAndEmptyArrays: true } }
+    ]);
+
   },
 
   pickUpOrder: async (path, args, context, info) => {

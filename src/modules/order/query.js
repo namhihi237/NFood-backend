@@ -46,12 +46,17 @@ const orderQuery = {
     const account = await Accounts.findOne({ _id: context.user._id });
 
     const shipper = await Shipper.findOne({ accountId: account._id });
+
+    if (!shipper) {
+      throw new Error('Bạn không phải là người giao hàng');
+    }
+
     const maxDistance = shipper.maxReceiveOrderDistance;
 
     global.logger.info('maxDistance: ' + maxDistance);
 
     // get order by max distance
-    return Order.aggregate([
+    const orders = await Order.aggregate([
       {
         $geoNear: {
           near: {
@@ -84,6 +89,8 @@ const orderQuery = {
         }
       },
     ]);
+
+    return orders;
   }
 };
 
