@@ -192,7 +192,7 @@ const orderMutation = {
     }
 
 
-    if (order.shipperId !== shipper._id) {
+    if (JSON.stringify(order.shipperId) !== JSON.stringify(shipper._id)) {
       throw new Error('Đơn hàng này không thuộc về bạn');
     }
 
@@ -222,7 +222,7 @@ const orderMutation = {
     }
 
 
-    if (order.shipperId !== shipper._id) {
+    if (JSON.stringify(order.shipperId) !== JSON.stringify(shipper._id)) {
       throw new Error('Đơn hàng này không thuộc về bạn');
     }
 
