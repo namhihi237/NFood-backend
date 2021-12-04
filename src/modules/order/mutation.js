@@ -163,12 +163,13 @@ const orderMutation = {
     });
 
     // return order with vendor
-    return Order.aggregate([
+    const orders = await Order.aggregate([
       { $match: { _id: orderId } },
       { $lookup: { from: 'vendor', localField: 'vendorId', foreignField: '_id', as: 'vendor' } },
       { $unwind: { path: '$vendor', preserveNullAndEmptyArrays: true } }
     ]);
 
+    return orders[0];
   },
 
   pickUpOrder: async (path, args, context, info) => {
