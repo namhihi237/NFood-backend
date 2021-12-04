@@ -221,9 +221,6 @@ const orderMutation = {
       throw new Error('Không tìm thấy đơn hàng');
     }
 
-    if (order.orderStatus !== 'Shipping') {
-      throw new Error('Đơn hàng này không thể chấp nhận');
-    }
 
     if (order.shipperId !== shipper._id) {
       throw new Error('Đơn hàng này không thuộc về bạn');
