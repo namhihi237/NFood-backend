@@ -65,7 +65,6 @@ const shipperMutation = {
   },
 
   updateLocationShipper: async (parent, args, context, info) => {
-    global.logger.info('shipperMutation::updateLocationShipper' + JSON.stringify(args));
 
     if (!context.user) {
       throw new Error('Bạn chưa đăng nhập');
