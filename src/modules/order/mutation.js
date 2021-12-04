@@ -191,7 +191,7 @@ const orderMutation = {
       throw new Error('Không tìm thấy đơn hàng');
     }
 
-    if (order.orderStatus !== 'Processing') {
+    if (order.orderStatus !== 'Pending') {
       throw new Error('Đơn hàng này không thể chấp nhận');
     }
 
