@@ -12,7 +12,7 @@ export default {
     if (!parent.deliveredAt) {
       return null;
     }
-    return moment(parent.deliveredAt).format('DD/MM/YYYY');
+    return moment(parent.deliveredAt).format('DD/MM/YYYY HH:mm');
   },
 
   acceptedShippingAt: (parent, args, context) => {
