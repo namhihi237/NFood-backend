@@ -27,9 +27,33 @@ const orderQuery = {
 
     const account = await Accounts.findOne({ _id: context.user._id });
 
-    const buyer = await Buyer.findOne({ accountId: account._id });
+    const vendor = await Vendor.findOne({ accountId: account._id });
 
-    const orders = await Order.find({ ownerId: buyer._id });
+    if (!vendor) {
+      throw new Error('Bạn không phải là nhà bán hàng');
+    }
+
+    const orders = await Order.aggregate([
+      {
+        $match: {
+          vendorId: vendor._id,
+        }
+      },
+      {
+        $lookup: {
+          from: 'shipper',
+          localField: 'shipperId',
+          foreignField: '_id',
+          as: 'shipper'
+        }
+      },
+      {
+        $unwind: {
+          path: '$shipper',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+    ]);
 
     return orders;
 
@@ -85,6 +109,64 @@ const orderQuery = {
       {
         $unwind: {
           path: '$vendor',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+    ]);
+
+    return orders;
+  },
+
+  getOrderByShipper: async (parent, args, context, info) => {
+    global.logger.info('orderQuery::getOrderByShipper' + JSON.stringify(args));
+
+    // check login and role
+    if (!context.user) {
+      throw new Error('Bạn chưa đăng nhập');
+    }
+
+    const account = await Accounts.findOne({ _id: context.user._id });
+
+    const shipper = await Shipper.findOne({ accountId: account._id });
+
+    if (!shipper) {
+      throw new Error('Bạn không phải là người giao hàng');
+    }
+
+    const orders = await Order.find({ shipperId: shipper._id });
+
+    return orders;
+  },
+
+  getOrderByBuyer: async (parent, args, context, info) => {
+    global.logger.info('orderQuery::getOrderByBuyer' + JSON.stringify(args));
+
+    // check login and role
+    const account = await Accounts.findOne({ _id: context.user._id });
+
+    const buyer = await Buyer.findOne({ accountId: account._id });
+
+    if (!buyer) {
+      throw new Error('Bạn không phải là người mua hàng');
+    }
+
+    const orders = await Order.aggregate([
+      {
+        $match: {
+          buyerId: buyer._id,
+        }
+      },
+      {
+        $lookup: {
+          from: 'shipper',
+          localField: 'shipperId',
+          foreignField: '_id',
+          as: 'shipper'
+        }
+      },
+      {
+        $unwind: {
+          path: '$shipper',
           preserveNullAndEmptyArrays: true
         }
       },
