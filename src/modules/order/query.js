@@ -173,6 +173,48 @@ const orderQuery = {
     ]);
 
     return orders;
+  },
+
+  getOrderById: async (parent, args, context, info) => {
+    global.logger.info('orderQuery::getOrderShipping' + JSON.stringify(args));
+
+    // check login and role
+    if (!context.user) {
+      throw new Error('Bạn chưa đăng nhập');
+    }
+
+    const account = await Accounts.findOne({ _id: context.user._id });
+
+    const shipper = await Shipper.findOne({ accountId: account._id });
+
+    if (!shipper) {
+      throw new Error('Bạn không phải là người giao hàng');
+    }
+
+    const orders = await Order.aggregate([
+      {
+        $match: {
+          _id: args.id,
+          shipperId: shipper._id,
+        }
+      },
+      {
+        $lookup: {
+          from: 'vendor',
+          localField: 'vendorId',
+          foreignField: '_id',
+          as: 'vendor'
+        },
+      },
+      {
+        $unwind: {
+          path: '$vendor',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+    ]);
+
+    return orders[0];
   }
 };
 

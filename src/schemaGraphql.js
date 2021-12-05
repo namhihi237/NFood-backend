@@ -114,6 +114,7 @@ export default gql`
     getOrderByBuyer: [Order]!
     getOrderByShipper: [Order]!
     getOrderByDistances: [Order]!
+    getOrderById(id: ID!): Order!
   }
 
   type Subscription {
