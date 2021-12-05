@@ -214,6 +214,10 @@ const orderQuery = {
       },
     ]);
 
+    if (orders.length == 0) {
+      throw new Error('Không tìm thấy đơn hàng');
+    }
+
     return orders[0];
   }
 };
