@@ -1,7 +1,7 @@
 import { bcryptUtils, emailUtils, jwtUtils, smsUtils } from '../../utils';
 import { Accounts, Order, Buyer, Vendor, Shipper, Category, Item } from "../../models";
 import _ from 'lodash';
-import mongoose from 'mongoose';
+import mongoose, { mongo } from 'mongoose';
 import { constants } from "../../configs";
 import orderService from "./orderService";
 
@@ -194,8 +194,8 @@ const orderQuery = {
     const orders = await Order.aggregate([
       {
         $match: {
-          _id: args.id,
-          shipperId: shipper._id,
+          _id: mongoose.Types.ObjectId(args.id),
+          shipperId: mongoose.Types.ObjectId(shipper._id),
         }
       },
       {
