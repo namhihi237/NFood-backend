@@ -79,7 +79,7 @@ export default gql`
     address: String!
     phoneNumber: String!
     name: String!
-    deliveryDate: String
+    deliveredAt: String
     acceptedShippingAt: String
     estimatedDeliveryTime: String
     paymentStatus: String!
