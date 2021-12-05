@@ -8,11 +8,11 @@ export default {
     return moment(parent.estimatedDeliveryTime).format('DD/MM/YYYY HH:mm');
   },
 
-  deliveryDate: (parent, args, context) => {
-    if (!parent.deliveryDate) {
+  deliveredAt: (parent, args, context) => {
+    if (!parent.deliveredAt) {
       return null;
     }
-    return moment(parent.deliveryDate).format('DD/MM/YYYY');
+    return moment(parent.deliveredAt).format('DD/MM/YYYY');
   },
 
   acceptedShippingAt: (parent, args, context) => {
