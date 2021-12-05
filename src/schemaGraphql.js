@@ -112,7 +112,7 @@ export default gql`
     calculateShipping(vendorId: ID!): Float! 
     getOrderByVendor: [Order]!
     getOrderByBuyer: [Order]!
-    getOrderByShipper: Order!
+    getOrderByShipper: [Order]!
     getOrderByDistances: [Order]!
   }
 
