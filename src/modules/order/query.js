@@ -17,7 +17,7 @@ const orderQuery = {
     return await orderService.calculateShippingCost(context.user._id, args.vendorId);
   },
 
-  getVendorOrders: async (path, args, context, info) => {
+  getOrderByVendor: async (path, args, context, info) => {
     global.logger.info('orderQuery::orders' + JSON.stringify(args));
 
     // check login and role

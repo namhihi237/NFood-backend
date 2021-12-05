@@ -110,7 +110,9 @@ export default gql`
     carts: resultCart!
     getQuantityOfCart: Int!
     calculateShipping(vendorId: ID!): Float! 
-    getVendorOrders: [Order]!
+    getOrderByVendor: [Order]!
+    getOrderByBuyer: [Order]!
+    getOrderByShipper: Order!
     getOrderByDistances: [Order]!
   }
 
