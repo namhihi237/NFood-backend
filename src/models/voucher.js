@@ -11,7 +11,7 @@ const Voucher = new Schema(
     },
     discountType: {
       type: String,
-      enum: ['percentage', 'fixed'],
+      enum: ['PERCENT', 'FIXED'],
     },
     startDate: {
       type: Date,

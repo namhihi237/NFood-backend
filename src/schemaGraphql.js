@@ -100,6 +100,18 @@ export default gql`
     note: String
   }
 
+  type Voucher {
+    _id: ID!
+    voucherCode: String!
+    discount: Float!
+    isActive: Boolean!
+    quantity: Int
+    startDate: String
+    endDate: String
+    discountType: discountType
+    createdAt: String
+  }
+
   type Query {
     getUser(role: roleEnum!): User
     getSignatureImage: String!
@@ -148,7 +160,7 @@ export default gql`
     acceptShippingOrder(orderId: ID!): Order!
     pickUpOrder(orderId: ID!): Boolean!
     completeShippingOrder(orderId: ID!): Boolean!
-
+    createVoucher(voucherCode: String!, discount: Float!, discountType: discountType!, startDate: String, endDate: String, maxDiscount: Float, minTotal: Float, quantity: Int): Vendor!
   }
 
   type JWTResponse {
@@ -170,5 +182,10 @@ export default gql`
   enum methodEnum {
     COD
     ONLINE
+  }
+
+  enum discountType {
+    PERCENT
+    FIXED
   }
 `;
