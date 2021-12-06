@@ -153,7 +153,7 @@ const orderQuery = {
     const orders = await Order.aggregate([
       {
         $match: {
-          buyerId: mongoose.Types.ObjectId(buyer._id),
+          ownerId: mongoose.Types.ObjectId(buyer._id),
         }
       },
       {
