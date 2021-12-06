@@ -7,6 +7,7 @@ import Category from './category';
 import Item from './item';
 import Cart from './cart';
 import Order from './order';
+import Voucher from './voucher';
 
 export {
   Accounts,
@@ -17,5 +18,6 @@ export {
   Category,
   Item,
   Cart,
-  Order
+  Order,
+  Voucher,
 }
