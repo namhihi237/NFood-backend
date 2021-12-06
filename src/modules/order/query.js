@@ -153,7 +153,7 @@ const orderQuery = {
     const orders = await Order.aggregate([
       {
         $match: {
-          buyerId: buyer._id,
+          buyerId: mongoose.Types.ObjectId(buyer._id),
         }
       },
       {
@@ -167,6 +167,20 @@ const orderQuery = {
       {
         $unwind: {
           path: '$shipper',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'vendor',
+          localField: 'vendorId',
+          foreignField: '_id',
+          as: 'vendor'
+        }
+      },
+      {
+        $unwind: {
+          path: '$vendor',
           preserveNullAndEmptyArrays: true
         }
       },
