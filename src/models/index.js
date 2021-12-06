@@ -8,6 +8,7 @@ import Item from './item';
 import Cart from './cart';
 import Order from './order';
 import Voucher from './voucher';
+import Notification from './notification';
 
 export {
   Accounts,
@@ -20,4 +21,5 @@ export {
   Cart,
   Order,
   Voucher,
+  Notification
 }
