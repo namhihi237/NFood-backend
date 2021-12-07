@@ -79,6 +79,28 @@ const voucherMutation = {
     });
 
     return newVoucher;
+  },
+
+  deleteVoucher: async (root, args, context) => {
+    global.logger.info('voucherMutation :: deleteVoucher :: ' + JSON.stringify(args.voucherId));
+
+    // check login and role
+    if (!context.user || !context.user.role.includes('vendor')) {
+      throw new Error('Bạn không có quyền thực hiện hành động này');
+    }
+
+    const vendor = await Vendor.findOne({ accountId: context.user._id });
+
+    // check voucher
+    const voucher = await Voucher.findOne({ _id: args.voucherId, vendorId: vendor._id });
+    if (!voucher) {
+      throw new Error('Mã voucher không tồn tại');
+    }
+
+    // delete voucher
+    await Voucher.deleteOne({ _id: args.voucherId });
+
+    return true;
   }
 }
 
