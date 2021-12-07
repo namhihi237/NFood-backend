@@ -176,6 +176,7 @@ export default gql`
     pickUpOrder(orderId: ID!): Boolean!
     completeShippingOrder(orderId: ID!): Boolean!
     createVoucher(inputVoucher: inputVoucher!): Vendor!
+    resetNumberOfNotifications(userType: roleEnum!): Boolean!
   }
 
   input inputVoucher {
