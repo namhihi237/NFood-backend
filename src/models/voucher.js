@@ -32,6 +32,10 @@ const Voucher = new Schema(
     vendorId: {
       type: Schema.Types.ObjectId,
       ref: 'Vendor',
+    },
+    quantity: {
+      type: Number,
+      default: 1,
     }
   },
   { timestamps: true },

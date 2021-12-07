@@ -8,6 +8,7 @@ import { Cart, cartMutation, cartQuery } from "./cart";
 import { orderMutation, orderQuery, orderSubscribe, Order } from "./order";
 import { shipperMutation } from './shipper';
 import { notificationQuery, notificationSubscribe, notificationMutation } from "./notification";
+import { voucherMutation } from "./voucher";
 
 export default {
   Category,
@@ -34,7 +35,8 @@ export default {
     ...cartMutation,
     ...orderMutation,
     ...shipperMutation,
-    ...notificationMutation
+    ...notificationMutation,
+    ...voucherMutation
   },
 
   Subscription: {

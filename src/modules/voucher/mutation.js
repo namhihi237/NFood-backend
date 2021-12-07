@@ -5,15 +5,17 @@ import moment from 'moment';
 
 const voucherMutation = {
   createVoucher: async (root, args, context) => {
-    let { voucherCode, discount, startDate, endDate, discountType, quantity, minTotal, maxDiscount } = args;
+    global.logger.info('voucherMutation :: createVoucher :: ' + JSON.stringify(args.inputVoucher));
+
+    let { promoCode, discount, startDate, endDate, discountType, quantity, minTotal, maxDiscount } = args.inputVoucher;
 
     // check login and role
-    if (!context.user || context.user.role.includes('vendor')) {
+    if (!context.user || !context.user.role.includes('vendor')) {
       throw new Error('Bạn không có quyền thực hiện hành động này');
     }
 
     // check voucherCode
-    const voucher = await Voucher.findOne({ voucherCode });
+    const voucher = await Voucher.findOne({ promoCode, vendorId: context.user._id });
     if (voucher) {
       throw new Error('Mã voucher đã tồn tại');
     }
@@ -56,16 +58,14 @@ const voucherMutation = {
       endDate = new Date(endDate);
     }
 
-
-
     // check quantity
-    if (quantity < 0) {
+    if (quantity && quantity < 0) {
       throw new Error('Số lượng không được nhỏ hơn 0');
     }
 
     // create voucher
     const newVoucher = await Voucher.create({
-      voucherCode,
+      promoCode,
       discount,
       startDate,
       endDate,

@@ -104,7 +104,7 @@ export default gql`
     _id: ID!
     voucherCode: String!
     discount: Float!
-    isActive: Boolean!
+    status: Boolean!
     quantity: Int
     startDate: String
     endDate: String
@@ -176,17 +176,17 @@ export default gql`
     acceptShippingOrder(orderId: ID!): Order!
     pickUpOrder(orderId: ID!): Boolean!
     completeShippingOrder(orderId: ID!): Boolean!
-    createVoucher(inputVoucher: inputVoucher!): Vendor!
+    createVoucher(inputVoucher: inputVoucher!): Voucher!
     resetNumberOfNotifications(userType: roleEnum!): Boolean!
   }
 
   input inputVoucher {
-    voucherCode: String!
+    promoCode: String!
     discount: Float!
     quantity: Int
     startDate: String
     endDate: String
-    discountType: discountType
+    discountType: discountType!
     maxDiscount: Float
     minTotal: Float
   }
