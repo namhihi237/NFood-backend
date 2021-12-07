@@ -156,7 +156,7 @@ const orderMutation = {
     }
 
     // update status shipper
-    await Shipper.findOneAndUpdate({ accountId: account._id }, { isReceiveOrder: true }, { new: true });
+    await Shipper.findOneAndUpdate({ accountId: account._id }, { isReceiveOrder: true, currentOrderId: order._id }, { new: true });
 
     // update status of order
     await Order.findByIdAndUpdate({ _id: orderId }, { orderStatus: 'Processing', shipperId: shipper._id, acceptedShippingAt: new Date() }, {
@@ -237,7 +237,7 @@ const orderMutation = {
     await Order.findByIdAndUpdate({ _id: orderId }, { orderStatus: 'Delivered', deliveredAt: new Date() });
 
     // update status shipper
-    await Shipper.findOneAndUpdate({ accountId: account._id }, { isReceiveOrder: false });
+    await Shipper.findOneAndUpdate({ accountId: account._id }, { isReceiveOrder: false, currentOrderId: null });
 
     return true;
   },

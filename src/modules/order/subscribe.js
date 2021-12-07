@@ -11,6 +11,12 @@ const orderSubscribe = {
       return pubsub.asyncIterator(`ORDER_SHIPPING_${user._id}`);
     }
   },
+
+  locationShipper: {
+    subscribe: (parent, args, { pubsub, user }) => {
+      return pubsub.asyncIterator(`LOCATION_SHIPPING_${args.orderId}`);
+    }
+  }
 };
 
 export default orderSubscribe;

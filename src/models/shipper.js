@@ -63,6 +63,10 @@ const ShipperSchema = new mongoose.Schema(
     numberOfNotifications: {
       type: Number,
       default: 0,
+    },
+    currentOrderId: {
+      type: mongoose.Types.ObjectId,
+      ref: 'Order',
     }
   },
   { timestamps: true }

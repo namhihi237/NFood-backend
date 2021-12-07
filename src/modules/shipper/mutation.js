@@ -84,7 +84,14 @@ const shipperMutation = {
         type: 'Point',
         coordinates: [args.longitude, args.latitude]
       }
-    });
+    }, { new: true });
+
+    // push the location
+    if (shipper.isReceiveOrder && shipper.currentOrderId) {
+      context.pubsub.publish(`LOCATION_SHIPPING_${shipper.currentOrderId}`, {
+        location: [args.longitude, args.latitude]
+      });
+    }
 
     return true;
   }
