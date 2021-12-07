@@ -7,6 +7,7 @@ import { itemQuery, itemMutation } from './item';
 import { Cart, cartMutation, cartQuery } from "./cart";
 import { orderMutation, orderQuery, orderSubscribe, Order } from "./order";
 import { shipperMutation } from './shipper';
+import { notificationQuery, notificationSubscribe } from "./notification";
 
 export default {
   Category,
@@ -21,6 +22,7 @@ export default {
     ...vendorQuery,
     ...cartQuery,
     ...orderQuery,
+    ...notificationQuery
   },
 
   Mutation: {
@@ -36,5 +38,6 @@ export default {
 
   Subscription: {
     ...orderSubscribe,
+    ...notificationSubscribe
   },
 };

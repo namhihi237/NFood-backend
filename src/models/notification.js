@@ -6,9 +6,8 @@ const Notification = new Schema(
       type: String,
       required: true,
     },
-    accountId: {
+    userId: {
       type: Schema.Types.ObjectId,
-      ref: 'Account',
       required: true,
     },
     image: {
@@ -17,10 +16,9 @@ const Notification = new Schema(
     type: {
       type: String,
     },
-    userType: {
-      type: String,
-      enum: ['buyer', 'vendor', 'shipper'],
-      required: true
+    orderId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Order',
     }
   },
   { timestamps: true },

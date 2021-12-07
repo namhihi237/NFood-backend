@@ -112,6 +112,19 @@ export default gql`
     createdAt: String
   }
 
+  type Notification {
+    _id: ID!
+    content: String!
+    image: String
+    type: String!
+    createdAt: String
+  }
+
+  type NotificationResponse {
+    items : [Notification!]
+    total: Int!
+  }
+
   type Query {
     getUser(role: roleEnum!): User
     getSignatureImage: String!
@@ -127,10 +140,12 @@ export default gql`
     getOrderByShipper: [Order]!
     getOrderByDistances: [Order]!
     getOrderById(id: ID!): Order!
+    getNotifications(skip: Int, limit: Int, userType: roleEnum!): NotificationResponse!
   }
 
   type Subscription {
     orderShipping: Order!
+    numberOfNotifications(userType: roleEnum!): Int!
   }
  
   type Mutation {
@@ -160,7 +175,18 @@ export default gql`
     acceptShippingOrder(orderId: ID!): Order!
     pickUpOrder(orderId: ID!): Boolean!
     completeShippingOrder(orderId: ID!): Boolean!
-    createVoucher(voucherCode: String!, discount: Float!, discountType: discountType!, startDate: String, endDate: String, maxDiscount: Float, minTotal: Float, quantity: Int): Vendor!
+    createVoucher(inputVoucher: inputVoucher!): Vendor!
+  }
+
+  input inputVoucher {
+    voucherCode: String!
+    discount: Float!
+    quantity: Int
+    startDate: String
+    endDate: String
+    discountType: discountType
+    maxDiscount: Float
+    minTotal: Float
   }
 
   type JWTResponse {
