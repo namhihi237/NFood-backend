@@ -3,6 +3,7 @@ import { Accounts, Notification, Buyer, Vendor, Shipper, Category, Item, Cart, O
 import _ from 'lodash';
 import mongoose from 'mongoose';
 import orderService from "./orderService";
+import { notificationService } from "../notification";
 
 const orderMutation = {
   checkout: async (path, args, context, info) => {
@@ -168,26 +169,12 @@ const orderMutation = {
       { $lookup: { from: 'vendor', localField: 'vendorId', foreignField: '_id', as: 'vendor' } },
       { $unwind: { path: '$vendor', preserveNullAndEmptyArrays: true } }
     ]);
-    // get number of order of buyer
-    let buyer = await Buyer.findOne({ _id: order.ownerId });
 
-    // create notification and push notification to buyer
-    await Notification.create({
-      userId: buyer.accountId,
-      type: 'ORDER_ACCEPTED',
-      orderId: order._id,
-      content: `Đơn hàng ${order.invoiceNumber} đã được chấp nhận, người giao hàng đang đi lấy hàng`
-    });
+    const content_buyer = `Đơn hàng ${order.invoiceNumber} đã được chấp nhận, người giao hàng đang đi lấy hàng`;
+    const content_vendor = `Bạn vừa có đơn hàng mới vui lòng chuẩn bị để người giao hàng đến lấy hàng`;
 
-    const numberOfNotifications = buyer.numberOfNotifications ? buyer.numberOfNotifications + 1 : 1;
-
-    await Buyer.findOneAndUpdate({ _id: buyer._id }, { numberOfNotifications }, { new: true });
-
-    // push notification to buyer
-    global.logger.info('orderQuery::acceptShippingOrder:: publish ' + `NUMBER_OF_NOTIFICATIONS_${buyer.accountId}_buyer`);
-    context.pubsub.publish(`NUMBER_OF_NOTIFICATIONS_${buyer.accountId}_buyer`, {
-      numberOfNotifications
-    });
+    await notificationService.createNotificationBuyer(content_buyer, orderId, order.ownerId, context.pubsub);
+    await notificationService.createNotificationVendor(content_vendor, orderId, order.vendorId, context.pubsub);
 
     return orders[0];
   },
