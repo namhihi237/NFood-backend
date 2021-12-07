@@ -39,6 +39,10 @@ const BuyerSchema = new mongoose.Schema(
     promoCode: {
       type: String,
     },
+    numberOfNotifications: {
+      type: Number,
+      default: 0,
+    }
   },
   { timestamps: true }
 );

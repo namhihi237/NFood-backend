@@ -1,5 +1,5 @@
 import { bcryptUtils, emailUtils, jwtUtils, queue } from '../../utils';
-import { Accounts, CodeResets, Buyer, Vendor, Shipper, Category, Item, Cart, Order } from "../../models";
+import { Accounts, Notification, Buyer, Vendor, Shipper, Category, Item, Cart, Order } from "../../models";
 import _ from 'lodash';
 import mongoose from 'mongoose';
 import orderService from "./orderService";
@@ -168,6 +168,26 @@ const orderMutation = {
       { $lookup: { from: 'vendor', localField: 'vendorId', foreignField: '_id', as: 'vendor' } },
       { $unwind: { path: '$vendor', preserveNullAndEmptyArrays: true } }
     ]);
+    // get number of order of buyer
+    let buyer = await Buyer.findOne({ _id: order.ownerId });
+
+    // create notification and push notification to buyer
+    await Notification.create({
+      userId: buyer.accountId,
+      type: 'ORDER_ACCEPTED',
+      orderId: order._id,
+      content: `Đơn hàng ${order.invoiceNumber} đã được chấp nhận, người giao hàng đang đi lấy hàng`
+    });
+
+    const numberOfNotifications = buyer.numberOfNotifications ? buyer.numberOfNotifications + 1 : 1;
+
+    await Buyer.findOneAndUpdate({ _id: buyer._id }, { numberOfNotifications }, { new: true });
+
+    // push notification to buyer
+    global.logger.info('orderQuery::acceptShippingOrder:: publish ' + `NUMBER_OF_NOTIFICATIONS_${buyer.accountId}_buyer`);
+    context.pubsub.publish(`NUMBER_OF_NOTIFICATIONS_${buyer.accountId}_buyer`, {
+      numberOfNotifications
+    });
 
     return orders[0];
   },

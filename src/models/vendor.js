@@ -54,6 +54,10 @@ const VendorSchema = new mongoose.Schema(
         },
       }],
     },
+    numberOfNotifications: {
+      type: Number,
+      default: 0,
+    }
   },
   { timestamps: true }
 );
