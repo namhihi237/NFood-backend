@@ -27,6 +27,28 @@ const notificationQuery = {
     });
 
     return { items: notifications, total };
+  },
+
+  getNumberOfNotifications: async (parent, args, context, info) => {
+    global.logger.info('notification::getNumberOfNotifications' + JSON.stringify(args));
+
+    // check login
+    if (!context.user) {
+      throw new Error('Bạn chưa đăng nhập');
+    }
+
+    const account = await Accounts.findOne({ _id: context.user._id });
+
+    let user;
+    if (args.userType === 'buyer') {
+      user = await Buyer.findOne({ accountId: account._id });
+    } else if (args.userType === 'vendor') {
+      user = await Vendor.findOne({ accountId: account._id });
+    } else if (args.userType === 'shipper') {
+      user = await Shipper.findOne({ accountId: account._id });
+    }
+
+    return user.numberOfNotifications ? user.numberOfNotifications : 0;
   }
 }
 

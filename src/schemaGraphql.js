@@ -14,6 +14,7 @@ export default gql`
     coordinates: [Float]
     isReceiveOrder: Boolean
     isShippingOrder: Boolean
+    numberOfNotifications: Int
   }
 
   type Category {
@@ -141,6 +142,7 @@ export default gql`
     getOrderByDistances: [Order]!
     getOrderById(id: ID!): Order!
     getNotifications(skip: Int, limit: Int, userType: roleEnum!): NotificationResponse!
+    getNumberOfNotifications(userType: roleEnum!): Int!
     getVouchers: [Voucher]!
   }
 
