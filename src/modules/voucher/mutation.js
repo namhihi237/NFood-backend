@@ -14,8 +14,10 @@ const voucherMutation = {
       throw new Error('Bạn không có quyền thực hiện hành động này');
     }
 
-    // check voucherCode
-    const voucher = await Voucher.findOne({ promoCode, vendorId: context.user._id });
+    const vendor = await Vendor.findOne({ accountId: context.user._id });
+
+    // check promo code
+    const voucher = await Voucher.findOne({ promoCode, vendorId: vendor._id });
     if (voucher) {
       throw new Error('Mã voucher đã tồn tại');
     }
@@ -71,7 +73,7 @@ const voucherMutation = {
       endDate,
       discountType,
       quantity,
-      vendorId: context.user._id,
+      vendorId: vendor._id,
       maxDiscount,
       minTotal
     });

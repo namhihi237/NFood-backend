@@ -8,7 +8,7 @@ import { Cart, cartMutation, cartQuery } from "./cart";
 import { orderMutation, orderQuery, orderSubscribe, Order } from "./order";
 import { shipperMutation } from './shipper';
 import { notificationQuery, notificationSubscribe, notificationMutation } from "./notification";
-import { voucherMutation } from "./voucher";
+import { voucherMutation, voucherQuery } from "./voucher";
 
 export default {
   Category,
@@ -23,7 +23,8 @@ export default {
     ...vendorQuery,
     ...cartQuery,
     ...orderQuery,
-    ...notificationQuery
+    ...notificationQuery,
+    ...voucherQuery,
   },
 
   Mutation: {

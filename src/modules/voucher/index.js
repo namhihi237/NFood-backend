@@ -1,5 +1,7 @@
 import voucherMutation from "./mutation";
+import voucherQuery from "./query";
 
 export {
-  voucherMutation
+  voucherMutation,
+  voucherQuery
 }

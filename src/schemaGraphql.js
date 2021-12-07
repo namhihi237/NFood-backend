@@ -102,7 +102,7 @@ export default gql`
 
   type Voucher {
     _id: ID!
-    voucherCode: String!
+    promoCode: String!
     discount: Float!
     status: Boolean!
     quantity: Int
@@ -141,6 +141,7 @@ export default gql`
     getOrderByDistances: [Order]!
     getOrderById(id: ID!): Order!
     getNotifications(skip: Int, limit: Int, userType: roleEnum!): NotificationResponse!
+    getVouchers: [Voucher]!
   }
 
   type Subscription {
@@ -169,7 +170,7 @@ export default gql`
     addToCart(itemId: ID!, quantity: Int!, vendorId: ID!, note: String): Cart!
     removeFromCart(id: ID!): Boolean!
     updateQuantityInCart(id: ID!, quantity: Int!): Cart!
-    checkout(method: methodEnum!, note: String, voucherCode: String ): Order!
+    checkout(method: methodEnum!, note: String, promoCode: String ): Order!
     activeShipper(name: String!, image: String!): Response!
     activeShippingOrder: Boolean!
     updateLocationShipper(latitude: Float!, longitude: Float!): Boolean!
