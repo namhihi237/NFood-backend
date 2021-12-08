@@ -44,6 +44,13 @@ const orderMutation = {
 
       // calculate discount
       let discount = 0;
+      if (args.promoCode) {
+        discount = await orderService.calculateDiscount(vendorId, buyerId, args.promoCode);
+        if (!discount) {
+          args.promoCode = null;
+          discount = 0;
+        }
+      }
 
       // calculate total price
       let total = subTotal + shipping - discount;
@@ -86,6 +93,7 @@ const orderMutation = {
           discount,
           shipping,
           subTotal,
+          promoCode: args.promoCode,
           total,
           estimatedDeliveryTime,
           orderItems,

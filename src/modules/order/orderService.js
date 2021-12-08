@@ -1,5 +1,5 @@
 import { bcryptUtils, emailUtils, jwtUtils, smsUtils } from '../../utils';
-import { Accounts, Order, Buyer, Vendor, Shipper, Category, Item } from "../../models";
+import { Accounts, Order, Buyer, Vendor, Shipper, UserVoucher, Voucher } from "../../models";
 import _ from 'lodash';
 import mongoose from 'mongoose';
 import { constants } from "../../configs";
@@ -83,6 +83,53 @@ class OrderService {
       return generateInvoiceNumber();
     }
     return invoiceNumber;
+  }
+
+  async calculateDiscount(vendorId, buyerId, promoCode, subTotal) {
+    const voucher = await Voucher.findOne({ promoCode, vendorId });
+    if (!voucher) {
+      return null;
+    }
+
+    const userVoucher = await UserVoucher.findOne({ voucherId: voucher._id, buyerId, promoCode: voucher.promoCode });
+    if (userVoucher) {
+      return null;
+    }
+
+    // check quantity
+    if (voucher.quantity && voucher.quantity <= 0) {
+      return null;
+    }
+
+    // check start date and end date
+    const now = new Date();
+    if (voucher.startDate && now < voucher.startDate) {
+      return null;
+    }
+    if (voucher.endDate && now > voucher.endDate) {
+      return null;
+    }
+
+    // check minTotal
+    if (voucher.minTotal && subTotal < voucher.minTotal) {
+      return null;
+    }
+
+    // calculate discount
+    let discount = 0;
+    if (voucher.discountType === 'PERCENT') {
+      discount = subTotal * voucher.discount / 100;
+    } else if (voucher.discountType === 'FIXED') {
+      discount = voucher.discount;
+    }
+
+    await UserVoucher.create({
+      buyerId,
+      voucherId: voucher._id,
+      promoCode: voucher.promoCode,
+    });
+
+    return discount;
   }
 
 }
