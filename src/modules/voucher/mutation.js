@@ -101,6 +101,29 @@ const voucherMutation = {
     await Voucher.deleteOne({ _id: args.voucherId });
 
     return true;
+  },
+
+  toggleVoucherStatus: async (root, args, context) => {
+    global.logger.info('voucherMutation :: toggleVoucherStatus :: ' + JSON.stringify(args));
+
+    // check login and role
+    if (!context.user || !context.user.role.includes('vendor')) {
+      throw new Error('Bạn không có quyền thực hiện hành động này');
+    }
+
+    const vendor = await Vendor.findOne({ accountId: context.user._id });
+
+    // check voucher
+    const voucher = await Voucher.findOne({ _id: args.id, vendorId: vendor._id });
+    if (!voucher) {
+      throw new Error('Mã voucher không tồn tại');
+    }
+
+    // toggle status
+    voucher.status = !voucher.status;
+    await voucher.save();
+
+    return voucher;
   }
 }
 

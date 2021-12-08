@@ -181,6 +181,7 @@ export default gql`
     completeShippingOrder(orderId: ID!): Boolean!
     createVoucher(inputVoucher: inputVoucher!): Voucher!
     deleteVoucher(id: ID!): Boolean!
+    toggleVoucherStatus(id: ID!): Boolean!
     resetNumberOfNotifications(userType: roleEnum!): Boolean!
   }
 
