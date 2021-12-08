@@ -41,11 +41,10 @@ const orderMutation = {
 
       // calculate shipping fee
       let shipping = await orderService.calculateShippingCost(context.user._id, vendorId);
-
       // calculate discount
       let discount = 0;
       if (args.promoCode) {
-        discount = await orderService.calculateDiscount(vendorId, buyerId, args.promoCode);
+        discount = await orderService.calculateDiscount(vendorId, buyer._id, args.promoCode, subTotal);
         if (!discount) {
           args.promoCode = null;
           discount = 0;
@@ -114,22 +113,10 @@ const orderMutation = {
       await session.commitTransaction();
       session.endSession();
 
-      // push notification to shipper to accept shipping order
-      // const job = queue.queue.createJob(order._id);
-      // job.save();
-
-      // job.on('succeeded', (result) => {
-      //   global.logger.info(`Received result for job ${job.id}`);
-      // });
-
-      // job.on('failed', (error) => {
-      //   global.logger.error(`OrderJob::findShipperForOrder::failed id = ${job.id} -- ${error}`);
-      // }
-      // );
-
       return order;
 
     } catch (error) {
+      console.log(error);
       await session.abortTransaction();
       session.endSession();
       throw error;

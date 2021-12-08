@@ -86,6 +86,7 @@ class OrderService {
   }
 
   async calculateDiscount(vendorId, buyerId, promoCode, subTotal) {
+    global.logger.info('OrderService::calculateDiscount:: ');
     const voucher = await Voucher.findOne({ promoCode, vendorId });
     if (!voucher) {
       return null;
@@ -116,8 +117,10 @@ class OrderService {
     }
 
     // calculate discount
+    console.log(voucher);
     let discount = 0;
     if (voucher.discountType === 'PERCENT') {
+      console.log(subTotal + " " + voucher.discount);
       discount = subTotal * voucher.discount / 100;
     } else if (voucher.discountType === 'FIXED') {
       discount = voucher.discount;
@@ -129,6 +132,11 @@ class OrderService {
       promoCode: voucher.promoCode,
     });
 
+    if (voucher.quantity) {
+      await Voucher.updateOne({ _id: voucher._id }, { $inc: { quantity: -1 } });
+    }
+
+    console.log(discount);
     return discount;
   }
 
