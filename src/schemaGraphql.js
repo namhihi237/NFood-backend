@@ -144,6 +144,7 @@ export default gql`
     getNotifications(skip: Int, limit: Int, userType: roleEnum!): NotificationResponse!
     getNumberOfNotifications(userType: roleEnum!): Int!
     getVouchers: [Voucher]!
+    checkPromoCode(promoCode: String!, vendorId: ID!, subTotal: Float!): Voucher!
   }
 
   type Subscription {
@@ -181,7 +182,6 @@ export default gql`
     completeShippingOrder(orderId: ID!): Boolean!
     createVoucher(inputVoucher: inputVoucher!): Voucher!
     deleteVoucher(id: ID!): Boolean!
-    checkPromoCode(promoCode: String!, vendorId: ID!, subTotal: Float!): Voucher!
     toggleVoucherStatus(id: ID!): Boolean!
     updateVoucher(id: ID!, inputVoucher: inputVoucher!): Boolean!
     resetNumberOfNotifications(userType: roleEnum!): Boolean!
