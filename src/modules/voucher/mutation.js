@@ -124,6 +124,86 @@ const voucherMutation = {
     await voucher.save();
 
     return voucher;
+  },
+
+  updateVoucher: async (root, args, context) => {
+    global.logger.info('voucherMutation :: updateVoucher :: ' + JSON.stringify(args.inputVoucher));
+
+    // check login and role
+    if (!context.user || !context.user.role.includes('vendor')) {
+      throw new Error('Bạn không có quyền thực hiện hành động này');
+    }
+
+    const vendor = await Vendor.findOne({ accountId: context.user._id });
+
+    // check voucher
+    const voucher = await Voucher.findOne({ _id: args.id, vendorId: vendor._id });
+    if (!voucher) {
+      throw new Error('Mã voucher không tồn tại');
+    }
+
+    // check promo code
+    const voucherExist = await Voucher.findOne({ promoCode: args.inputVoucher.promoCode, vendorId: vendor._id });
+    if (voucherExist && voucherExist._id.toString() !== voucher._id.toString()) {
+      throw new Error('Mã voucher đã tồn tại');
+    }
+
+    // check discount
+    if (args.inputVoucher.discountType === 'PERCENT') {
+      if (args.inputVoucher.discount > 100 || args.inputVoucher.discount < 0) {
+        throw new Error('Giảm giá không được lớn hơn 100% hoặc nhỏ hơn 0%');
+      }
+    }
+
+    if (args.inputVoucher.discountType === 'FIXED') {
+      if (args.inputVoucher.discount < 0) {
+        throw new Error('Giảm giá không được nhỏ hơn 0');
+      }
+    }
+
+    // check startDate if
+    if (args.inputVoucher.startDate) {
+      if (!moment(args.inputVoucher.startDate).isValid()) {
+        throw new Error('Ngày bắt đầu không đúng định dạng');
+      }
+      // check valid startDate
+      if (moment(args.inputVoucher.startDate).isBefore(moment())) {
+        throw new Error('Ngày bắt đầu phải sau ngày hiện tại');
+      }
+
+      args.inputVoucher.startDate = new Date(args.inputVoucher.startDate);
+    }
+
+    // check endDate if
+    if (args.inputVoucher.endDate) {
+      if (!moment(args.inputVoucher.endDate).isValid()) {
+        throw new Error('Ngày kết thúc không đúng định dạng');
+      }
+      // check valid endDate
+      if (moment(args.inputVoucher.endDate).isBefore(moment())) {
+        throw new Error('Ngày kết thúc phải sau ngày hiện tại');
+      }
+
+      args.inputVoucher.endDate = new Date(args.inputVoucher.endDate);
+    }
+
+    // check quantity
+    if (args.inputVoucher.quantity && args.inputVoucher.quantity < 0) {
+      throw new Error('Số lượng không được nhỏ hơn 0');
+    }
+
+    // check minTotal
+    if (args.inputVoucher.minTotal && args.inputVoucher.minTotal < 0) {
+      throw new Error('Giá trị tối thiểu không được nhỏ hơn 0');
+    }
+
+    // check maxTotal
+    if (args.inputVoucher.maxTotal && args.inputVoucher.maxTotal < 0) {
+      throw new Error('Giá trị tối đa không được nhỏ hơn 0');
+    }
+
+    // update voucher
+    await Voucher.updateOne({ _id: args.id }, { $set: args.inputVoucher });
   }
 }
 

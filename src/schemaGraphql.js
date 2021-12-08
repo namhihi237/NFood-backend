@@ -182,6 +182,7 @@ export default gql`
     createVoucher(inputVoucher: inputVoucher!): Voucher!
     deleteVoucher(id: ID!): Boolean!
     toggleVoucherStatus(id: ID!): Boolean!
+    updateVoucher(id: ID!, inputVoucher: inputVoucher!): Boolean!
     resetNumberOfNotifications(userType: roleEnum!): Boolean!
   }
 
