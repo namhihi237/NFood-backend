@@ -6,13 +6,13 @@ class StripeUtils {
     this.stripe = Stripe(envVariable.STRIPE_SECRET_KEY);
   }
 
-  async createCustomer(email = 'nfood app', source) {
-    global.logger.info('Stripe createCustomer' + JSON.stringify({ email, source }));
-    let description = `Customer for ${email}`;
+  async createCustomer(phone = 'nfood app', source) {
+    global.logger.info('Stripe createCustomer' + JSON.stringify({ phone, source }));
+    let description = `Customer for ${phone}`;
 
     try {
       const customer = await this.stripe.customers.create({
-        email,
+        phone,
         description,
       });
 
