@@ -236,6 +236,61 @@ const orderQuery = {
     }
 
     return orders[0];
+  },
+
+  getOrderByIdBuyer: async (parent, args, context, info) => {
+    global.logger.info('orderQuery::getOrderByIdBuyer' + JSON.stringify(args));
+
+    // check login and role
+    if (!context.user) {
+      throw new Error('Bạn chưa đăng nhập');
+    }
+
+    const buyer = await Buyer.findOne({ accountId: context.user.id });
+
+    if (!buyer) {
+      throw new Error('Bạn không phải là người mua hàng');
+    }
+
+    const orders = await Order.aggregate([
+      {
+        $match: {
+          _id: mongoose.Types.ObjectId(args.id),
+          ownerId: mongoose.Types.ObjectId(buyer._id),
+        }
+      },
+      {
+        $lookup: {
+          from: 'vendor',
+          localField: 'vendorId',
+          foreignField: '_id',
+          as: 'vendor'
+        },
+      },
+      {
+        $unwind: {
+          path: '$vendor',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'shipper',
+          localField: 'shipperId',
+          foreignField: '_id',
+          as: 'shipper'
+        },
+      },
+      {
+        $unwind: {
+          path: '$shipper',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+    ]);
+
+    return orders[0]
+
   }
 };
 
