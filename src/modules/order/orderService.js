@@ -6,9 +6,7 @@ import { constants } from "../../configs";
 class OrderService {
   async calculateShippingCost(userId, vendorId) {
     global.logger.info('OrderService::calculateShippingCost:: ' + JSON.stringify({ userId }) + ' ' + JSON.stringify({ vendorId }));
-    const account = await Accounts.findOne({ _id: userId });
-
-    const buyer = await Buyer.findOne({ accountId: account._id });
+    const buyer = await Buyer.findOne({ accountId: userId });
 
     if (!buyer) {
       throw new Error('bạn không phải là người mua hàng');

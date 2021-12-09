@@ -15,11 +15,11 @@ const vendorQuery = {
       throw new Error('Bạn chưa đăng nhập');
     }
 
-    let account = await Accounts.findById(context.user.id);
+    // let account = await Accounts.findById(context.user.id);
 
     if (!latitude || !longitude) {
       // get location from buyer
-      const buyer = await Buyer.findOne({ accountId: account._id }, { location: 1 });
+      const buyer = await Buyer.findOne({ accountId: context.user.id }, { location: 1 });
 
       if (!buyer) {
         throw new Error('Bạn chưa là người mua');

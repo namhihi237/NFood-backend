@@ -14,15 +14,13 @@ const notificationQuery = {
       throw new Error('Bạn chưa đăng nhập');
     }
 
-    const account = await Accounts.findOne({ _id: context.user._id });
-
     const notifications = await Notification.find({
-      userId: account._id,
+      userId: context.user.id,
       userType: args.userType,
     }).skip(skip).limit(limit).sort({ createdAt: -1 });
 
     const total = await Notification.countDocuments({
-      accountId: account._id,
+      accountId: context.user.id,
       userType: args.userType,
     });
 
@@ -37,15 +35,13 @@ const notificationQuery = {
       throw new Error('Bạn chưa đăng nhập');
     }
 
-    const account = await Accounts.findOne({ _id: context.user._id });
-
     let user;
     if (args.userType === 'buyer') {
-      user = await Buyer.findOne({ accountId: account._id });
+      user = await Buyer.findOne({ accountId: context.user.id });
     } else if (args.userType === 'vendor') {
-      user = await Vendor.findOne({ accountId: account._id });
+      user = await Vendor.findOne({ accountId: context.user.id });
     } else if (args.userType === 'shipper') {
-      user = await Shipper.findOne({ accountId: account._id });
+      user = await Shipper.findOne({ accountId: context.user.id });
     }
 
     return user.numberOfNotifications ? user.numberOfNotifications : 0;

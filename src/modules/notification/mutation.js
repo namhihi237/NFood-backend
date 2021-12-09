@@ -18,11 +18,11 @@ const notificationMutation = {
     }
 
     if (args.userType === 'buyer') {
-      await Buyer.findOneAndUpdate({ accountId: context.user._id }, { $set: { numberOfNotifications: 0 } });
+      await Buyer.findOneAndUpdate({ accountId: context.user.id }, { $set: { numberOfNotifications: 0 } });
     } else if (args.userType === 'vendor') {
-      await Vendor.findOneAndUpdate({ accountId: context.user._id }, { $set: { numberOfNotifications: 0 } });
+      await Vendor.findOneAndUpdate({ accountId: context.user.id }, { $set: { numberOfNotifications: 0 } });
     } else if (args.userType === 'shipper') {
-      await Shipper.findOneAndUpdate({ accountId: context.user._id }, { $set: { numberOfNotifications: 0 } });
+      await Shipper.findOneAndUpdate({ accountId: context.user.id }, { $set: { numberOfNotifications: 0 } });
     }
 
     return true;

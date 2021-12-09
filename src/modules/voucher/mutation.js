@@ -14,7 +14,7 @@ const voucherMutation = {
       throw new Error('Bạn không có quyền thực hiện hành động này');
     }
 
-    const vendor = await Vendor.findOne({ accountId: context.user._id });
+    const vendor = await Vendor.findOne({ accountId: context.user.id });
 
     // check promo code
     const voucher = await Voucher.findOne({ promoCode, vendorId: vendor._id });
@@ -89,7 +89,7 @@ const voucherMutation = {
       throw new Error('Bạn không có quyền thực hiện hành động này');
     }
 
-    const vendor = await Vendor.findOne({ accountId: context.user._id });
+    const vendor = await Vendor.findOne({ accountId: context.user.id });
 
     // check voucher
     const voucher = await Voucher.findOne({ _id: args.voucherId, vendorId: vendor._id });
@@ -111,7 +111,7 @@ const voucherMutation = {
       throw new Error('Bạn không có quyền thực hiện hành động này');
     }
 
-    const vendor = await Vendor.findOne({ accountId: context.user._id });
+    const vendor = await Vendor.findOne({ accountId: context.user.id });
 
     // check voucher
     const voucher = await Voucher.findOne({ _id: args.id, vendorId: vendor._id });
@@ -134,7 +134,7 @@ const voucherMutation = {
       throw new Error('Bạn không có quyền thực hiện hành động này');
     }
 
-    const vendor = await Vendor.findOne({ accountId: context.user._id });
+    const vendor = await Vendor.findOne({ accountId: context.user.id });
 
     // check voucher
     const voucher = await Voucher.findOne({ _id: args.id, vendorId: vendor._id });

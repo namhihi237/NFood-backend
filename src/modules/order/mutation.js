@@ -16,12 +16,12 @@ const orderMutation = {
       if (!context.user) {
         throw new Error('Bạn chưa đăng nhập');
       }
-      const account = await Accounts.findOne({ _id: context.user._id });
+      const account = await Accounts.findOne({ _id: context.user.id });
       const buyer = await Buyer.findOne({ accountId: account._id });
 
       // find all items in the cart
       const cartItems = await Cart.aggregate([
-        { $match: { userId: context.user._id } },
+        { $match: { userId: context.user.id } },
         { $lookup: { from: 'item', localField: 'itemId', foreignField: '_id', as: 'item' } },
         { $unwind: { path: '$item', preserveNullAndEmptyArrays: true } }
       ]);
@@ -40,7 +40,7 @@ const orderMutation = {
       });
 
       // calculate shipping fee
-      let shipping = await orderService.calculateShippingCost(context.user._id, vendorId);
+      let shipping = await orderService.calculateShippingCost(context.user.id, vendorId);
       // calculate discount
       let discount = 0;
       if (args.promoCode) {
@@ -132,10 +132,8 @@ const orderMutation = {
       throw new Error('Bạn chưa đăng nhập');
     }
 
-    const account = await Accounts.findOne({ _id: context.user._id });
-
     // check has order receiving
-    const shipper = await Shipper.findOne({ account: account._id });
+    const shipper = await Shipper.findOne({ accountId: context.user.id });
     if (shipper.isReceiveOrder) {
       throw new Error('Bạn đang có đơn hàng đang cần giao');
     }
@@ -151,7 +149,7 @@ const orderMutation = {
     }
 
     // update status shipper
-    await Shipper.findOneAndUpdate({ accountId: account._id }, { isReceiveOrder: true, currentOrderId: order._id }, { new: true });
+    await Shipper.findOneAndUpdate({ accountId: context.user.id }, { isReceiveOrder: true, currentOrderId: order._id }, { new: true });
 
     // update status of order
     await Order.findByIdAndUpdate({ _id: orderId }, { orderStatus: 'Processing', shipperId: shipper._id, acceptedShippingAt: new Date() }, {
@@ -183,9 +181,7 @@ const orderMutation = {
       throw new Error('Bạn chưa đăng nhập');
     }
 
-    const account = await Accounts.findOne({ _id: context.user._id });
-
-    const shipper = await Shipper.findOne({ account: account._id });
+    const shipper = await Shipper.findOne({ accountId: context.user.id });
 
     const order = await Order.findOne({ _id: orderId });
 
@@ -213,9 +209,7 @@ const orderMutation = {
       throw new Error('Bạn chưa đăng nhập');
     }
 
-    const account = await Accounts.findOne({ _id: context.user._id });
-
-    const shipper = await Shipper.findOne({ account: account._id });
+    const shipper = await Shipper.findOne({ accountId: context.user.id });
 
     const order = await Order.findOne({ _id: orderId });
 

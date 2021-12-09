@@ -12,7 +12,7 @@ const voucherQuery = {
       throw new Error('Bạn không có quyền truy cập dữ liệu');
     }
 
-    const vendor = await Vendor.findOne({ accountId: context.user._id });
+    const vendor = await Vendor.findOne({ accountId: context.user.id });
 
     return Voucher.find({ vendorId: vendor._id })
   },
@@ -25,6 +25,8 @@ const voucherQuery = {
       throw new Error('Bạn không có quyền truy cập dữ liệu');
     }
 
+    const buyer = await Buyer.findOne({ accountId: context.user.id });
+
     const voucher = await Voucher.findOne({ promoCode, vendorId, status: true });
 
     if (!voucher) {
@@ -32,7 +34,7 @@ const voucherQuery = {
     }
 
     // check used promoCode
-    const userVoucher = await UserVoucher.findOne({ voucherId: voucher._id, promoCode, buyerId: context.user._id });
+    const userVoucher = await UserVoucher.findOne({ voucherId: voucher._id, promoCode, buyerId: buyer._id });
 
     if (userVoucher) {
       throw new Error('Mã chỉ được sử dụng một lần');

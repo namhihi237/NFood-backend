@@ -94,7 +94,6 @@ export const startServer = async () => {
       token = connectionParams.Authorization;
       try {
         user = await jwtUtils.verify(token);
-        user = await Accounts.findById(user.data.id, { id: 1, phoneNumber: 1, role: 1 });
       } catch (error) {
       }
 

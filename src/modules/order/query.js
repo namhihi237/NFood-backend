@@ -14,7 +14,7 @@ const orderQuery = {
       throw new Error('Bạn chưa đăng nhập');
     }
 
-    return await orderService.calculateShippingCost(context.user._id, args.vendorId);
+    return await orderService.calculateShippingCost(context.user.id, args.vendorId);
   },
 
   getOrderByVendor: async (path, args, context, info) => {
@@ -25,9 +25,7 @@ const orderQuery = {
       throw new Error('Bạn chưa đăng nhập');
     }
 
-    const account = await Accounts.findOne({ _id: context.user._id });
-
-    const vendor = await Vendor.findOne({ accountId: account._id });
+    const vendor = await Vendor.findOne({ accountId: context.user.id });
 
     if (!vendor) {
       throw new Error('Bạn không phải là nhà bán hàng');
@@ -56,7 +54,6 @@ const orderQuery = {
     ]);
 
     return orders;
-
   },
 
   getOrderByDistances: async (parent, args, context, info) => {
@@ -67,9 +64,7 @@ const orderQuery = {
       throw new Error('Bạn chưa đăng nhập');
     }
 
-    const account = await Accounts.findOne({ _id: context.user._id });
-
-    const shipper = await Shipper.findOne({ accountId: account._id });
+    const shipper = await Shipper.findOne({ accountId: context.user.id });
 
     if (!shipper) {
       throw new Error('Bạn không phải là người giao hàng');
@@ -125,9 +120,7 @@ const orderQuery = {
       throw new Error('Bạn chưa đăng nhập');
     }
 
-    const account = await Accounts.findOne({ _id: context.user._id });
-
-    const shipper = await Shipper.findOne({ accountId: account._id });
+    const shipper = await Shipper.findOne({ accountId: context.user.id });
 
     if (!shipper) {
       throw new Error('Bạn không phải là người giao hàng');
@@ -142,9 +135,7 @@ const orderQuery = {
     global.logger.info('orderQuery::getOrderByBuyer' + JSON.stringify(args));
 
     // check login and role
-    const account = await Accounts.findOne({ _id: context.user._id });
-
-    const buyer = await Buyer.findOne({ accountId: account._id });
+    const buyer = await Buyer.findOne({ accountId: context.user.id });
 
     if (!buyer) {
       throw new Error('Bạn không phải là người mua hàng');
@@ -197,9 +188,7 @@ const orderQuery = {
       throw new Error('Bạn chưa đăng nhập');
     }
 
-    const account = await Accounts.findOne({ _id: context.user._id });
-
-    const shipper = await Shipper.findOne({ accountId: account._id });
+    const shipper = await Shipper.findOne({ accountId: context.user.id });
 
     if (!shipper) {
       throw new Error('Bạn không phải là người giao hàng');

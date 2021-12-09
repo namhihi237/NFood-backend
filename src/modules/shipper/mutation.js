@@ -101,8 +101,7 @@ const shipperMutation = {
       throw new Error('Bạn chưa đăng nhập');
     }
 
-    let account = await Accounts.findById(context.user._id);
-    let shipper = await Shipper.findOne({ accountId: account._id });
+    let shipper = await Shipper.findOne({ accountId: context.user.id });
 
     if (!shipper) {
       throw new Error('Bạn chưa đăng ký là người giao hàng');
