@@ -21,7 +21,7 @@ const orderMutation = {
 
       // find all items in the cart
       const cartItems = await Cart.aggregate([
-        { $match: { userId: context.user.id } },
+        { $match: { userId: mongoose.Types.ObjectId(context.user.id) } },
         { $lookup: { from: 'item', localField: 'itemId', foreignField: '_id', as: 'item' } },
         { $unwind: { path: '$item', preserveNullAndEmptyArrays: true } }
       ]);
