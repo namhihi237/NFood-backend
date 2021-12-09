@@ -155,7 +155,7 @@ export default gql`
     getNumberOfNotifications(userType: roleEnum!): Int!
     getVouchers: [Voucher]!
     checkPromoCode(promoCode: String!, vendorId: ID!, subTotal: Float!): Voucher!
-    getOrderByIdBuyer(id: ID!) Order!
+    getOrderByIdBuyer(id: ID!): Order!
   }
 
   type Subscription {
