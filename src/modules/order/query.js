@@ -215,6 +215,20 @@ const orderQuery = {
           preserveNullAndEmptyArrays: true
         }
       },
+      {
+        $lookup: {
+          from: 'shipper',
+          localField: 'shipperId',
+          foreignField: '_id',
+          as: 'shipper'
+        },
+      },
+      {
+        $unwind: {
+          path: '$shipper',
+          preserveNullAndEmptyArrays: true
+        }
+      },
     ]);
 
     if (orders.length == 0) {

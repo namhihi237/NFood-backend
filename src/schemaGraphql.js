@@ -88,6 +88,16 @@ export default gql`
     createdAt: String
     vendorId: ID
     vendor: Vendor
+    shipperId: ID
+    shipper: Shipper
+
+  }
+
+  type Shipper {
+    _id: ID!
+    name: String
+    phoneNumber: String
+    image: String
   }
 
   type OrderItem {
