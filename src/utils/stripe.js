@@ -1,7 +1,7 @@
 
 import Stripe from 'stripe';
 import { envVariable } from '../configs';
-class Stripe {
+class StripeUtils {
   constructor() {
     this.stripe = Stripe(envVariable.STRIPE_SECRET_KEY);
   }
@@ -90,7 +90,7 @@ class Stripe {
 
   async createTokenForTesting() {
     try {
-      global.logger.info('Stripe createTokenForTesting');
+      console.log('Stripe createTokenForTesting');
       return await this.stripe.tokens.create({
         card: {
           number: '4242424242424242',
@@ -100,9 +100,9 @@ class Stripe {
         },
       });
     } catch (error) {
-      global.logger.error('Stripe createTokenForTesting error' + JSON.stringify({ error }));
+      console.log(error);
     }
   }
 }
 
-export default new Stripe();
+export default new StripeUtils();
