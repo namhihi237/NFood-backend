@@ -231,6 +231,31 @@ const orderMutation = {
     return true;
   },
 
+  cancelOrder: async (path, args, context, info) => {
+    global.logger.info('orderQuery::cancelOrder' + JSON.stringify(args));
+
+    // check login
+    if (!context.user) {
+      throw new Error('Bạn chưa đăng nhập');
+    }
+
+    const order = await Order.findById({ _id: args.id });
+
+    if (!order) {
+      throw new Error('Không tìm thấy đơn hàng');
+    }
+
+    // check status of order
+    if (order.orderStatus !== 'Pending') {
+      throw new Error('Đơn hàng này không thể hủy');
+    }
+
+    // update status order
+    await Order.findByIdAndUpdate({ _id: args.id }, { orderStatus: 'Canceled', canceledAt: new Date() });
+
+    return true;
+  }
+
 
 };
 

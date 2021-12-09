@@ -197,6 +197,7 @@ export default gql`
     updateVoucher(id: ID!, inputVoucher: inputVoucher!): Boolean!
     resetNumberOfNotifications(userType: roleEnum!): Boolean!
     updateMaxDistanceReceiveOrder(maxDistance: Float!): Boolean!
+    cancelOrder(id: ID!): Boolean!
   }
 
   input inputVoucher {
