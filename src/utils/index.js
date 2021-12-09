@@ -10,4 +10,20 @@ import { upload } from './multer';
 import connectDb from './connectDb';
 import hereUtils from './here';
 import queue from './queue';
-export { logger, jwtUtils, queue, bcryptUtils, emailUtils, randomUtils, smsUtils, redisUtils, imageUtils, upload, connectDb, hereUtils };
+import stripeUtils from './stripe';
+
+export {
+  logger,
+  jwtUtils,
+  queue,
+  bcryptUtils,
+  emailUtils,
+  randomUtils,
+  smsUtils,
+  redisUtils,
+  imageUtils,
+  upload,
+  connectDb,
+  hereUtils,
+  stripeUtils,
+};

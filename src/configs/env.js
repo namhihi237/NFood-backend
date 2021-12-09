@@ -19,4 +19,5 @@ export const envVariable = {
   clientUrl: NODE_ENV == 'stg' ? process.env.CLIENT_URL : 'http://localhost/',
   expireTime: process.env.expireTime || 30 * 24 * 60 * 60 * 1000,
   HERE_API_KEY: process.env.HERE_API_KEY || '',
+  STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY || ''
 };
