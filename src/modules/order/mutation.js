@@ -96,6 +96,7 @@ const orderMutation = {
           total,
           estimatedDeliveryTime,
           orderItems,
+          paymentMethod: 'COD',
           location: {
             type: 'Point',
             coordinates: [vendor.location.coordinates[0], vendor.location.coordinates[1]]
