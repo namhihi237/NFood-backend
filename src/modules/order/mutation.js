@@ -251,7 +251,7 @@ const orderMutation = {
     }
 
     // update status order
-    await Order.findByIdAndUpdate({ _id: args.id }, { orderStatus: 'Canceled', canceledAt: new Date() });
+    await Order.findByIdAndUpdate({ _id: args.id }, { orderStatus: 'Cancelled', cancelledAt: new Date() });
 
     return true;
   }

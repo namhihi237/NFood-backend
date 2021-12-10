@@ -72,7 +72,7 @@ const OrderSchema = new mongoose.Schema(
     pickedUpAt: {
       type: Date,
     },
-    canceledAt: {
+    cancelledAt: {
       type: Date,
     },
     orderItems: {
