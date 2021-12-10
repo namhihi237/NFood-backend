@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%=titlePage %> </title>
+    <link rel="stylesheet" href="https://demo.6amtech.com/restaurant/public/assets/admin/css/vendor.min.css" />
+    <link rel="stylesheet" href="https://demo.6amtech.com/restaurant/public/assets/admin/vendor/icon-set/style.css" />
+    <link rel="stylesheet" href="https://demo.6amtech.com/restaurant/public/assets/admin/css/theme.minc619.css?v=1.0" />
+    <meta name="csrf-token" content="SuFWmPmg8wMiqZYxVWupcnoK2WvR9lFxoO027pFe" />
+    <script src="https://demo.6amtech.com/restaurant/public/assets/admin/vendor/hs-navbar-vertical-aside/hs-navbar-vertical-aside-mini-cache.js"></script>
+    <link rel="stylesheet" href="https://demo.6amtech.com/restaurant/public/assets/admin/css/toastr.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  </head>
+  <body class="footer-offset">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div id="loading" style="display: none">
+            <div style="position: fixed; z-index: 9999; left: 40%; top: 37%; width: 100%">
+              <img width="200" src="https://demo.6amtech.com/restaurant/public/assets/admin/img/loader.gif" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="styleSwitcherDropdown" class="hs-unfold-content sidebar sidebar-bordered sidebar-box-shadow" style="width: 35rem">
+      <div class="card card-lg border-0 h-100">
+        <div class="card-body sidebar-scrollbar">
+          <div class="row gx-2 mb-5"></div>
+
+          <div class="col-4 text-center">
+            <div class="text-center">
+              <div class="custom-checkbox-card mb-2">
+                <input
+                  type="radio"
+                  class="custom-checkbox-card-input"
+                  name="headerLayoutOptions"
+                  id="headerLayoutOptions2"
+                  value="single-container"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <div class="row gx-2">
+          <div class="col">
+            <button type="button" id="js-builder-reset" class="btn btn-block btn-lg btn-white"><i class="tio-restore"></i> Reset</button>
+          </div>
+          <div class="col">
+            <button type="button" id="js-builder-preview" class="btn btn-block btn-lg btn-primary">
+              <i class="tio-visible"></i> Preview
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="headerMain" class="d-none">
+      <header id="header" class="navbar navbar-expand-lg navbar-fixed navbar-height navbar-flush navbar-container navbar-bordered">
+        <div class="navbar-nav-wrap">
+          <div class="navbar-brand-wrapper">
+            <a class="navbar-brand" href="#">
+              <img
+                class="navbar-brand-logo"
+                onerror="this.src='https://demo.6amtech.com/restaurant/public/assets/admin/img/160x160/img1.jpg'"
+                src="https://demo.6amtech.com/restaurant/storage/app/public/restaurant/2021-02-27-603aa32c36d89.png"
+                alt="Logo"
+              />
+              <img
+                class="navbar-brand-logo-mini"
+                onerror="this.src='https://demo.6amtech.com/restaurant/public/assets/admin/img/160x160/img1.jpg'"
+                src="https://demo.6amtech.com/restaurant/storage/app/public/restaurant/2021-02-27-603aa32c36d89.png"
+                alt="Logo"
+              />
+            </a>
+          </div>
+          <div class="navbar-nav-wrap-content-left">
+            <button type="button" class="js-navbar-vertical-aside-toggle-invoker close mr-3">
+              <i
+                class="tio-first-page navbar-vertical-aside-toggle-short-align"
+                data-toggle="tooltip"
+                data-placement="right"
+                title="Collapse"
+              ></i>
+              <i
+                class="tio-last-page navbar-vertical-aside-toggle-full-align"
+                data-template='<div class="tooltip d-none d-sm-block" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'
+                data-toggle="tooltip"
+                data-placement="right"
+                title="Expand"
+              ></i>
+            </button>
+          </div>
+
+          <div class="navbar-nav-wrap-content-right">
+            <ul class="navbar-nav align-items-center flex-row">
+              <li class="nav-item d-none d-sm-inline-block">
+                <div class="hs-unfold">
+                  <a
+                    class="js-hs-unfold-invoker btn btn-icon btn-ghost-secondary rounded-circle"
+                    href="#"
+                  >
+                    <i class="tio-messages-outlined"></i>
+                  </a>
+                </div>
+              </li>
+              <li class="nav-item d-none d-sm-inline-block">
+                <div class="hs-unfold">
+                  <a
+                    class="js-hs-unfold-invoker btn btn-icon btn-ghost-secondary rounded-circle"
+                    href="#"
+                  >
+                    <i class="tio-shopping-cart-outlined"></i>
+                  </a>
+                </div>
+              </li>
+              <li class="nav-item">
+                <div class="hs-unfold">
+                  <a
+                    class="js-hs-unfold-invoker navbar-dropdown-account-wrapper"
+                    href="javascript:;"
+                    data-hs-unfold-options='{
+                                     "target": "#accountNavbarDropdown",
+                                     "type": "css-animation"
+                                   }'
+                  >
+                    <div class="avatar avatar-sm avatar-circle">
+                      <img
+                        class="avatar-img"
+                        onerror="this.src='https://demo.6amtech.com/restaurant/public/assets/admin/img/160x160/img1.jpg'"
+                        src="https://demo.6amtech.com/restaurant/storage/app/public/admin/"
+                        alt="Image Description"
+                      />
+                      <span class="avatar-status avatar-sm-status avatar-status-success"></span>
+                    </div>
+                  </a>
+                  <div
+                    id="accountNavbarDropdown"
+                    class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-right navbar-dropdown-menu navbar-dropdown-account"
+                    style="width: 16rem"
+                  >
+                    <div class="dropdown-item-text">
+                      <div class="media align-items-center">
+                        <div class="avatar avatar-sm avatar-circle mr-2">
+                          <img
+                            class="avatar-img"
+                            onerror="this.src='https://demo.6amtech.com/restaurant/public/assets/admin/img/160x160/img1.jpg'"
+                            src="#"
+                            alt="Image Description"
+                          />
+                        </div>
+                        <div class="media-body">
+                          <span class="card-title h5">admin</span>
+                          <span class="card-text"
+                            ><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8beaefe6e2e5cbeaefe6e2e5a5e8e4e6"
+                              >[email&#160;protected]</a
+                            ></span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <div class="dropdown-divider"></div>
+
+                    <a class="dropdown-item" href="/logout">
+                      <span class="text-truncate pr-2" title="Sign out">Sign out</span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </header>
+    </div>
+    <div id="headerFluid" class="d-none"></div>
+    <div id="headerDouble" class="d-none"></div>
+    <div id="sidebarMain" class="d-none">
+      <aside
+        class="js-navbar-vertical-aside navbar navbar-vertical-aside navbar-vertical navbar-vertical-fixed navbar-expand-xl navbar-bordered"
+      >
+        <div class="navbar-vertical-container text-capitalize">
+          <div class="navbar-vertical-footer-offset">
+            <div class="navbar-brand-wrapper justify-content-between">
+              <a class="navbar-brand" href="https://demo.6amtech.com/restaurant/admin" aria-label="Front">
+                <img
+                  class="navbar-brand-logo"
+                  onerror="this.src='https://demo.6amtech.com/restaurant/public/assets/admin/img/160x160/img2.jpg'"
+                  src="https://demo.6amtech.com/restaurant/storage/app/public/restaurant/2021-02-27-603aa32c36d89.png"
+                />
+                <img
+                  class="navbar-brand-logo-mini"
+                  onerror="this.src='https://demo.6amtech.com/restaurant/public/assets/admin/img/160x160/img2.jpg'"
+                  src="https://demo.6amtech.com/restaurant/storage/app/public/restaurant/2021-02-27-603aa32c36d89.png"
+                />
+              </a>
+              <button
+                type="button"
+                class="js-navbar-vertical-aside-toggle-invoker navbar-vertical-aside-toggle btn btn-icon btn-xs btn-ghost-dark"
+              >
+                <i class="tio-clear tio-lg"></i>
+              </button>
+            </div>
+            <div class="navbar-vertical-content">
+              <ul class="navbar-nav navbar-nav-lg nav-tabs">
+                <li class="navbar-vertical-aside-has-menu show">
+                  <a class="js-navbar-vertical-aside-menu-link nav-link" href="#">
+                    <i class="tio-home-vs-1-outlined nav-icon"></i>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate"> Dashboard </span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <small class="nav-subtitle">Order Section</small>
+                  <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                </li>
+                <li class="navbar-vertical-aside-has-menu">
+                  <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:">
+                    <i class="tio-shopping-cart nav-icon"></i>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate"> Order </span>
+                  </a>
+                  <ul class="js-navbar-vertical-aside-submenu nav nav-sub" style="display: none">
+                    <li class="nav-item">
+                      <a class="nav-link" href="/orders">
+                        <span class="tio-circle nav-indicator-icon"></span>
+                        <span class="text-truncate">
+                          All
+                          <span class="badge badge-info badge-pill ml-1"> 39 </span>
+                        </span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">
+                        <span class="tio-circle nav-indicator-icon"></span>
+                        <span class="text-truncate">
+                          Pending
+                          <span class="badge badge-soft-info badge-pill ml-1"> 22 </span>
+                        </span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">
+                        <span class="tio-circle nav-indicator-icon"></span>
+                        <span class="text-truncate">
+                          Confirmed
+                          <span class="badge badge-soft-success badge-pill ml-1"> 5 </span>
+                        </span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">
+                        <span class="tio-circle nav-indicator-icon"></span>
+                        <span class="text-truncate">
+                          Processing
+                          <span class="badge badge-warning badge-pill ml-1"> 2 </span>
+                        </span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">
+                        <span class="tio-circle nav-indicator-icon"></span>
+                        <span class="text-truncate">
+                          Out for delivery
+                          <span class="badge badge-warning badge-pill ml-1"> 1 </span>
+                        </span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">
+                        <span class="tio-circle nav-indicator-icon"></span>
+                        <span class="text-truncate">
+                          Delivered
+                          <span class="badge badge-success badge-pill ml-1"> 8 </span>
+                        </span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">
+                        <span class="tio-circle nav-indicator-icon"></span>
+                        <span class="text-truncate">
+                          Returned
+                          <span class="badge badge-soft-danger badge-pill ml-1"> 0 </span>
+                        </span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#" title="">
+                        <span class="tio-circle nav-indicator-icon"></span>
+                        <span class="text-truncate">
+                          Failed
+                          <span class="badge badge-danger badge-pill ml-1"> 0 </span>
+                        </span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">
+                        <span class="tio-circle nav-indicator-icon"></span>
+                        <span class="text-truncate">
+                          Canceled
+                          <span class="badge badge-soft-dark badge-pill ml-1"> 1 </span>
+                        </span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">
+                        <span class="tio-circle nav-indicator-icon"></span>
+                        <span class="text-truncate">
+                          Scheduled
+                          <span class="badge badge-soft-info badge-pill ml-1"> 0 </span>
+                        </span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+
+                <li class="nav-item">
+                  <small class="nav-subtitle">Product Section</small>
+                  <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                </li>
+
+                <li class="navbar-vertical-aside-has-menu">
+                  <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:">
+                    <i class="tio-category nav-icon"></i>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Category</span>
+                  </a>
+                  <ul class="js-navbar-vertical-aside-submenu nav nav-sub" style="display: none">
+                    <li class="nav-item">
+                      <a class="nav-link" href="/categories" title="add new category">
+                        <span class="tio-circle nav-indicator-icon"></span>
+                        <span class="text-truncate">Category</span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#" title="add new sub category">
+                        <span class="tio-circle nav-indicator-icon"></span>
+                        <span class="text-truncate">Sub category</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="navbar-vertical-aside-has-menu">
+                  <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:">
+                    <i class="tio-premium-outlined nav-icon"></i>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Product</span>
+                  </a>
+                  <ul class="js-navbar-vertical-aside-submenu nav nav-sub" style="display: none">
+                    <li class="nav-item">
+                      <a class="nav-link" href="/items/add" title="add new product">
+                        <span class="tio-circle nav-indicator-icon"></span>
+                        <span class="text-truncate">Add New</span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/items" title="product list">
+                        <span class="tio-circle nav-indicator-icon"></span>
+                        <span class="text-truncate">List</span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#" title="bulk import">
+                        <span class="tio-circle nav-indicator-icon"></span>
+                        <span class="text-truncate">Bulk import</span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#" title="bulk export">
+                        <span class="tio-circle nav-indicator-icon"></span>
+                        <span class="text-truncate">Bulk export</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+
+                <li class="navbar-vertical-aside-has-menu">
+                  <a class="js-navbar-vertical-aside-menu-link nav-link" href="#">
+                    <i class="tio-shop nav-icon"></i>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate"> Branch </span>
+                  </a>
+                </li>
+
+                <li class="navbar-vertical-aside-has-menu">
+                  <a class="js-navbar-vertical-aside-menu-link nav-link" href="#">
+                    <i class="tio-messages nav-icon"></i>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate"> Messages </span>
+                  </a>
+                </li>
+
+                <li class="navbar-vertical-aside-has-menu">
+                  <a class="js-navbar-vertical-aside-menu-link nav-link" href="#">
+                    <i class="tio-star nav-icon"></i>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate"> Product Reviews </span>
+                  </a>
+                </li>
+
+                <li class="navbar-vertical-aside-has-menu">
+                  <a class="js-navbar-vertical-aside-menu-link nav-link" href="#">
+                    <i class="tio-notifications nav-icon"></i>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate"> Send Notification </span>
+                  </a>
+                </li>
+
+                <li class="navbar-vertical-aside-has-menu">
+                  <a class="js-navbar-vertical-aside-menu-link nav-link" href="#">
+                    <i class="tio-gift nav-icon"></i>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Coupon</span>
+                  </a>
+                </li>
+
+                <li class="nav-item">
+                  <small class="nav-subtitle" title="Layouts">Deliveryman Section</small>
+                  <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                </li>
+
+                <li class="navbar-vertical-aside-has-menu">
+                  <a class="js-navbar-vertical-aside-menu-link nav-link" href="#">
+                    <i class="tio-running nav-icon"></i>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate"> Register </span>
+                  </a>
+                </li>
+
+                <li class="navbar-vertical-aside-has-menu">
+                  <a class="js-navbar-vertical-aside-menu-link nav-link" href="#">
+                    <i class="tio-filter-list nav-icon"></i>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate"> List </span>
+                  </a>
+                </li>
+                <li class="navbar-vertical-aside-has-menu">
+                  <a class="js-navbar-vertical-aside-menu-link nav-link" href="#">
+                    <i class="tio-star-outlined nav-icon"></i>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate"> Reviews </span>
+                  </a>
+                </li>
+
+                <li class="nav-item">
+                  <small class="nav-subtitle" title="Documentation">Customer Section</small>
+                  <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                </li>
+
+                <li class="navbar-vertical-aside-has-menu">
+                  <a class="js-navbar-vertical-aside-menu-link nav-link" href="#">
+                    <i class="tio-poi-user nav-icon"></i>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate"> Customer List </span>
+                  </a>
+                </li>
+                <li class="navbar-vertical-aside-has-menu">
+                  <a class="js-navbar-vertical-aside-menu-link nav-link" href="#">
+                    <i class="tio-format-points nav-icon"></i>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate"> Point History </span>
+                  </a>
+                </li>
+
+                <li class="nav-item">
+                  <div class="nav-divider"></div>
+                </li>
+                <li class="nav-item">
+                  <small class="nav-subtitle" title="Documentation">Report and analytics</small>
+                  <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                </li>
+
+                <li class="navbar-vertical-aside-has-menu">
+                  <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:">
+                    <i class="tio-report-outlined nav-icon"></i>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Reports</span>
+                  </a>
+                  <ul class="js-navbar-vertical-aside-submenu nav nav-sub" style="display: none">
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">
+                        <span class="tio-circle nav-indicator-icon"></span>
+                        <span class="text-truncate">Earning Report</span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">
+                        <span class="tio-circle nav-indicator-icon"></span>
+                        <span class="text-truncate">Order Report</span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">
+                        <span class="tio-circle nav-indicator-icon"></span>
+                        <span class="text-truncate">Driver Report</span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">
+                        <span class="tio-circle nav-indicator-icon"></span>
+                        <span class="text-truncate">Product Report</span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">
+                        <span class="tio-circle nav-indicator-icon"></span>
+                        <span class="text-truncate">Sale Report</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+
+                <li class="nav-item" style="padding-top: 100px">
+                  <div class="nav-divider"></div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+    <div id="sidebarCompact" class="d-none"></div>
+    <main id="content" role="main" class="main pointer-event">
+      <div class="content container-fluid">

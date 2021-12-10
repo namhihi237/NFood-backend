@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Admin | Login</title>
+    <%- include('../../component/loader.ejs'); -%>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&amp;display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <main id="content" role="main" class="main">
+      <div
+        class="position-fixed top-0 right-0 left-0 bg-img-hero"
+        style="height: 100%; background-image: url(./assets/admin/svg/components/login-background.png)"
+      ></div>
+
+      <div class="container py-5 py-sm-7">
+        <a class="d-flex justify-content-center mb-5" href="javascript:">
+          <img
+            class="z-index-2"
+            onerror="this.src='https://demo.6amtech.com/restaurant/public/assets/admin/img/160x160/img2.jpg'"
+            src="https://demo.6amtech.com/restaurant/storage/app/public/restaurant/2021-02-27-603aa32c36d89.png"
+            alt="Image Description"
+            style="height: 100px"
+          />
+        </a>
+        <div class="row justify-content-center">
+          <div class="col-md-7 col-lg-5">
+            <div class="card card-lg mb-5">
+              <div class="card-body">
+                <form class="js-validate" action="/login" method="post">
+                  <div class="text-center">
+                    <div class="mb-5">
+                      <h1 class="display-4">Sign in</h1>
+                    </div>
+                  </div>
+                  <div class="js-form-message form-group">
+                    <label class="input-label text-capitalize" for="signinSrEmail">Email</label>
+                    <input
+                      type="text"
+                      class="form-control form-control-lg"
+                      id="signinSrEmail"
+                      tabindex="1"
+                      placeholder="example@gmail.com"
+                      required
+                      data-msg="Please enter a valid email."
+                      name="email"
+                      value="<%= params ? params.userName : ''; %>"
+                    />
+                  </div>
+
+                  <div class="js-form-message form-group">
+                    <label class="input-label" for="signupSrPassword" tabindex="0">
+                      <span class="d-flex justify-content-between align-items-center"> Password </span>
+                    </label>
+                    <div class="input-group input-group-merge">
+                      <input
+                        type="password"
+                        class="js-toggle-password form-control form-control-lg"
+                        name="password"
+                        id="signupSrPassword"
+                        placeholder="6+ characters required"
+                        aria-label="6+ characters required"
+                        required
+                        value="<%= params ? params.password : ''; %>"
+                        data-msg="Your password is invalid. Please try again."
+                        data-hs-toggle-password-options='{
+                                                     "target": "#changePassTarget",
+                                            "defaultClass": "tio-hidden-outlined",
+                                            "showClass": "tio-visible-outlined",
+                                            "classChangeTarget": "#changePassIcon"
+                                            }'
+                      />
+                      <div id="changePassTarget" class="input-group-append">
+                        <a class="input-group-text" href="javascript:">
+                          <i id="changePassIcon" class="tio-visible-outlined"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" id="termsCheckbox" name="remember" />
+                      <label class="custom-control-label text-muted" for="termsCheckbox"> Remember Me </label>
+                    </div>
+                  </div>
+
+                  <button type="submit" class="btn btn-lg btn-block btn-primary">Sign in</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <%- include('../../component/loadScript.ejs'); -%>
+    <script>
+      var message = JSON.parse(`<%- JSON.stringify(message) %>`);
+      // var params = JSON.parse(`<%- JSON.stringify(params) %>`);
+      jQuery(document).ready(function () {
+        if (message) {
+          toastr.error(message, Error, {
+            CloseButton: true,
+            ProgressBar: true
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

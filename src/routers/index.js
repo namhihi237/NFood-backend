@@ -1,3 +1,3 @@
+import adminRouter from './admin-router';
 
-export {
-}
+export { adminRouter };

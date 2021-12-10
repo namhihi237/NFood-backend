@@ -10,6 +10,7 @@ import Order from './order';
 import Voucher from './voucher';
 import Notification from './notification';
 import UserVoucher from './userVoucher';
+import Admin from './admin';
 
 export {
   Accounts,
@@ -24,4 +25,5 @@ export {
   Voucher,
   Notification,
   UserVoucher,
+  Admin
 }

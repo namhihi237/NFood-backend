@@ -9,7 +9,7 @@ import cors from 'cors';
 import path from 'path';
 import helmet from 'helmet';
 import session from "express-session";
-// import redis from "redis";
+import redis from "redis";
 import conectRedis from 'connect-redis';
 import cookieParser from 'cookie-parser';
 import typeDefs from './schemaGraphql';
@@ -17,7 +17,7 @@ import resolvers from './modules';
 import { envVariable } from './configs';
 import { logger, jwtUtils, connectDb } from './utils';
 import { Accounts } from "./models";
-
+import { adminRouter } from './routers';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
 const Redis = require('ioredis');
 const pathServer = '/api/v1/graphql';
@@ -36,16 +36,17 @@ const pubsub = new RedisPubSub({
 });
 
 // setup session storage
-// const redisClient = redis.createClient({
-//   host: '127.0.0.1',
-//   port: 6379,
-//   db: 0
-// });
+const redisClient = redis.createClient({
+  host: '127.0.0.1',
+  port: 6379,
+  db: 0
+});
 
-// const RedisStore = conectRedis(session);
-// const redisStore = new RedisStore({
-//   client: redisClient
-// });
+
+const RedisStore = conectRedis(session);
+const redisStore = new RedisStore({
+  client: redisClient
+});
 
 
 export const startServer = async () => {
@@ -53,29 +54,31 @@ export const startServer = async () => {
 
   const httpServer = createServer(app);
 
-  // app.use(session({
-  //   secret: 'z5l1c9dpSD', // random key
-  //   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-  //   maxAgeRemember: 30 * 24 * 60 * 60 * 1000, // 30 days
-  //   resave: false,
-  //   saveUninitialized: true,
-  //   store: redisStore
-  // }));
+  app.use(session({
+    secret: 'z5l1c9dpSD', // random key
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    maxAgeRemember: 30 * 24 * 60 * 60 * 1000, // 30 days
+    resave: false,
+    saveUninitialized: true,
+    store: redisStore
+  }));
 
   //config routes api
   app.use(helmet());
   app.use(cors());
   app.use(express.json());
   app.use(express.urlencoded({ extended: false, limit: '20mb', parameterLimit: 100 }));
-  app.use(express.static(path.join(process.cwd(), 'public')));
+  app.use(express.static(path.join(process.cwd(), './src/public')));
   app.use(cookieParser());
 
   app.get('/', (req, res) => {
     res.send('Welcome to NFoodFast');
   });
 
+  app.use('/admin', adminRouter());
+
   // view engine setup
-  app.set('views', path.join(process.cwd(), 'views'));
+  app.set('views', path.join(process.cwd(), './src/views'));
   app.set('view engine', 'ejs');
 
   const schema = makeExecutableSchema({
