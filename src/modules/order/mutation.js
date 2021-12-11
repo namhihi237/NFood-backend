@@ -135,6 +135,11 @@ const orderMutation = {
 
     // check has order receiving
     const shipper = await Shipper.findOne({ accountId: context.user.id });
+
+    if (!shipper) {
+      throw new Error('Bạn không có quyền này');
+    }
+
     if (shipper.isReceiveOrder) {
       throw new Error('Bạn đang có đơn hàng đang cần giao');
     }
