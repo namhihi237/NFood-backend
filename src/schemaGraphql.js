@@ -162,7 +162,7 @@ export default gql`
   type Subscription {
     orderShipping: Order!
     numberOfNotifications(userType: roleEnum!): Int!
-    locationShipper(orderId: ID!): Location!
+    locationShipper(orderId: ID!):[Float]
   }
  
   type Mutation {
