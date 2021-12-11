@@ -90,6 +90,7 @@ export default gql`
     vendor: Vendor
     shipperId: ID
     shipper: Shipper
+    paymentMethod: methodEnum
 
   }
 
@@ -229,7 +230,7 @@ export default gql`
 
   enum methodEnum {
     COD
-    ONLINE
+    CRE
   }
 
   enum discountType {
