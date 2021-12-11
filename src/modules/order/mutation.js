@@ -105,7 +105,7 @@ const orderMutation = {
 
         order = order[0];
 
-      } else if (method === 'ONLINE') {
+      } else if (method === 'CRE') {
         throw new Error('Not implemented')
       }
 

@@ -83,7 +83,7 @@ export default gql`
     deliveredAt: String
     acceptedShippingAt: String
     estimatedDeliveryTime: String
-    paymentStatus: String!
+    paymentStatus: String
     orderStatus: String!
     createdAt: String
     vendorId: ID
