@@ -14,13 +14,7 @@
 
       <div class="container py-5 py-sm-7">
         <a class="d-flex justify-content-center mb-5" href="javascript:">
-          <img
-            class="z-index-2"
-            onerror="this.src='https://demo.6amtech.com/restaurant/public/assets/admin/img/160x160/img2.jpg'"
-            src="https://demo.6amtech.com/restaurant/storage/app/public/restaurant/2021-02-27-603aa32c36d89.png"
-            alt="Image Description"
-            style="height: 100px"
-          />
+          <img class="z-index-2" src="/images/logo.png" alt="Image Description" style="height: 200px" />
         </a>
         <div class="row justify-content-center">
           <div class="col-md-7 col-lg-5">
@@ -29,27 +23,27 @@
                 <form class="js-validate" action="/login" method="post">
                   <div class="text-center">
                     <div class="mb-5">
-                      <h1 class="display-4">Sign in</h1>
+                      <h1 class="display-4">Đăng nhập</h1>
                     </div>
                   </div>
                   <div class="js-form-message form-group">
                     <label class="input-label text-capitalize" for="signinSrEmail">Email</label>
                     <input
-                      type="text"
+                      type="email"
                       class="form-control form-control-lg"
                       id="signinSrEmail"
                       tabindex="1"
                       placeholder="example@gmail.com"
                       required
-                      data-msg="Please enter a valid email."
+                      data-msg="Vui lòng nhập email."
                       name="email"
-                      value="<%= params ? params.userName : ''; %>"
+                      value="<%= params ? params.email : ''; %>"
                     />
                   </div>
 
                   <div class="js-form-message form-group">
                     <label class="input-label" for="signupSrPassword" tabindex="0">
-                      <span class="d-flex justify-content-between align-items-center"> Password </span>
+                      <span class="d-flex justify-content-between align-items-center"> Mật khẩu </span>
                     </label>
                     <div class="input-group input-group-merge">
                       <input
@@ -80,11 +74,11 @@
                   <div class="form-group">
                     <div class="custom-control custom-checkbox">
                       <input type="checkbox" class="custom-control-input" id="termsCheckbox" name="remember" />
-                      <label class="custom-control-label text-muted" for="termsCheckbox"> Remember Me </label>
+                      <label class="custom-control-label text-muted" for="termsCheckbox"> Nhớ thông tin đăng nhập </label>
                     </div>
                   </div>
 
-                  <button type="submit" class="btn btn-lg btn-block btn-primary">Sign in</button>
+                  <button type="submit" class="btn btn-lg btn-block btn-primary">Đăng nhập</button>
                 </form>
               </div>
             </div>
@@ -98,6 +92,7 @@
       // var params = JSON.parse(`<%- JSON.stringify(params) %>`);
       jQuery(document).ready(function () {
         if (message) {
+          console.log(message);
           toastr.error(message, Error, {
             CloseButton: true,
             ProgressBar: true

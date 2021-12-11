@@ -71,11 +71,7 @@ export const startServer = async () => {
   app.use(express.static(path.join(process.cwd(), './src/public')));
   app.use(cookieParser());
 
-  app.get('/', (req, res) => {
-    res.send('Welcome to NFoodFast');
-  });
-
-  app.use('/admin', adminRouter());
+  app.use('/', adminRouter());
 
   // view engine setup
   app.set('views', path.join(process.cwd(), './src/views'));
