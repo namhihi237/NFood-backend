@@ -89,7 +89,7 @@ const shipperMutation = {
     // push the location
     if (shipper.isReceiveOrder && shipper.currentOrderId) {
       context.pubsub.publish(`LOCATION_SHIPPING_${shipper.currentOrderId}`, {
-        location: [args.longitude, args.latitude]
+        coordinates: [args.longitude, args.latitude]
       });
     }
 
