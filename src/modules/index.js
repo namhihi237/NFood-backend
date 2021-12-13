@@ -6,7 +6,7 @@ import { categoryMutation, categoryQuery, Category } from './category';
 import { itemQuery, itemMutation } from './item';
 import { Cart, cartMutation, cartQuery } from "./cart";
 import { orderMutation, orderQuery, orderSubscribe, Order } from "./order";
-import { shipperMutation } from './shipper';
+import { shipperMutation, shipperQuery } from './shipper';
 import { notificationQuery, notificationSubscribe, notificationMutation } from "./notification";
 import { voucherMutation, voucherQuery } from "./voucher";
 
@@ -25,6 +25,7 @@ export default {
     ...orderQuery,
     ...notificationQuery,
     ...voucherQuery,
+    ...shipperQuery
   },
 
   Mutation: {

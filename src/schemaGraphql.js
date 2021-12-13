@@ -157,6 +157,7 @@ export default gql`
     getVouchers: [Voucher]!
     checkPromoCode(promoCode: String!, vendorId: ID!, subTotal: Float!): Voucher!
     getOrderByIdBuyer(id: ID!): Order!
+    getMaxDistanceFindOrder: Float!
   }
 
   type Subscription {

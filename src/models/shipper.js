@@ -58,7 +58,7 @@ const ShipperSchema = new mongoose.Schema(
     },
     maxReceiveOrderDistance: {
       type: Number,
-      default: 10,
+      default: 0.5,
     },
     numberOfNotifications: {
       type: Number,
