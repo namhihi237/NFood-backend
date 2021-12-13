@@ -33,6 +33,11 @@ const orderMutation = {
 
       const vendor = await Vendor.findOne({ _id: vendorId });
 
+      // check vendor is ready to accept order
+      if (!vendor.isReceiveOrder) {
+        throw new Error("Cửa hàng này hiện không nhận đơn hàng");
+      }
+
       // calculate total price
       let subTotal = 0;
       cartItems.forEach(cartItem => {
