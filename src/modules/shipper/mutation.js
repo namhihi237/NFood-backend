@@ -113,7 +113,7 @@ const shipperMutation = {
     }
 
     await Shipper.findOneAndUpdate({ _id: shipper._id }, {
-      maxDistanceReceiveOrder: args.maxDistance
+      maxReceiveOrderDistance: args.maxDistance
     });
 
     return true;
