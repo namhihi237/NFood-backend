@@ -10,7 +10,8 @@ class NotificationService {
     await Notification.create({
       content,
       orderId,
-      userId: buyer.accountId
+      userId: buyer.accountId,
+      userType: 'buyer'
     });
 
     const numberOfNotifications = buyer.numberOfNotifications ? buyer.numberOfNotifications + 1 : 1;
@@ -28,7 +29,8 @@ class NotificationService {
     await Notification.create({
       content,
       orderId,
-      userId: vendor.accountId
+      userId: vendor.accountId,
+      userType: 'vendor'
     });
 
     const numberOfNotifications = vendor.numberOfNotifications ? vendor.numberOfNotifications + 1 : 1;

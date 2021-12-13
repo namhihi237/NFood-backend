@@ -19,6 +19,10 @@ const Notification = new Schema(
     orderId: {
       type: Schema.Types.ObjectId,
       ref: 'Order',
+    },
+    userType: {
+      type: String,
+      enum: ['buyer', 'shipper', 'vendor'],
     }
   },
   { timestamps: true },
