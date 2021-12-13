@@ -48,6 +48,10 @@ const vendorQuery = {
           maxDistance: (args.distance || 5) * 1000, // meters
           spherical: true,
         }
+      }, {
+        $match: {
+          isReceiveOrder: true
+        }
       }
     ]);
 

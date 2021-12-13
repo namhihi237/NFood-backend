@@ -57,6 +57,10 @@ const VendorSchema = new mongoose.Schema(
     numberOfNotifications: {
       type: Number,
       default: 0,
+    },
+    isReceiveOrder: {
+      type: Boolean,
+      default: false,
     }
   },
   { timestamps: true }
