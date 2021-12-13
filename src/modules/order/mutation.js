@@ -232,7 +232,7 @@ const orderMutation = {
     await Order.findByIdAndUpdate({ _id: orderId }, { orderStatus: 'Delivered', deliveredAt: new Date() });
 
     // update status shipper
-    await Shipper.findOneAndUpdate({ accountId: account._id }, { isReceiveOrder: false, currentOrderId: null });
+    await Shipper.findOneAndUpdate({ accountId: context.user.id }, { isReceiveOrder: false, currentOrderId: null });
 
     return true;
   },
