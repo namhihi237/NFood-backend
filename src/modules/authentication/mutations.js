@@ -222,25 +222,6 @@ const authenticationMutation = {
     return true;
   },
 
-  updateStatusReceiveOrder: async (parent, args, context, info) => {
-    global.logger.info('authenticationMutation::updateStatusReceiveOrder' + JSON.stringify(args));
-
-    // check login
-    if (!context.user) {
-      throw new Error('Vui lòng đăng nhập');
-    }
-
-    let vendor = await Vendor.findOne({ accountId: context.user.id });
-
-    if (!vendor) {
-      throw new Error('Bạn chưa là cửa hàng');
-    }
-
-    vendor = await Vendor.updateOne({ accountId: context.user.id }, { isReceiveOrder: !vendor.isReceiveOrder }, { new: true });
-
-    return vendor.isReceiveOrder;
-  }
-
 }
 
 export default authenticationMutation;

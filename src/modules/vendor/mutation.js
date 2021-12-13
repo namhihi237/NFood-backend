@@ -54,6 +54,25 @@ const vendorMutation = {
     } catch (error) {
       throw new Error(error);
     }
+  },
+
+  updateStatusReceiveOrder: async (parent, args, context, info) => {
+    global.logger.info('vendorMutation::updateStatusReceiveOrder' + JSON.stringify(args));
+
+    // check login
+    if (!context.user) {
+      throw new Error('Vui lòng đăng nhập');
+    }
+
+    let vendor = await Vendor.findOne({ accountId: context.user.id });
+
+    if (!vendor) {
+      throw new Error('Bạn chưa là cửa hàng');
+    }
+
+    vendor = await Vendor.findOneAndUpdate({ _id: vendor._id }, { isReceiveOrder: !vendor.isReceiveOrder }, { new: true });
+
+    return vendor.isReceiveOrder;
   }
 }
 
