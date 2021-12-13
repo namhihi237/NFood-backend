@@ -7,7 +7,7 @@ const notificationQuery = {
   getNotifications: async (parent, args, context, info) => {
     global.logger.info('notification::getNotifications' + JSON.stringify(args));
 
-    const { skip = 0, limit = 20 } = args;
+    const { skip = 0, limit = 100 } = args;
     global.logger.info('notification::getNotifications skip: ' + skip + ' limit: ' + limit);
     // check login
     if (!context.user) {
@@ -20,7 +20,7 @@ const notificationQuery = {
     }).skip(skip).limit(limit).sort({ createdAt: -1 });
 
     const total = await Notification.countDocuments({
-      accountId: context.user.id,
+      userId: context.user.id,
       userType: args.userType,
     });
 
