@@ -107,7 +107,12 @@ const shipperMutation = {
       throw new Error('Bạn chưa đăng ký là người giao hàng');
     }
 
-    await Shipper.findOneAndUpdate({ accountId: account._id }, {
+    // validate max distance
+    if (args.maxDistance < 0 || args.maxDistance > 10) {
+      throw new Error('Khoảng cách tối đa không hợp lệ');
+    }
+
+    await Shipper.findOneAndUpdate({ _id: shipper._id }, {
       maxDistanceReceiveOrder: args.maxDistance
     });
 
