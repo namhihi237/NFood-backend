@@ -31,11 +31,11 @@ const authenticationMutation = {
 
     // create user by roleEnum
     if (role === 'buyer') {
-      await Buyer.create({ accountId: newUser.id });
+      await Buyer.create({ accountId: newUser.id, phoneNumber });
     } else if (role === 'vendor') {
-      await Vendor.create({ accountId: newUser.id });
+      await Vendor.create({ accountId: newUser.id, phoneNumber });
     } else if (role === 'shipper') {
-      await Shipper.create({ accountId: newUser.id });
+      await Shipper.create({ accountId: newUser.id, phoneNumber });
     }
 
     // send sms active phone number

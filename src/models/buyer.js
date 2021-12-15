@@ -7,6 +7,9 @@ const BuyerSchema = new mongoose.Schema(
       ref: 'Account',
       required: true,
     },
+    phoneNumber: {
+      type: String,
+    },
     name: {
       type: String,
     },

@@ -26,7 +26,7 @@ const shipperMutation = {
     if (shipper) {
       await Shipper.findOneAndUpdate({ accountId: account._id }, { name, image });
     } else {
-      await Shipper.create({ accountId: account._id, name, image });
+      await Shipper.create({ accountId: account._id, name, image, phoneNumber: account.phoneNumber });
     }
 
     await Accounts.findByIdAndUpdate(account._id, { isShipper: true, });

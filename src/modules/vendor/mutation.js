@@ -39,7 +39,14 @@ const vendorMutation = {
       if (vendor) {
         await Vendor.findOneAndUpdate({ accountId: context.user.id }, { name, address, image, location: { type: 'Point', coordinates } });
       } else {
-        await Vendor.create({ accountId: context.user.id, name, address, image, location: { type: 'Point', coordinates } });
+        await Vendor.create({
+          accountId: context.user.id,
+          name,
+          address,
+          image,
+          phoneNumber: account.phoneNumber,
+          location: { type: 'Point', coordinates }
+        });
       }
       await Accounts.findByIdAndUpdate(context.user.id, { isVendor: true, });
       if (!account.role.includes('vendor')) {

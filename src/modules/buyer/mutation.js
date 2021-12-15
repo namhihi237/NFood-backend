@@ -30,7 +30,7 @@ const buyerMutation = {
     if (buyer) {
       await Buyer.updateOne({ _id: buyer._id }, { name });
     } else {
-      await Buyer.create({ accountId: account._id, name });
+      await Buyer.create({ accountId: account._id, name, phoneNumber: account.phoneNumber });
     }
 
     if (!account.role.includes('buyer')) {

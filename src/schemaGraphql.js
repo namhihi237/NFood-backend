@@ -90,6 +90,8 @@ export default gql`
     vendor: Vendor
     shipperId: ID
     shipper: Shipper
+    buyerId: ID
+    buyer: Buyer
     paymentMethod: methodEnum
 
   }
@@ -122,6 +124,13 @@ export default gql`
     endDate: String
     discountType: discountType
     createdAt: String
+  }
+
+  type Buyer {
+    _id: ID!
+    name: String
+    phoneNumber: String
+    image: String
   }
 
   type Notification {
