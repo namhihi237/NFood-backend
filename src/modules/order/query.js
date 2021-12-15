@@ -35,6 +35,7 @@ const orderQuery = {
       {
         $match: {
           vendorId: vendor._id,
+          orderStatus: { $ne: 'Pending' },
         }
       },
       {
