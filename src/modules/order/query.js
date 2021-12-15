@@ -53,6 +53,20 @@ const orderQuery = {
         }
       },
       {
+        $lookup: {
+          from: 'buyer',
+          localField: 'ownerId',
+          foreignField: '_id',
+          as: 'buyer'
+        }
+      },
+      {
+        $unwind: {
+          path: '$buyer',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
         $sort: {
           acceptedShippingAt: -1
         }
