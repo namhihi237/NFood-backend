@@ -52,6 +52,11 @@ const orderQuery = {
           preserveNullAndEmptyArrays: true
         }
       },
+      {
+        $sort: {
+          acceptedShippingAt: -1
+        }
+      }
     ]);
 
     return orders;
