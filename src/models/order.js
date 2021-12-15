@@ -76,6 +76,9 @@ const OrderSchema = new mongoose.Schema(
     pickedUpAt: {
       type: Date,
     },
+    vendorCompletionTime: {
+      type: Date,
+    },
     cancelledAt: {
       type: Date,
     },
