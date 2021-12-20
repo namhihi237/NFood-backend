@@ -14,7 +14,9 @@ const voucherQuery = {
 
     const vendor = await Vendor.findOne({ accountId: context.user.id });
 
-    return Voucher.find({ vendorId: vendor._id })
+    return Voucher.find({ vendorId: vendor._id }).sort({
+      createdAt: -1
+    });
   },
 
   checkPromoCode: async (root, { promoCode, vendorId, subTotal }, context) => {
