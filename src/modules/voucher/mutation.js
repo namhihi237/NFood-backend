@@ -123,7 +123,7 @@ const voucherMutation = {
     voucher.status = !voucher.status;
     await voucher.save();
 
-    return voucher;
+    return true;
   },
 
   updateVoucher: async (root, args, context) => {
