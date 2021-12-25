@@ -82,7 +82,7 @@ const voucherMutation = {
   },
 
   deleteVoucher: async (root, args, context) => {
-    global.logger.info('voucherMutation :: deleteVoucher :: ' + JSON.stringify(args.voucherId));
+    global.logger.info('voucherMutation :: deleteVoucher :: ' + JSON.stringify(args));
 
     // check login and role
     if (!context.user || !context.user.role.includes('vendor')) {
@@ -92,13 +92,13 @@ const voucherMutation = {
     const vendor = await Vendor.findOne({ accountId: context.user.id });
 
     // check voucher
-    const voucher = await Voucher.findOne({ _id: args.voucherId, vendorId: vendor._id });
+    const voucher = await Voucher.findOne({ _id: args.id, vendorId: vendor._id });
     if (!voucher) {
       throw new Error('Mã voucher không tồn tại');
     }
 
     // delete voucher
-    await Voucher.deleteOne({ _id: args.voucherId });
+    await Voucher.deleteOne({ _id: args.id });
 
     return true;
   },
