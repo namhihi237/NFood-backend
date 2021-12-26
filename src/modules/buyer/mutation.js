@@ -1,11 +1,11 @@
 import { bcryptUtils, emailUtils, jwtUtils, smsUtils, hereUtils } from '../../utils';
-import { Accounts, CodeResets, Buyer, Vendor, Shipper } from "../../models";
+import { Accounts, VendorFavorite, Buyer, Vendor, Shipper } from "../../models";
 
 import _ from 'lodash';
 
 const buyerMutation = {
   setNameBuyer: async (parent, args, context, info) => {
-    global.logger.info('authenticationMutation::setNameBuyer' + JSON.stringify(args));
+    global.logger.info('buyerMutation::setNameBuyer' + JSON.stringify(args));
     let { name } = args;
 
     // check has login
@@ -46,7 +46,7 @@ const buyerMutation = {
   },
 
   updateGPSAddressBuyer: async (parent, args, context, info) => {
-    global.logger.info('authenticationMutation::updateAddress' + JSON.stringify(args));
+    global.logger.info('buyerMutation::updateAddress' + JSON.stringify(args));
     let { latitude, longitude } = args;
 
     // check has login
@@ -72,7 +72,43 @@ const buyerMutation = {
     await Buyer.findOneAndUpdate({ accountId: context.user.id }, { address, location: { type: 'Point', coordinates: [longitude, latitude] } });
 
     return address
+  },
 
+  addVendorFavorite: async (parent, args, context, info) => {
+    global.logger.info('buyerMutation::addVendorFavorite' + JSON.stringify(args));
+
+    // check has login
+    if (!context.user) {
+      throw new Error('Vui lòng đăng nhập');
+    }
+
+    // check has buyer
+    let buyer = await Buyer.findOne({ accountId: context.user.id });
+
+    if (!buyer) {
+      throw new Error('Bạn chưa đăng ký là người mua');
+    }
+
+    // check has vendor
+    let vendor = await Vendor.findById(args.vendorId);
+
+    if (!vendor) {
+      throw new Error('Cừa hàng này không tồn tại');
+    }
+
+    // check has favorite
+    let favorite = await VendorFavorite.findOne({ buyerId: buyer._id, vendorId: vendor._id });
+
+    // remove favorite
+    if (favorite) {
+      await VendorFavorite.deleteOne({ _id: favorite._id });
+      return false;
+    }
+
+    // add favorite
+    await VendorFavorite.create({ buyerId: buyer._id, vendorId: vendor._id });
+
+    return true;
   }
 
 }

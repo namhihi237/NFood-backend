@@ -1,5 +1,5 @@
 import { bcryptUtils, emailUtils, jwtUtils, smsUtils, hereUtils } from '../../utils';
-import { Accounts, CodeResets, Buyer, Vendor, Shipper } from "../../models";
+import { Accounts, VendorFavorite, Buyer, Vendor, Shipper } from "../../models";
 import _ from 'lodash';
 
 const vendorMutation = {
@@ -80,7 +80,7 @@ const vendorMutation = {
     vendor = await Vendor.findOneAndUpdate({ _id: vendor._id }, { isReceiveOrder: !vendor.isReceiveOrder }, { new: true });
 
     return vendor.isReceiveOrder;
-  }
+  },
 }
 
 

@@ -115,7 +115,6 @@ class OrderService {
     }
 
     // calculate discount
-    console.log(voucher);
     let discount = 0;
     if (voucher.discountType === 'PERCENT') {
       console.log(subTotal + " " + voucher.discount);
@@ -134,7 +133,6 @@ class OrderService {
       await Voucher.updateOne({ _id: voucher._id }, { $inc: { quantity: -1 } });
     }
 
-    console.log(discount);
     return discount;
   }
 

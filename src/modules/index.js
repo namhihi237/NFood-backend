@@ -25,7 +25,8 @@ export default {
     ...orderQuery,
     ...notificationQuery,
     ...voucherQuery,
-    ...shipperQuery
+    ...shipperQuery,
+    ...buyerQuery
   },
 
   Mutation: {

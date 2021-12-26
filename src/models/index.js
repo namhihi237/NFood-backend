@@ -11,6 +11,7 @@ import Voucher from './voucher';
 import Notification from './notification';
 import UserVoucher from './userVoucher';
 import Admin from './admin';
+import VendorFavorite from './vendor-favorite';
 
 export {
   Accounts,
@@ -25,5 +26,6 @@ export {
   Voucher,
   Notification,
   UserVoucher,
-  Admin
+  Admin,
+  VendorFavorite,
 }

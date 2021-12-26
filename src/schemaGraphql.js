@@ -167,6 +167,7 @@ export default gql`
     checkPromoCode(promoCode: String!, vendorId: ID!, subTotal: Float!): Voucher!
     getOrderByIdBuyer(id: ID!): Order!
     getMaxDistanceFindOrder: Float!
+    getVendorFavorite: [Vendor]!
   }
 
   type Subscription {
@@ -209,7 +210,8 @@ export default gql`
     resetNumberOfNotifications(userType: roleEnum!): Boolean!
     updateMaxDistanceReceiveOrder(maxDistance: Float!): Boolean!
     cancelOrder(id: ID!): Boolean!
-    updateStatusReceiveOrder: Boolean! 
+    updateStatusReceiveOrder: Boolean!
+    addVendorFavorite(vendorId: ID!): Boolean!
   }
 
   input inputVoucher {
