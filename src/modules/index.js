@@ -9,7 +9,7 @@ import { orderMutation, orderQuery, orderSubscribe, Order } from "./order";
 import { shipperMutation, shipperQuery } from './shipper';
 import { notificationQuery, notificationSubscribe, notificationMutation } from "./notification";
 import { voucherMutation, voucherQuery } from "./voucher";
-
+import { reviewMutation, reviewQuery } from './review';
 export default {
   Category,
   Cart,
@@ -26,7 +26,8 @@ export default {
     ...notificationQuery,
     ...voucherQuery,
     ...shipperQuery,
-    ...buyerQuery
+    ...buyerQuery,
+    ...reviewQuery,
   },
 
   Mutation: {
@@ -39,7 +40,8 @@ export default {
     ...orderMutation,
     ...shipperMutation,
     ...notificationMutation,
-    ...voucherMutation
+    ...voucherMutation,
+    ...reviewMutation
   },
 
   Subscription: {

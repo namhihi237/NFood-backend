@@ -12,6 +12,7 @@ import Notification from './notification';
 import UserVoucher from './userVoucher';
 import Admin from './admin';
 import VendorFavorite from './vendor-favorite';
+import Review from './review';
 
 export {
   Accounts,
@@ -28,4 +29,5 @@ export {
   UserVoucher,
   Admin,
   VendorFavorite,
+  Review,
 }

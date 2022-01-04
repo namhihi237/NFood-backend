@@ -153,6 +153,17 @@ export default gql`
     accountBalance: Float!
   }
 
+  type Review {
+    _id: ID!
+    rating: Float!
+    comment: String!
+    image: String
+    buyerId: ID!
+    reviewedId: ID!
+    type: String!
+    createdAt: String
+  }
+
   type Query {
     getUser(role: roleEnum!): User
     getSignatureImage: String!
@@ -176,6 +187,7 @@ export default gql`
     getMaxDistanceFindOrder: Float!
     getVendorFavorite: [Vendor]!
     vendorReport(type: reportType!, time: String!): Report!
+    getReviews: [Review]!
   }
 
   type Subscription {
@@ -220,6 +232,7 @@ export default gql`
     cancelOrder(id: ID!): Boolean!
     updateStatusReceiveOrder: Boolean!
     addVendorFavorite(vendorId: ID!): Boolean!
+    addReview(rating: Int!, comment: String!, reviewedId: ID!, type: reviewEnum!): Boolean!
   }
 
   input inputVoucher {
@@ -262,5 +275,11 @@ export default gql`
   enum reportType {
     DATE
     MONTH
+  }
+
+  enum reviewEnum {
+    vendor
+    item
+    shipper
   }
 `;
