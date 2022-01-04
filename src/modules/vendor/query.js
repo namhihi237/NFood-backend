@@ -1,5 +1,5 @@
 import { bcryptUtils, emailUtils, jwtUtils, logger, smsUtils } from '../../utils';
-import { Accounts, CodeResets, Buyer, Vendor, Shipper, Category } from "../../models";
+import { Accounts, CodeResets, Buyer, Vendor, Order, Category } from "../../models";
 import mongoose from 'mongoose';
 import _ from 'lodash';
 import queue from 'bee-queue';
@@ -98,6 +98,93 @@ const vendorQuery = {
     vendor.menu = menu;
 
     return vendor;
+  },
+
+  // type Report {
+  //   totalRevenue: Float!
+  //   totalOrder: Int!
+  //   totalOrderCompleted: Int!
+  //   accountBalance: Float!
+  // }
+  vendorReport: async (parent, args, context, info) => {
+    global.logger.info('vendorQuery::vendorReport::' + JSON.stringify(args));
+
+    const { type, time } = args;
+
+    // check login
+    if (!context.user) {
+      3
+      throw new Error('Bạn chưa đăng nhập');
+    }
+
+    const vendor = await Vendor.findOne({ accountId: context.user.id });
+    if (!vendor) {
+      throw new Error('Bạn chưa là người bán hàng');
+    }
+
+    let totalRevenue = 0;
+    let totalOrder = 0;
+    let totalOrderCompleted = 0;
+    let accountBalance = 0;
+    let orders = [];
+
+    if (type === 'DATE') {
+      // get report by date
+
+      // convert date to timestamp start day
+      const startDate = new Date(time);
+      const endDate = new Date(time);
+      endDate.setDate(endDate.getDate() + 1);
+
+      // get orders
+      orders = await Order.find({
+        vendorId: vendor._id,
+        createdAt: {
+          $gte: startDate,
+          $lt: endDate
+        }
+      });
+
+    } else if (type === 'MONTH') {
+      // get report by month
+
+      // convert date to timestamp start month
+      const startDate = new Date(time);
+      startDate.setDate(1);
+      const endDate = new Date(time);
+      endDate.setMonth(endDate.getMonth() + 1);
+      endDate.setDate(1);
+
+      // get orders
+      orders = await Order.find({
+        vendorId: vendor._id,
+        createdAt: {
+          $gte: startDate,
+          $lt: endDate
+        }
+      });
+    }
+
+    // get all order completed
+
+    if (orders && orders.length > 0) {
+      totalOrder = orders.length;
+      const ordersDelivered = orders.filter(order => order.orderStatus === 'Delivered');
+      if (ordersDelivered.length > 0) {
+        totalOrderCompleted = orders.length;
+        // get total revenue
+        for (let i = 0; i < ordersDelivered.length; i++) {
+          totalRevenue += (orders[i].subTotal - orders[i].discount);
+        }
+      }
+    }
+
+    // get account balance
+    accountBalance = vendor.money;
+
+    return {
+      totalRevenue, totalOrder, totalOrderCompleted, accountBalance
+    };
   }
 }
 

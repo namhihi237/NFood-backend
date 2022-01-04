@@ -146,6 +146,13 @@ export default gql`
     total: Int!
   }
 
+  type Report {
+    totalRevenue: Float!
+    totalOrder: Int!
+    totalOrderCompleted: Int!
+    accountBalance: Float!
+  }
+
   type Query {
     getUser(role: roleEnum!): User
     getSignatureImage: String!
@@ -168,6 +175,7 @@ export default gql`
     getOrderByIdBuyer(id: ID!): Order!
     getMaxDistanceFindOrder: Float!
     getVendorFavorite: [Vendor]!
+    vendorReport(type: reportType!, time: String!): Report!
   }
 
   type Subscription {
@@ -249,5 +257,10 @@ export default gql`
   enum discountType {
     PERCENT
     FIXED
+  }
+
+  enum reportType {
+    DATE
+    MONTH
   }
 `;
