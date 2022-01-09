@@ -127,6 +127,14 @@ const OrderSchema = new mongoose.Schema(
         type: [Number],
       },
     },
+    isReviewedVendor: {
+      type: Boolean,
+      default: false,
+    },
+    isReviewedShipper: {
+      type: Boolean,
+      default: false,
+    }
   },
   { timestamps: true }
 );

@@ -25,6 +25,10 @@ const ReviewVoucher = new Schema(
       type: String,
       required: true,
       enum: ['item', 'vendor', 'shipper'],
+    },
+    orderId: {
+      type: String,
+      required: true,
     }
   },
   { timestamps: true },

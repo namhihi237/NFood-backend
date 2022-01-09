@@ -1,5 +1,5 @@
 import { bcryptUtils, emailUtils, jwtUtils, smsUtils } from '../../utils';
-import { Accounts, Review, Buyer, Vendor, Shipper, Category, Item, Cart, Order } from "../../models";
+import { Accounts, Review, Buyer, Vendor, Shipper, Item, Cart, Order } from "../../models";
 import _ from 'lodash';
 import mongoose from 'mongoose';
 
@@ -38,6 +38,22 @@ const reviewMutation = {
       }
     }
 
+    const order = await Order.findOne({ _id: args.orderId });
+
+    if (!order) {
+      throw new Error('Không tìm thấy đơn hàng này');
+    }
+
+    if (args.type === 'vendor') {
+      if (vendor.isReviewVendor) {
+        throw new Error('Bạn đã đánh giá cửa hàng này rồi');
+      }
+    } else if (args.type === 'shipper') {
+      if (shipper.isReviewShipper) {
+        throw new Error('Bạn đã đánh giá nhân viên này rồi');
+      }
+    }
+
     // validate rating
     if (args.rating < 1 || args.rating > 5) {
       throw new Error('Đánh giá phải từ 1 đến 5');
@@ -47,6 +63,13 @@ const reviewMutation = {
       ...args,
       buyerId: context.user.id,
     });
+
+    // update isReviewVendor or isReviewShipper
+    if (args.type === 'vendor') {
+      await Order.updateOne({ _id: args.orderId }, { $set: { isReviewVendor: true } });
+    } else if (args.type === 'shipper') {
+      await Order.updateOne({ _id: args.orderId }, { $set: { isReviewShipper: true } });
+    }
 
     return true;
   },
