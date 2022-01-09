@@ -232,7 +232,7 @@ export default gql`
     cancelOrder(id: ID!): Boolean!
     updateStatusReceiveOrder: Boolean!
     addVendorFavorite(vendorId: ID!): Boolean!
-    addReview(rating: Int!, comment: String!, reviewedId: ID!, type: reviewEnum!): Boolean!
+    addReview(rating: Int!, comment: String!, reviewedId: ID!, type: reviewEnum!, orderId: ID!): Boolean!
   }
 
   input inputVoucher {
