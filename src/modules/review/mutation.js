@@ -45,11 +45,11 @@ const reviewMutation = {
     }
 
     if (args.type === 'vendor') {
-      if (order.isReviewVendor) {
+      if (order.isReviewedVendor) {
         throw new Error('Bạn đã đánh giá cửa hàng này rồi');
       }
     } else if (args.type === 'shipper') {
-      if (order.isReviewShipper) {
+      if (order.isReviewedShipper) {
         throw new Error('Bạn đã đánh giá nhân viên này rồi');
       }
     }
