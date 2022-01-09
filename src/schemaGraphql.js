@@ -93,6 +93,8 @@ export default gql`
     buyerId: ID
     buyer: Buyer
     paymentMethod: methodEnum
+    isReviewedShipper: Boolean
+    isReviewVendor: Boolean
 
   }
 
