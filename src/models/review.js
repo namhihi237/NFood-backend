@@ -11,7 +11,8 @@ const ReviewVoucher = new Schema(
       required: true,
     },
     buyerId: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'buyer',
       required: true,
     },
     reviewedId: {

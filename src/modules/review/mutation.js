@@ -61,7 +61,7 @@ const reviewMutation = {
 
     await Review.create({
       ...args,
-      buyerId: context.user.id,
+      buyerId: buyer._id,
     });
 
     // update isReviewVendor or isReviewShipper

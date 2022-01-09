@@ -161,6 +161,7 @@ export default gql`
     comment: String!
     image: String
     buyerId: ID!
+    buyer : Buyer
     reviewedId: ID!
     type: String!
     createdAt: String
@@ -189,7 +190,7 @@ export default gql`
     getMaxDistanceFindOrder: Float!
     getVendorFavorite: [Vendor]!
     vendorReport(type: reportType!, time: String!): Report!
-    getReviews: [Review]!
+    getReviews(type: reviewEnum!): [Review]!
   }
 
   type Subscription {
