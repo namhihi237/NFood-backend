@@ -50,7 +50,7 @@ const reviewMutation = {
       }
     } else if (args.type === 'shipper') {
       if (order.isReviewedShipper) {
-        throw new Error('Bạn đã đánh giá nhân viên này rồi');
+        throw new Error('Bạn đã đánh giá người giao hàng này rồi');
       }
     }
 

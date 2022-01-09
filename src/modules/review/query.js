@@ -34,26 +34,13 @@ const reviewQuery = {
     }
 
     if (reviewedId) {
-      reviews = await Review.aggregate([
-        {
-          $match: {
-            reviewedId
-          }
-        },
-        {
-          $lookup: {
-            from: 'buyer',
-            localField: 'buyerId',
-            foreignField: '_id',
-            as: 'buyer'
-          }
-        }, {
-          $unwind: {
-            path: '$buyer',
-            preserveNullAndEmptyArrays: true
-          }
-        }
-      ]);
+      reviews = await Review.find({ reviewedId: reviewedId });
+
+      reviews = reviews.map(async (review) => {
+        const buyer = await Buyer.findOne({ _id: review.buyerId });
+        review.buyer = buyer;
+        return review;
+      });
     }
 
     return reviews;
