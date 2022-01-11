@@ -148,6 +148,7 @@ export default gql`
     total: Int!
   }
 
+  # for vendor
   type Report {
     totalRevenue: Float!
     totalOrder: Int!
@@ -165,6 +166,20 @@ export default gql`
     reviewedId: ID!
     type: String!
     createdAt: String
+  }
+
+  type ReportShipper {
+    deliveryMoney: Float!
+    buyOrderMoney: Float!
+    rewardMoney: Float!
+    balanceWallet: Float!
+  }
+
+  type IncomeShipper {
+    totalIncome: Float
+    totalShipping: Float
+    rewardPoint: Float
+    totalOrder: Int
   }
 
   type Query {
@@ -191,6 +206,9 @@ export default gql`
     getVendorFavorite: [Vendor]!
     vendorReport(type: reportType!, time: String!): Report!
     getReviews(type: reviewEnum!): [Review]!
+    getReportsByShipper: ReportShipper!
+    getIncomesByShipper(type: reportType!, time: String!): IncomeShipper!
+
   }
 
   type Subscription {
