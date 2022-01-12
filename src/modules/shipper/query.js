@@ -74,11 +74,17 @@ const shipperQuery = {
       },
     ]);
 
+    const totalOrder = await Order.countDocuments({
+      shipperId: shipper._id,
+      orderStatus: 'Delivered'
+    });
+
     return {
       deliveryMoney: deliveryMoney[0].deliveryMoney || 0,
       buyOrderMoney: buyOrderMoney[0].buyOrderMoney || 0,
       rewardMoney: 0,
-      balanceWallet: shipper.money || 0
+      balanceWallet: shipper.money || 0,
+      totalOrder
     }
   },
 

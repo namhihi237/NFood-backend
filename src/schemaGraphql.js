@@ -173,6 +173,7 @@ export default gql`
     buyOrderMoney: Float!
     rewardMoney: Float!
     balanceWallet: Float!
+    totalOrder: Int!
   }
 
   type IncomeShipper {
