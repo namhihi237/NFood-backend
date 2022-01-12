@@ -159,6 +159,11 @@ const orderMutation = {
       throw new Error('Đơn hàng này không thể chấp nhận');
     }
 
+    // check money amount
+    if (order.subTotal > shipper.money) {
+      throw new Error('Bạn không đủ tiền để chấp nhận đơn hàng');
+    }
+
     // update status shipper
     await Shipper.findOneAndUpdate({ accountId: context.user.id }, { isReceiveOrder: true, currentOrderId: order._id }, { new: true });
 
@@ -176,6 +181,9 @@ const orderMutation = {
 
     const content_buyer = `Đơn hàng ${order.invoiceNumber} đã được chấp nhận, người giao hàng đang đi lấy hàng`;
     const content_vendor = `Bạn vừa có đơn hàng mới vui lòng chuẩn bị để người giao hàng đến lấy hàng`;
+
+    // charge money to system
+    await Shipper.findOneAndUpdate({ accountId: context.user.id }, { $inc: { money: -order.subTotal } });
 
     await notificationService.createNotificationBuyer(content_buyer, orderId, order.ownerId, context.pubsub);
     await notificationService.createNotificationVendor(content_vendor, orderId, order.vendorId, context.pubsub);
@@ -207,6 +215,9 @@ const orderMutation = {
 
     // update status order
     await Order.findByIdAndUpdate({ _id: orderId }, { orderStatus: 'Shipping', pickedUpAt: new Date() });
+
+    // charge money to vendor
+    await Vendor.findByIdAndUpdate(order.vendorId, { $inc: { money: order.subTotal } });
 
     return true;
   },
