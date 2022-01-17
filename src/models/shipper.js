@@ -16,6 +16,26 @@ const ShipperSchema = new mongoose.Schema(
     address: {
       type: String,
     },
+    birthday: {
+      type: Date,
+    },
+    cmnd: {
+      number: {
+        type: String,
+      },
+      date: {
+        type: Date,
+      },
+      place: {
+        type: String,
+      },
+      beforeImage: {
+        type: String,
+      },
+      afterImage: {
+        type: String,
+      }
+    },
     location: {
       type: {
         type: String,
