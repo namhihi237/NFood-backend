@@ -71,6 +71,13 @@ export default gql`
     vendor: Vendor
   }
 
+  type ReviewResult {
+    reviews: [Review!]
+    badReviews: Int
+    goodReviews: Int
+    normalReviews: Int
+  }
+
   type Order {
     _id: ID!
     invoiceNumber: String!
@@ -217,7 +224,7 @@ export default gql`
     getMaxDistanceFindOrder: Float!
     getVendorFavorite: [Vendor]!
     vendorReport(type: reportType!, time: String!): Report!
-    getReviews(type: reviewEnum!): [Review]!
+    getReviews(type: reviewEnum!): ReviewResult!
     getReportsByShipper: ReportShipper!
     getIncomesByShipper(type: reportType!, time: String!): IncomeShipper!
 

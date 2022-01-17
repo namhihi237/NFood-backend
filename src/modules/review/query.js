@@ -2,6 +2,9 @@ import { bcryptUtils, emailUtils, jwtUtils, smsUtils } from '../../utils';
 import { Accounts, Review, Buyer, Vendor, Shipper, Category, Item, Cart, Order } from "../../models";
 import _ from 'lodash';
 import mongoose from 'mongoose';
+const BAD_REVIEW = 1;
+const NORMAL_REVIEW = 2;
+const GOOD_REVIEW = 3;
 
 const reviewQuery = {
   getReviews: async (parent, args, context, info) => {
@@ -13,7 +16,9 @@ const reviewQuery = {
     }
 
     let reviews = [];
+    let badReviews = 0, normalReviews = 0, goodReviews = 0;
     let reviewedId = null;
+
     if (args.type === 'vendor') {
       const vendor = await Vendor.findOne({ accountId: context.user.id });
 
@@ -41,9 +46,18 @@ const reviewQuery = {
         review.buyer = buyer;
         return review;
       });
+
+      badReviews = await Review.count({ reviewedId: reviewedId, rating: BAD_REVIEW });
+      normalReviews = await Review.count({ reviewedId: reviewedId, rating: NORMAL_REVIEW });
+      goodReviews = await Review.count({ reviewedId: reviewedId, rating: GOOD_REVIEW });
     }
 
-    return reviews;
+    return {
+      reviews,
+      badReviews,
+      normalReviews,
+      goodReviews
+    };
   }
 };
 
