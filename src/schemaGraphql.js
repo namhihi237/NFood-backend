@@ -15,6 +15,7 @@ export default gql`
     isReceiveOrder: Boolean
     isShippingOrder: Boolean
     numberOfNotifications: Int
+    identityCard: IdentityCard
   }
 
   type Category {
