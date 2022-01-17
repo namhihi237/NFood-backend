@@ -103,6 +103,15 @@ export default gql`
     name: String
     phoneNumber: String
     image: String
+    identityCard: IdentityCard
+  }
+
+  type IdentityCard {
+    number: String
+    date: String
+    place: String
+    beforeImage: String
+    afterImage: String
   }
 
   type OrderItem {

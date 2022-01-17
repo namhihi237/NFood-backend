@@ -19,7 +19,7 @@ const ShipperSchema = new mongoose.Schema(
     birthday: {
       type: Date,
     },
-    cmnd: {
+    identityCard: {
       number: {
         type: String,
       },
