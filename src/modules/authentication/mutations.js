@@ -250,7 +250,106 @@ const authenticationMutation = {
     await context.db.Accounts.findByIdAndUpdate(context.user.id, { password: passHash });
 
     return true;
+  },
+
+  forgotPassword: async (parent, args, context, info) => {
+    global.logger.info('authenticationMutation::forgotPassword' + JSON.stringify(args));
+
+    let { phoneNumber } = args;
+
+    // check required fields
+    if (!phoneNumber) {
+      throw new Error('Vui lòng nhập số điện thoại');
+    }
+
+    // convert phone number to Vietnam format
+    phoneNumber = smsUtils.convertPhoneNumber(phoneNumber);
+
+    // check if user exists
+    const user = await context.db.Accounts.findOne({ phoneNumber });
+
+    if (!user) {
+      throw new Error('Số điện thoại không tồn tại trong hệ thống');
+    }
+
+    // check if user is active
+    if (!user.isActive) {
+      throw new Error('Số điện thoại chưa được xác thực');
+    }
+
+    // send sms active phone number
+    const code = await smsUtils.sendCodePhoneActive(phoneNumber);
+
+    if (!code) {
+      throw new Error('Gửi mã xác thực thất bại');
+    }
+
+    // save code reset
+    await context.db.CodeResets.create({ phoneNumber, code });
+
+    return true;
+  },
+
+  verifyCode: async (parent, args, context, info) => {
+    global.logger.info('authenticationMutation::verifyCode' + JSON.stringify(args));
+
+    let { phoneNumber, code } = args;
+
+    // check required fields
+    if (!phoneNumber || !code) {
+      throw new Error('Vui lòng nhập  mã xác thực');
+    }
+
+    // convert phone number to Vietnam format
+    phoneNumber = smsUtils.convertPhoneNumber(phoneNumber);
+
+    // check if phone has been sent before
+    const isSent = await context.db.CodeResets.findOne({ phoneNumber, code });
+
+    if (!isSent) {
+      throw new Error('Mã xác thực không đúng');
+    }
+
+    // check code expired 1 minutes
+
+    const timeDiff = new Date() - isSent.updatedAt;
+    if (timeDiff > LIMIT_TIME_SEND_SMS) {
+      throw new Error('Mã xác thực đã hết bạn');
+    }
+
+    return true;
+  },
+
+  updatePassword: async (parent, args, context, info) => {
+    global.logger.info('authenticationMutation::updatePassword' + JSON.stringify(args));
+
+    let { phoneNumber, code, newPassword } = args;
+
+    // check required fields
+    if (!phoneNumber || !code || !newPassword) {
+      throw new Error('Vui lòng nhập đủ thông tin');
+    }
+
+    // convert phone number to Vietnam format
+    phoneNumber = smsUtils.convertPhoneNumber(phoneNumber);
+
+    // check if phone has been sent before
+    const isSent = await context.db.CodeResets.findOne({ phoneNumber, code });
+
+    if (!isSent) {
+      throw new Error('Mã xác thực không đúng');
+    }
+
+    const newPasswordHash = await bcryptUtils.hashPassword(newPassword);
+
+    // update password
+    await context.db.Accounts.findOneAndUpdate({ phoneNumber }, { password: newPasswordHash });
+
+    return true;
   }
+
+
+
 
 }
 

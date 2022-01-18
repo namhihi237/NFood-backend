@@ -274,6 +274,9 @@ export default gql`
     addVendorFavorite(vendorId: ID!): Boolean!
     addReview(rating: Int!, comment: String!, reviewedId: ID!, type: reviewEnum!, orderId: ID!): Boolean!
     changePassword(oldPassword: String!, newPassword: String!): Boolean!
+    forgotPassword(phoneNumber: String!): Boolean!
+    verifyCode(code: String!, phoneNumber: String!): Boolean!
+    updatePassword(password: String!, code: String!): Boolean!
   }
 
   input inputVoucher {
