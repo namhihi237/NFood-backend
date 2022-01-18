@@ -222,6 +222,36 @@ const authenticationMutation = {
     return true;
   },
 
+  changePassword: async (parent, args, context, info) => {
+    global.logger.info('authenticationMutation::changePassword' + JSON.stringify(args));
+    let { oldPassword, newPassword } = args;
+
+    if (!context.user) {
+      throw new Error('Vui lòng đăng nhập');
+    }
+
+    // check required fields
+    if (!oldPassword || !newPassword) {
+      throw new Error('Vui lòng nhập đủ thông tin');
+    }
+
+    // get user
+    const user = await context.db.Accounts.findOne({ _id: context.user.id });
+
+    // check if password is correct
+    const isPasswordCorrect = await bcryptUtils.comparePassword(oldPassword, user.password);
+    if (!isPasswordCorrect) {
+      throw new Error('Sai mật khẩu');
+    }
+
+    const passHash = await bcryptUtils.hashPassword(newPassword);
+
+    // update password
+    await context.db.Accounts.findByIdAndUpdate(context.user.id, { password: passHash });
+
+    return true;
+  }
+
 }
 
 export default authenticationMutation;

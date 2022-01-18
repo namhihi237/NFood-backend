@@ -273,6 +273,7 @@ export default gql`
     updateStatusReceiveOrder: Boolean!
     addVendorFavorite(vendorId: ID!): Boolean!
     addReview(rating: Int!, comment: String!, reviewedId: ID!, type: reviewEnum!, orderId: ID!): Boolean!
+    changePassword(oldPassword: String!, newPassword: String!): Boolean!
   }
 
   input inputVoucher {
