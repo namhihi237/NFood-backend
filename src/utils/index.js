@@ -11,6 +11,8 @@ import connectDb from './connectDb';
 import hereUtils from './here';
 import queue from './queue';
 import stripeUtils from './stripe';
+import paypal from './paypal';
+import HttpError from './httpError';
 
 export {
   logger,
@@ -26,4 +28,6 @@ export {
   connectDb,
   hereUtils,
   stripeUtils,
+  paypal,
+  HttpError
 };

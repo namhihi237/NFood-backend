@@ -15,9 +15,9 @@ import cookieParser from 'cookie-parser';
 import typeDefs from './schemaGraphql';
 import resolvers from './modules';
 import { envVariable } from './configs';
-import { logger, jwtUtils, connectDb } from './utils';
+import { logger, jwtUtils, connectDb, HttpError } from './utils';
 import { Accounts } from "./models";
-import { adminRouter } from './routers';
+import { adminRouter, paymentRouter } from './routers';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
 const Redis = require('ioredis');
 const pathServer = '/api/v1/graphql';
@@ -72,10 +72,22 @@ export const startServer = async () => {
   app.use(cookieParser());
 
   app.use('/', adminRouter());
+  app.use('/api/v1/payment', paymentRouter());
 
   // view engine setup
   app.set('views', path.join(process.cwd(), './src/views'));
   app.set('view engine', 'ejs');
+
+  // error handler
+  app.use('/', function (err, req, res, next) {
+    const status = err.status ? err.status : 500;
+
+    res.status(status).json({
+      message: err.message,
+      status,
+      ok: status >= 200 && status < 300 ? true : false,
+    });
+  });
 
   const schema = makeExecutableSchema({
     typeDefs,
