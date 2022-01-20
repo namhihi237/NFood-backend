@@ -69,6 +69,11 @@ const vendorQuery = {
           spherical: true,
         },
       }, {
+        $match: {
+          isReceiveOrder: true
+        },
+      }, {
+
         $count: "total"
       }
     ]);
