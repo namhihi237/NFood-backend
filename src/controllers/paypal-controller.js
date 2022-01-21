@@ -98,6 +98,53 @@ class PayPalController {
     }
   }
 
+  async chargeOrderSuccess(req, res, next) {
+    global.logger.info(req.body);
+
+    const paymentId = req.query.paymentId;
+    const PayerID = req.query.PayerID;
+
+    try {
+      let amount = 0;
+      paypal.payment.get(paymentId, (err, payment) => {
+        if (err) {
+          throw new HttpError('Error some error occurred', 500);
+        }
+        amount = payment.transactions[0].amount.total;
+
+        const userId = payment.payer.Buyer.id;
+        global.logger.info('userId payer:' + userId);
+
+        const execute_payment_json = {
+          payer_id: PayerID,
+          transactions: [
+            {
+              amount: {
+                currency: "USD",
+                total: `${amount}`
+              }
+            }
+          ]
+        };
+
+        paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+          if (error) throw new HttpError(error.message, 500);
+
+          // create order
+
+          res.status(200).json({
+            message: 'Payment success',
+            status: 200,
+            ok: true,
+            payment: payment
+          });
+        });
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async createChargeOrder(req, res, next) {
     global.logger.info('PayPalController::chargeOrder' + JSON.stringify(req.body));
     const { promoCode } = req.body;
@@ -151,11 +198,14 @@ class PayPalController {
       const creat_payment_json = {
         intent: 'sale',
         payer: {
-          payment_method: 'paypal'
+          payment_method: 'paypal',
+          Buyer: {
+            id: req.user.id,
+          }
         },
         redirect_urls: {
-          return_url: `${req.protocol}://${req.get('host')}/api/v1/payment/success`,
-          cancel_url: `${req.protocol}://${req.get('host')}/api/v1/payment/cancel`
+          return_url: `${req.protocol}://${req.get('host')}/api/v1/payment/charge-success`,
+          cancel_url: `${req.protocol}://${req.get('host')}/api/v1/payment/charge-cancel`
         },
         transactions: [{
           item_list: {
@@ -184,7 +234,8 @@ class PayPalController {
           message: 'Payment success',
           status: 200,
           ok: true,
-          url: payment.links[1].href
+          url: payment.links[1].href,
+          payment: payment
         });
       });
 
