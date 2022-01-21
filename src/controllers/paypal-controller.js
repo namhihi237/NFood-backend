@@ -89,7 +89,7 @@ class PayPalController {
             message: 'Payment success',
             status: 200,
             ok: true,
-            payment
+            url: payment.links[1].href
           });
         });
       });
