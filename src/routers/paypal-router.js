@@ -11,6 +11,7 @@ export default () => {
   router.route('/paypal').post((req, res, next) => payPalController.payment(req, res, next));
   router.route('/success').get((req, res, next) => payPalController.success(req, res, next));
   router.route('/charge-success').get((req, res, next) => payPalController.chargeOrderSuccess(req, res, next));
+  router.route('/charge-cancel').get((req, res, next) => payPalController.chargeOrderCancel(req, res, next));
   router.route('/charge-order').post(authenticationMiddleware.jwtMiddleware, (req, res, next) => payPalController.createChargeOrder(req, res, next));
 
   return router;

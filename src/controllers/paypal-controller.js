@@ -135,17 +135,16 @@ class PayPalController {
 
           // create order
 
-          res.status(200).json({
-            message: 'Payment success',
-            status: 200,
-            ok: true,
-            payment: payment
-          });
+          res.render(`${this.rootModule}success`);
         });
       });
     } catch (error) {
       next(error);
     }
+  }
+
+  async chargeOrderCancel(req, res, next) {
+    res.render(`${this.rootModule}cancel`);
   }
 
   async createChargeOrder(req, res, next) {
