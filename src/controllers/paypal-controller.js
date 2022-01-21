@@ -199,8 +199,8 @@ class PayPalController {
         intent: 'sale',
         payer: {
           payment_method: 'paypal',
-          Buyer: {
-            id: req.user.id,
+          payer_info: {
+            id: req.user.id
           }
         },
         redirect_urls: {
