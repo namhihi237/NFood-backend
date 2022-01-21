@@ -13,6 +13,7 @@ import UserVoucher from './userVoucher';
 import Admin from './admin';
 import VendorFavorite from './vendor-favorite';
 import Review from './review';
+import Transaction from './transaction';
 
 export {
   Accounts,
@@ -30,4 +31,5 @@ export {
   Admin,
   VendorFavorite,
   Review,
+  Transaction,
 }
