@@ -179,7 +179,13 @@ class PayPalController {
         if (err) {
           throw new HttpError(err.message, 500);
         }
-        res.redirect(payment.links[1].href);
+        // res.redirect(payment.links[1].href);
+        res.status(200).json({
+          message: 'Payment success',
+          status: 200,
+          ok: true,
+          url: payment.links[1].href
+        });
       });
 
     } catch (error) {
