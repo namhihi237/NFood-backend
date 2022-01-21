@@ -22,4 +22,6 @@ export const envVariable = {
   STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY || '',
   PAYPAL_CLIENT_ID: process.env.PAYPAL_CLIENT_ID || '',
   PAYPAL_CLIENT_SECRET: process.env.PAYPAL_CLIENT_SECRET || '',
+  // API_DOMAIN: process.env.API_DOMAIN || 'https://nfood-api.southeastasia.cloudapp.azure.com',
+  API_DOMAIN: process.env.API_DOMAIN || 'http://localhost:8000',
 };

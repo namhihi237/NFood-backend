@@ -1,5 +1,11 @@
 import { paypal, HttpError } from '../utils';
-
+import { Accounts, Buyer, Vendor, Shipper, Transaction, Cart } from '../models';
+const EXCHANGE_RATE = 0.000044;
+import orderService from "../modules/order/orderService";
+import { notificationService } from "../modules/notification";
+import { envVariable } from '../configs';
+import mongoose from 'mongoose';
+import _ from 'lodash';
 class PayPalController {
   constructor(db) {
     this.db = db;
@@ -88,6 +94,96 @@ class PayPalController {
         });
       });
     } catch (error) {
+      next(error);
+    }
+  }
+
+  async createChargeOrder(req, res, next) {
+    global.logger.info('PayPalController::chargeOrder' + JSON.stringify(req.body));
+    const { promoCode } = req.body;
+
+    try {
+      const buyer = await Buyer.findOne({ accountId: req.user.id });
+
+      // find all items in the cart
+      const cartItems = await Cart.aggregate([
+        { $match: { userId: mongoose.Types.ObjectId(req.user.id) } },
+        { $lookup: { from: 'item', localField: 'itemId', foreignField: '_id', as: 'item' } },
+        { $unwind: { path: '$item', preserveNullAndEmptyArrays: true } }
+      ]);
+
+      if (cartItems.length == 0) {
+        throw new HttpError("Bạn không có món ăn nào trong giỏ", 400);
+      }
+      const vendorId = _.uniq(_.map(cartItems, 'item.vendorId'))[0];
+
+      const vendor = await Vendor.findOne({ _id: vendorId });
+
+      // check vendor is ready to accept order
+      if (!vendor.isReceiveOrder) {
+        throw new HttpError("Cửa hàng này hiện không nhận đơn hàng", 400);
+      }
+
+      // calculate total price
+      let subTotal = 0;
+      cartItems.forEach(cartItem => {
+        subTotal += cartItem.item.price * cartItem.quantity;
+      });
+
+      // calculate shipping fee
+      let shipping = await orderService.calculateShippingCost(req.user.id, vendorId);
+      // calculate discount
+      let discount = 0;
+      if (promoCode) {
+        discount = await orderService.calculateDiscount(vendorId, buyer._id, promoCode, subTotal);
+        if (!discount) {
+          promoCode = null;
+          discount = 0;
+        }
+      }
+
+      // calculate total price
+      let total = subTotal + shipping - discount;
+
+      // convert to USD
+      const amount = parseFloat(total * EXCHANGE_RATE).toFixed(2);
+
+      const creat_payment_json = {
+        intent: 'sale',
+        payer: {
+          payment_method: 'paypal'
+        },
+        redirect_urls: {
+          return_url: `${req.protocol}://${req.get('host')}/api/v1/payment/success`,
+          cancel_url: `${req.protocol}://${req.get('host')}/api/v1/payment/cancel`
+        },
+        transactions: [{
+          item_list: {
+            items: [{
+              name: 'item',
+              sku: 'item',
+              price: `${amount}`,
+              currency: 'USD',
+              quantity: 1
+            }]
+          },
+          amount: {
+            currency: 'USD',
+            total: `${amount}`
+          },
+          description: 'This is the payment description.'
+        }]
+      }
+
+      paypal.payment.create(creat_payment_json, (err, payment) => {
+        if (err) {
+          throw new HttpError(err.message, 500);
+        }
+        res.redirect(payment.links[1].href);
+      });
+
+    } catch (error) {
+      global.logger.error('PayPalController::chargeOrder' + error);
       next(error);
     }
   }
