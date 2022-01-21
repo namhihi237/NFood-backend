@@ -135,7 +135,7 @@ class PayPalController {
 
           // create order
 
-          res.render(`${this.rootModule}success`);
+          return res.render(`api/paypal/success`);
         });
       });
     } catch (error) {
@@ -144,7 +144,7 @@ class PayPalController {
   }
 
   async chargeOrderCancel(req, res, next) {
-    res.render(`${this.rootModule}cancel`);
+    return res.render(`${this.rootModule}cancel`);
   }
 
   async createChargeOrder(req, res, next) {
