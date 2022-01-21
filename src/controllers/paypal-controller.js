@@ -25,7 +25,7 @@ class PayPalController {
         payment_method: 'paypal'
       },
       redirect_urls: {
-        return_url: `${req.protocol}://${req.get('host')}/api/v1/payment/success`,
+        return_url: `${req.protocol}://${req.get('host')}/api/v1/payment/success?a=4`,
         cancel_url: `${req.protocol}://${req.get('host')}/api/v1/payment/cancel`
       },
       transactions: [{
@@ -62,6 +62,7 @@ class PayPalController {
   async success(req, res, next) {
     const paymentId = req.query.paymentId;
     const PayerID = req.query.PayerID;
+    console.log(req.query);
 
     try {
       let amount = 0;
@@ -89,7 +90,7 @@ class PayPalController {
             message: 'Payment success',
             status: 200,
             ok: true,
-            url: payment.links[1].href
+            payment: payment
           });
         });
       });
@@ -103,6 +104,9 @@ class PayPalController {
 
     const paymentId = req.query.paymentId;
     const PayerID = req.query.PayerID;
+    const { userId, promoCode } = req.query;
+
+    global.logger.info(JSON.stringify(req.query));
 
     try {
       let amount = 0;
@@ -112,7 +116,6 @@ class PayPalController {
         }
         amount = payment.transactions[0].amount.total;
 
-        const userId = payment.payer.Buyer.id;
         global.logger.info('userId payer:' + userId);
 
         const execute_payment_json = {
@@ -199,12 +202,9 @@ class PayPalController {
         intent: 'sale',
         payer: {
           payment_method: 'paypal',
-          payer_info: {
-            id: req.user.id
-          }
         },
         redirect_urls: {
-          return_url: `${req.protocol}://${req.get('host')}/api/v1/payment/charge-success`,
+          return_url: `${req.protocol}://${req.get('host')}/api/v1/payment/charge-success?userId=${req.user.id}&promoCode=${promoCode}`,
           cancel_url: `${req.protocol}://${req.get('host')}/api/v1/payment/charge-cancel`
         },
         transactions: [{
