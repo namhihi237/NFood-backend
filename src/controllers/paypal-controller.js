@@ -185,7 +185,7 @@ class PayPalController {
           ]
         };
 
-        paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+        paypal.payment.execute(paymentId, execute_payment_json, async (error, payment) => {
           if (error) throw new HttpError(error.message, 500);
 
           // create order
