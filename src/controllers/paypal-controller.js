@@ -210,6 +210,7 @@ class PayPalController {
             }
           });
 
+          await Cart.deleteMany({ userId });
 
           return res.render(`api/paypal/success`);
         });
