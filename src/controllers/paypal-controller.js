@@ -1,5 +1,5 @@
 import { paypal, HttpError } from '../utils';
-import { Accounts, Buyer, Vendor, Shipper, Transaction, Cart } from '../models';
+import { Accounts, Buyer, Vendor, Shipper, Transaction, Cart, Order } from '../models';
 const EXCHANGE_RATE = 0.000044;
 import orderService from "../modules/order/orderService";
 import { notificationService } from "../modules/notification";
