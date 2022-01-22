@@ -6,6 +6,7 @@ import { notificationService } from "../modules/notification";
 import { envVariable } from '../configs';
 import mongoose from 'mongoose';
 import _ from 'lodash';
+
 class PayPalController {
   constructor(db) {
     this.db = db;
@@ -25,7 +26,7 @@ class PayPalController {
         payment_method: 'paypal'
       },
       redirect_urls: {
-        return_url: `${req.protocol}://${req.get('host')}/api/v1/payment/success?a=4`,
+        return_url: `${req.protocol}://${req.get('host')}/api/v1/payment/success`,
         cancel_url: `${req.protocol}://${req.get('host')}/api/v1/payment/cancel`
       },
       transactions: [{
@@ -109,6 +110,60 @@ class PayPalController {
     global.logger.info(JSON.stringify(req.query));
 
     try {
+
+      const buyer = await Buyer.findOne({ accountId: userId });
+
+      // find all items in the cart
+      const cartItems = await Cart.aggregate([
+        { $match: { userId: mongoose.Types.ObjectId(userId) } },
+        { $lookup: { from: 'item', localField: 'itemId', foreignField: '_id', as: 'item' } },
+        { $unwind: { path: '$item', preserveNullAndEmptyArrays: true } }
+      ]);
+
+      const vendorId = _.uniq(_.map(cartItems, 'item.vendorId'))[0];
+      const vendor = await Vendor.findOne({ _id: vendorId });
+
+      // calculate total price
+      let subTotal = 0;
+      cartItems.forEach(cartItem => {
+        subTotal += cartItem.item.price * cartItem.quantity;
+      });
+
+      // calculate shipping fee
+      let shipping = await orderService.calculateShippingCost(userId, vendorId);
+      // calculate discount
+      let discount = 0;
+      if (promoCode) {
+        discount = await orderService.calculateDiscount(vendorId, buyer._id, promoCode, subTotal);
+        if (!discount) {
+          promoCode = null;
+          discount = 0;
+        }
+      }
+
+      // calculate total price
+      let total = subTotal + shipping - discount;
+
+      // calculate delivery time base on distance
+      let now = new Date();
+      let estimatedDeliveryTime = new Date(now.getTime() + (5 * 1000));
+
+
+      let orderItems = [];
+      cartItems.forEach(cartItem => {
+        orderItems.push({
+          itemId: cartItem.item._id,
+          buyerId: buyer._id,
+          buyerName: buyer.name,
+          name: cartItem.item.name,
+          quantity: cartItem.quantity,
+          price: cartItem.item.price,
+          note: cartItem.note,
+          image: cartItem.item.image
+        })
+      });
+
+
       let amount = 0;
       paypal.payment.get(paymentId, (err, payment) => {
         if (err) {
@@ -134,6 +189,27 @@ class PayPalController {
           if (error) throw new HttpError(error.message, 500);
 
           // create order
+          await Order.create({
+            ownerId: buyer._id,
+            vendorId,
+            name: buyer.name,
+            address: buyer.address,
+            phoneNumber: account.phoneNumber,
+            invoiceNumber,
+            discount,
+            shipping,
+            subTotal,
+            promoCode,
+            total,
+            estimatedDeliveryTime,
+            orderItems,
+            paymentMethod: 'CRE',
+            location: {
+              type: 'Point',
+              coordinates: [vendor.location.coordinates[0], vendor.location.coordinates[1]]
+            }
+          });
+
 
           return res.render(`api/paypal/success`);
         });
@@ -203,7 +279,7 @@ class PayPalController {
           payment_method: 'paypal',
         },
         redirect_urls: {
-          return_url: `${req.protocol}://${req.get('host')}/api/v1/payment/charge-success?userId=${req.user.id}&promoCode=${promoCode}`,
+          return_url: `${req.protocol}://${req.get('host')}/api/v1/payment/charge-success?userId=${req.user.id}&promoCode=${promoCode}&vendorId=${vendorId}`,
           cancel_url: `${req.protocol}://${req.get('host')}/api/v1/payment/charge-cancel`
         },
         transactions: [{
