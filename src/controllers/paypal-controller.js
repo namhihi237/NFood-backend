@@ -213,7 +213,7 @@ class PayPalController {
             estimatedDeliveryTime,
             orderItems,
             paymentMethod: 'CRE',
-            paymentMethod: 'paid',
+            paymentMethod: 'Paid',
             location: {
               type: 'Point',
               coordinates: [vendor.location.coordinates[0], vendor.location.coordinates[1]]
