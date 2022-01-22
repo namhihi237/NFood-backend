@@ -202,10 +202,18 @@ class PayPalController {
             shipping,
             subTotal,
             promoCode,
+            infoPaypal: {
+              paymentId: payment.id,
+              payerId: payment.payer.payer_info.payer_id,
+              email: payment.payer.payer_info.email,
+              amount: parseFloat(payment.transactions[0].amount.total),
+              currency: payment.transactions[0].amount.currency,
+            },
             total,
             estimatedDeliveryTime,
             orderItems,
             paymentMethod: 'CRE',
+            paymentMethod: 'paid',
             location: {
               type: 'Point',
               coordinates: [vendor.location.coordinates[0], vendor.location.coordinates[1]]

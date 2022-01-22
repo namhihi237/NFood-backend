@@ -59,6 +59,23 @@ const OrderSchema = new mongoose.Schema(
       type: String,
       enum: ['COD', 'CRE'],
     },
+    infoPaypal: {
+      email: {
+        type: String,
+      },
+      payerId: {
+        type: String,
+      },
+      paymentId: {
+        type: String,
+      },
+      amount: {
+        type: Number,
+      },
+      currency: {
+        type: String,
+      }
+    },
     orderStatus: {
       type: String,
       enum: ['Pending', 'Processing', 'Shipping', 'Delivered', 'Cancelled'],
