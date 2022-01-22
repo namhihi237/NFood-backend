@@ -194,7 +194,7 @@ class PayPalController {
             vendorId,
             name: buyer.name,
             address: buyer.address,
-            phoneNumber: account.phoneNumber,
+            phoneNumber: buyer.phoneNumber,
             invoiceNumber,
             discount,
             shipping,
