@@ -96,17 +96,19 @@ const buyerMutation = {
       throw new Error('Cừa hàng này không tồn tại');
     }
 
-    // check has favorite
-    let favorite = await VendorFavorite.findOne({ buyerId: buyer._id, vendorId: vendor._id });
+    if (args.isAdd) {
+      // check has favorite
+      let favorite = await VendorFavorite.findOne({ buyerId: buyer._id, vendorId: vendor._id });
 
-    // remove favorite
-    if (favorite) {
-      await VendorFavorite.deleteOne({ _id: favorite._id });
-      return false;
+      if (favorite) {
+        return true;
+      }
+      // add favorite
+      await VendorFavorite.create({ buyerId: buyer._id, vendorId: vendor._id });
+    } else {
+      // remove favorite
+      await VendorFavorite.deleteOne({ buyerId: buyer._id, vendorId: vendor._id });
     }
-
-    // add favorite
-    await VendorFavorite.create({ buyerId: buyer._id, vendorId: vendor._id });
 
     return true;
   }
