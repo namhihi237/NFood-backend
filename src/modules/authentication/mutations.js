@@ -207,7 +207,7 @@ const authenticationMutation = {
     phoneNumber = smsUtils.convertPhoneNumber(phoneNumber);
 
     // check if phone has been sent before
-    const isSent = await context.db.CodeResets.findOne({ where: { phoneNumber, code } });
+    const isSent = await CodeResets.findOne({ where: { phoneNumber, code } });
 
     if (!isSent) {
       throw new Error('Code không đúng');
@@ -236,7 +236,7 @@ const authenticationMutation = {
     }
 
     // get user
-    const user = await context.db.Accounts.findOne({ _id: context.user.id });
+    const user = await Accounts.findOne({ _id: context.user.id });
 
     // check if password is correct
     const isPasswordCorrect = await bcryptUtils.comparePassword(oldPassword, user.password);
@@ -247,7 +247,7 @@ const authenticationMutation = {
     const passHash = await bcryptUtils.hashPassword(newPassword);
 
     // update password
-    await context.db.Accounts.findByIdAndUpdate(context.user.id, { password: passHash });
+    await Accounts.findByIdAndUpdate(context.user.id, { password: passHash });
 
     return true;
   },
@@ -266,7 +266,7 @@ const authenticationMutation = {
     phoneNumber = smsUtils.convertPhoneNumber(phoneNumber);
 
     // check if user exists
-    const user = await context.db.Accounts.findOne({ phoneNumber });
+    const user = await Accounts.findOne({ phoneNumber });
 
     if (!user) {
       throw new Error('Số điện thoại không tồn tại trong hệ thống');
@@ -285,7 +285,7 @@ const authenticationMutation = {
     }
 
     // save code reset
-    await context.db.CodeResets.create({ phoneNumber, code });
+    await CodeResets.create({ phoneNumber, code });
 
     return true;
   },
@@ -304,7 +304,7 @@ const authenticationMutation = {
     phoneNumber = smsUtils.convertPhoneNumber(phoneNumber);
 
     // check if phone has been sent before
-    const isSent = await context.db.CodeResets.findOne({ phoneNumber, code });
+    const isSent = await CodeResets.findOne({ phoneNumber, code });
 
     if (!isSent) {
       throw new Error('Mã xác thực không đúng');
@@ -334,7 +334,7 @@ const authenticationMutation = {
     phoneNumber = smsUtils.convertPhoneNumber(phoneNumber);
 
     // check if phone has been sent before
-    const isSent = await context.db.CodeResets.findOne({ phoneNumber, code });
+    const isSent = await CodeResets.findOne({ phoneNumber, code });
 
     if (!isSent) {
       throw new Error('Mã xác thực không đúng');
@@ -343,7 +343,7 @@ const authenticationMutation = {
     const newPasswordHash = await bcryptUtils.hashPassword(newPassword);
 
     // update password
-    await context.db.Accounts.findOneAndUpdate({ phoneNumber }, { password: newPasswordHash });
+    await Accounts.findOneAndUpdate({ phoneNumber }, { password: newPasswordHash });
 
     return true;
   }
