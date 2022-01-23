@@ -80,6 +80,13 @@ const vendorQuery = {
 
     logger.info('total: ' + JSON.stringify(total));
 
+    // get menu of vendor
+    vendors = await Promise.all(vendors.map(async (vendor) => {
+      let menu = await Category.find({ vendorId: vendor._id, isActive: true });
+      vendor.menu = menu;
+      return vendor;
+    }));
+
     return {
       items: vendors, total: total[0] ? total[0].total : 0
     };
@@ -296,6 +303,15 @@ const vendorQuery = {
         });
       }
     }
+
+    // get menu of vendor
+    vendors = await Promise.all(vendors.map(async (vendor) => {
+      const menu = await Category.find({ vendorId: vendor._id, isActive: true }, {
+        _id: 1, name: 1
+      });
+      vendor.menu = menu;
+      return vendor;
+    }));
 
     return {
       items: vendors, total
