@@ -159,6 +159,7 @@ export default gql`
     content: String!
     image: String
     type: String!
+    orderId: ID
     createdAt: String
   }
 
