@@ -61,12 +61,19 @@ const VendorSchema = new mongoose.Schema(
     isReceiveOrder: {
       type: Boolean,
       default: false,
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
     }
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 // create index 2dsphere for location
 VendorSchema.index({ location: '2dsphere' });
+
+// create index search index for name
+VendorSchema.index({ name: 'text' });
 
 export default mongoose.model('vendor', VendorSchema, 'vendor');

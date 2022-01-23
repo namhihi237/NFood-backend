@@ -45,6 +45,10 @@ const BuyerSchema = new mongoose.Schema(
     numberOfNotifications: {
       type: Number,
       default: 0,
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
     }
   },
   { timestamps: true }

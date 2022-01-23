@@ -50,7 +50,7 @@ const vendorQuery = {
         }
       }, {
         $match: {
-          isReceiveOrder: true
+          isReceiveOrder: true, isActive: true
         }
       }
     ]);
@@ -70,7 +70,7 @@ const vendorQuery = {
         },
       }, {
         $match: {
-          isReceiveOrder: true
+          isReceiveOrder: true, isActive: true
         },
       }, {
 
@@ -190,6 +190,116 @@ const vendorQuery = {
     return {
       totalRevenue, totalOrder, totalOrderCompleted, accountBalance
     };
+  },
+
+  getAllVendors: async (parent, args, context, info) => {
+    global.logger.info('vendorQuery::getAllVendors::' + JSON.stringify(args));
+    const { page = 1, limit = 20, keyword } = args;
+
+    // check login
+    if (!context.user) {
+      throw new Error('Bạn chưa đăng nhập');
+    }
+
+    const buyer = await Buyer.findOne({ accountId: context.user.id });
+
+    if (!buyer) {
+      throw new Error('Bạn chưa là người mua');
+    }
+
+    let latitude = null, longitude = null;
+
+    if (buyer.location && buyer.location.coordinates && buyer.location.coordinates.length > 0) {
+      logger.info('buyer.location: ' + buyer.location);
+      latitude = buyer.location.coordinates[1];
+      longitude = buyer.location.coordinates[0];
+    }
+
+    let vendors = [];
+    let total = 0;
+    if (!latitude || !longitude) {
+      // find the vendors
+      vendors = await Vendor.find(
+        {
+          isReceiveOrder: true, isActive: true,
+          $text: { $search: keyword }
+        },
+      ).skip((page - 1) * limit).limit(limit);
+
+      total = await Vendor.countDocuments({
+        isReceiveOrder: true, isActive: true,
+        $text: {
+          $search: keyword
+        }
+      });
+
+    } else if (latitude && longitude) {
+      if (!keyword) {
+        // find the vendors
+        vendors = await Vendor.aggregate([
+          {
+            $geoNear: {
+              near: {
+                type: "Point",
+                coordinates: [longitude, latitude]
+              },
+              distanceField: "distance",
+              maxDistance: (args.distance || 10) * 1000, // meters
+              spherical: true,
+            }
+          }, {
+            $match: {
+              isReceiveOrder: true,
+              isActive: true
+            }
+          },
+
+        ]).skip((page - 1) * limit).limit(limit);
+
+        const totalDocuments = await Vendor.aggregate([
+          {
+            $geoNear: {
+              near: {
+                type: "Point",
+                coordinates: [longitude, latitude]
+              },
+              distanceField: "distance",
+              maxDistance: (args.distance || 10) * 1000, // meters
+              spherical: true,
+            }
+          }, {
+            $match: {
+              isReceiveOrder: true,
+              isActive: true
+            }
+          }, {
+            $count: "total"
+          }
+        ]);
+
+        total = totalDocuments[0] ? totalDocuments[0].total : 0;
+      } else if (keyword) {
+        vendors = await Vendor.find(
+          {
+            isReceiveOrder: true, isActive: true,
+            $text: {
+              $search: keyword
+            }
+          }
+        ).skip((page - 1) * limit).limit(limit);
+
+        total = await Vendor.countDocuments({
+          isReceiveOrder: true, isActive: true,
+          $text: {
+            $search: keyword
+          }
+        });
+      }
+    }
+
+    return {
+      items: vendors, total
+    }
   }
 }
 

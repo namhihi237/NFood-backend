@@ -29,7 +29,6 @@ export default gql`
   type Vendor {
     _id: ID!
     name: String
-    phoneNumber: String
     rating: Float
     image: String
     distance: Float
@@ -37,6 +36,8 @@ export default gql`
     numberOfReviews: Int
     menu: [Category]
     location: Location
+    isActive: Boolean
+    phoneNumber: String
   }
 
   type Location {
@@ -208,6 +209,7 @@ export default gql`
     getAllItem: [Item]!
     vendors(latitude: Float, longitude: Float, distance: Float, offset: Int, limit: Int): resultVendor!
     vendor(id: ID!): Vendor!
+    getAllVendors(keyword: String, offset: Int, limit: Int, distance: Float): resultVendor!
     carts: resultCart!
     getQuantityOfCart: Int!
     calculateShipping(vendorId: ID!): Float! 
