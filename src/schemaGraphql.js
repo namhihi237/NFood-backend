@@ -203,6 +203,16 @@ export default gql`
     totalOrder: Int
   }
 
+  type Transaction {
+    _id: ID!
+    userId: ID!
+    amount: Float!
+    type: String!
+    status: String!
+    currency: String!
+    createdAt: String
+  }
+
   type Query {
     getUser(role: roleEnum!): User
     getSignatureImage: String!
@@ -230,7 +240,7 @@ export default gql`
     getReviews(type: reviewEnum!): ReviewResult!
     getReportsByShipper: ReportShipper!
     getIncomesByShipper(type: reportType!, time: String!): IncomeShipper!
-
+    getTransactions(type: String!): Transaction!
   }
 
   type Subscription {

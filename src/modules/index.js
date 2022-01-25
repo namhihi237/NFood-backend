@@ -10,6 +10,7 @@ import { shipperMutation, shipperQuery } from './shipper';
 import { notificationQuery, notificationSubscribe, notificationMutation } from "./notification";
 import { voucherMutation, voucherQuery } from "./voucher";
 import { reviewMutation, reviewQuery } from './review';
+import { transactionQuery } from './transaction';
 export default {
   Category,
   Cart,
@@ -28,6 +29,7 @@ export default {
     ...shipperQuery,
     ...buyerQuery,
     ...reviewQuery,
+    ...transactionQuery,
   },
 
   Mutation: {
