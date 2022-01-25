@@ -16,6 +16,9 @@ const Transaction = new Schema(
       type: String,
       enum: ['pending', 'success', 'failed'],
     },
+    currency: {
+      type: String,
+    }
   },
   { timestamps: true },
 );

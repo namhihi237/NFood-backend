@@ -433,9 +433,25 @@ class PayPalController {
           }
 
           if (type === 'shipper') {
-            await Shipper.findOneAndUpdate({ accountId: userId }, { $inc: { money: amount } });
+            const shipper = await Shipper.findOneAndUpdate({ accountId: userId }, { $inc: { money: amount } });
+
+            await Transaction.create({
+              userId: shipper._id,
+              type: 'deposit',
+              amount: amount,
+              status: 'success',
+              currency: 'VND',
+            });
           } else if (type === 'buyer') {
-            await Buyer.findOneAndUpdate({ accountId: userId }, { $inc: { money: amount } });
+            const buyer = await Buyer.findOneAndUpdate({ accountId: userId }, { $inc: { money: amount } });
+
+            await Transaction.create({
+              userId: buyer._id,
+              type: 'deposit',
+              amount: amount,
+              status: 'success',
+              currency: 'VND',
+            });
           }
 
           return res.render(`api/paypal/success`);
