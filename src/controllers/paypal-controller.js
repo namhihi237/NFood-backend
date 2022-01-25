@@ -63,7 +63,6 @@ class PayPalController {
   async success(req, res, next) {
     const paymentId = req.query.paymentId;
     const PayerID = req.query.PayerID;
-    console.log(req.query);
 
     try {
       let amount = 0;
@@ -330,6 +329,126 @@ class PayPalController {
       next(error);
     }
   }
+
+  async deposit(req, res, next) {
+    global.logger.info('PayPalController::deposit' + JSON.stringify(req.body));
+    const { amount, type } = req.body;
+
+    try {
+      // validate amount
+      if (!amount || amount <= 0) {
+        throw new HttpError('Amount is invalid', 400);
+      }
+
+      if (type === 'shipper') {
+        const shipper = await Shipper.findOne({ accountId: req.user.id });
+        if (!shipper) {
+          throw new HttpError('Shipper not found', 404);
+        }
+      } else if (type === 'buyer') {
+        const buyer = await Buyer.findOne({ accountId: req.user.id });
+        if (!buyer) {
+          throw new HttpError('Buyer not found', 404);
+        }
+      }
+
+      const amountUSD = parseFloat(amount * EXCHANGE_RATE).toFixed(2);
+
+      const creat_payment_json = {
+        intent: 'sale',
+        payer: {
+          payment_method: 'paypal',
+        },
+        redirect_urls: {
+          return_url: `${req.protocol}://${req.get('host')}/api/v1/payment/deposit-success?userId=${req.user.id}&type=${type}&amount=${amount}`,
+          cancel_url: `${req.protocol}://${req.get('host')}/api/v1/payment/deposit-cancel`
+        },
+        transactions: [{
+          item_list: {
+            items: [{
+              name: 'item',
+              sku: 'item',
+              price: `${amountUSD}`,
+              currency: 'USD',
+              quantity: 1
+            }]
+          },
+          amount: {
+            currency: 'USD',
+            total: `${amountUSD}`
+          },
+          description: 'This is the deposit description.'
+        }]
+      }
+
+      paypal.payment.create(creat_payment_json, (err, payment) => {
+        if (err) {
+          throw new HttpError(err.message, 500);
+        }
+
+        res.status(200).json({
+          message: 'deposit success',
+          status: 200,
+          ok: true,
+          url: payment.links[1].href,
+          payment: payment
+        });
+      });
+
+    }
+    catch (error) {
+      next(error);
+    }
+  }
+
+  async depositSuccess(req, res, next) {
+    try {
+      const { userId, type, amount } = req.query;
+
+      const paymentId = req.query.paymentId;
+      const payerId = req.query.PayerID;
+
+      // get payment
+      paypal.payment.get(paymentId, (err, payment) => {
+        if (err) {
+          throw new HttpError('Error some error occurred', 500);
+        }
+        const amountUSD = payment.transactions[0].amount.total;
+
+        const execute_payment_json = {
+          payer_id: payerId,
+          transactions: [
+            {
+              amount: {
+                currency: "USD",
+                total: `${amountUSD}`
+              }
+            }
+          ]
+        };
+
+        paypal.payment.execute(paymentId, execute_payment_json, async (err, payment) => {
+          if (err) {
+            throw new HttpError('Error some error occurred', 500);
+          }
+
+          if (type === 'shipper') {
+            await Shipper.findOneAndUpdate({ accountId: userId }, { $inc: { money: amount } });
+          } else if (type === 'buyer') {
+            await Buyer.findOneAndUpdate({ accountId: userId }, { $inc: { money: amount } });
+          }
+
+          return res.render(`api/paypal/success`);
+        });
+      });
+
+
+    } catch (error) {
+      next(error);
+    }
+  }
+
+
 }
 
 export default PayPalController;
