@@ -6,6 +6,7 @@ const transactionQuery = {
   getTransactions: async (parent, args, context, info) => {
     global.logger.info('transactionQuery::getTransactions' + JSON.stringify(args));
 
+    const { type } = args;
     // check login
     if (!context.user) {
       throw new Error('Bạn chưa đăng nhập');
