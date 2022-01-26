@@ -240,7 +240,7 @@ export default gql`
     getReviews(type: reviewEnum!): ReviewResult!
     getReportsByShipper: ReportShipper!
     getIncomesByShipper(type: reportType!, time: String!): IncomeShipper!
-    getTransactions(type: String!): Transaction!
+    getTransactions(type: String!): [Transaction]!
   }
 
   type Subscription {
