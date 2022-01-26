@@ -24,7 +24,7 @@ const transactionQuery = {
     }
 
     const transactions = await Transaction.find({
-      userId
+      userId: user._id
     });
 
     return transactions;
