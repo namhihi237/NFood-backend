@@ -345,12 +345,11 @@ const authenticationMutation = {
     // update password
     await Accounts.findOneAndUpdate({ phoneNumber }, { password: newPasswordHash });
 
+    // delete code reset
+    await CodeResets.deleteMany({ phoneNumber });
+
     return true;
   }
-
-
-
-
 }
 
 export default authenticationMutation;
