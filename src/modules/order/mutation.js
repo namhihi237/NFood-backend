@@ -1,5 +1,5 @@
 import { bcryptUtils, emailUtils, jwtUtils, queue } from '../../utils';
-import { Accounts, Notification, Buyer, Vendor, Shipper, Category, Item, Cart, Order } from "../../models";
+import { Accounts, Notification, Buyer, Vendor, Shipper, Transaction, Item, Cart, Order } from "../../models";
 import _ from 'lodash';
 import mongoose from 'mongoose';
 import orderService from "./orderService";
@@ -184,6 +184,14 @@ const orderMutation = {
 
     // charge money to system
     await Shipper.findOneAndUpdate({ accountId: context.user.id }, { $inc: { money: -order.subTotal } });
+
+    // create transaction
+    await Transaction.create({
+      userId: shipper._id,
+      type: 'payment',
+      amount: order.subTotal,
+      currency: 'VND',
+    });
 
     await notificationService.createNotificationBuyer(content_buyer, orderId, order.ownerId, context.pubsub);
     await notificationService.createNotificationVendor(content_vendor, orderId, order.vendorId, context.pubsub);
