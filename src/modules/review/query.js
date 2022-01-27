@@ -58,6 +58,24 @@ const reviewQuery = {
       normalReviews,
       goodReviews
     };
+  },
+
+  getReviewsByVendor: async (parent, args, context, info) => {
+    global.logger.info('reviewQuery.getReviewsByVendor' + JSON.stringify(args));
+
+    const { vendorId } = args;
+
+    let reviews = await Review.find({ reviewedId: vendorId });
+
+    reviews = reviews.map(async (review) => {
+      const buyer = await Buyer.findOne({ _id: review.buyerId });
+      review.buyer = buyer;
+      return review;
+    });
+
+    return {
+      reviews
+    };
   }
 };
 

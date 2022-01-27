@@ -238,6 +238,7 @@ export default gql`
     getVendorFavorite: [Vendor]!
     vendorReport(type: reportType!, time: String!): Report!
     getReviews(type: reviewEnum!): ReviewResult!
+    getReviewsByVendor(vendorId: ID!): ReviewResult!
     getReportsByShipper: ReportShipper!
     getIncomesByShipper(type: reportType!, time: String!): IncomeShipper!
     getTransactions(type: String!): [Transaction]!
