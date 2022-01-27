@@ -67,8 +67,10 @@ const reviewMutation = {
     // update isReviewVendor or isReviewShipper
     if (args.type === 'vendor') {
       await Order.findByIdAndUpdate(args.orderId, { isReviewedVendor: true });
+      await Vendor.findByIdAndUpdate(args.reviewedId, { $inc: { numberOfReviews: 1 } });
     } else if (args.type === 'shipper') {
       await Order.findByIdAndUpdate(args.orderId, { isReviewedShipper: true });
+      await Shipper.findByIdAndUpdate(args.reviewedId, { $inc: { numberOfReviews: 1 } });
     }
 
     return true;
