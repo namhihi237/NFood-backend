@@ -68,9 +68,16 @@ const reviewMutation = {
     if (args.type === 'vendor') {
       await Order.findByIdAndUpdate(args.orderId, { isReviewedVendor: true });
       await Vendor.findByIdAndUpdate(args.reviewedId, { $inc: { numberOfReviews: 1 } });
+      if (arg.rating === 3) {
+        await Vendor.findByIdAndUpdate(args.reviewedId, { $inc: { rating: 1 } });
+      }
     } else if (args.type === 'shipper') {
       await Order.findByIdAndUpdate(args.orderId, { isReviewedShipper: true });
       await Shipper.findByIdAndUpdate(args.reviewedId, { $inc: { numberOfReviews: 1 } });
+
+      if (arg.rating === 3) {
+        await Shipper.findByIdAndUpdate(args.reviewedId, { $inc: { rating: 1 } });
+      }
     }
 
     return true;
