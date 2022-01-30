@@ -57,6 +57,8 @@ export default gql`
     image: String
     price: Float
     isActive: Boolean
+    quantitySold: Int
+    totalRevenue: Float
   }
 
   type Cart {
@@ -242,6 +244,7 @@ export default gql`
     getReportsByShipper: ReportShipper!
     getIncomesByShipper(type: reportType!, time: String!): IncomeShipper!
     getTransactions(type: String!): [Transaction]!
+    getReportItem(type: reportType!, time: String!): [Item]!
   }
 
   type Subscription {
