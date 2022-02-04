@@ -294,6 +294,7 @@ export default gql`
     forgotPassword(phoneNumber: String!): Boolean!
     verifyCode(code: String!, phoneNumber: String!): Boolean!
     updatePassword(password: String!, code: String!): Boolean!
+    updateBuyerProfile(name: String!, image: String!): User!
   }
 
   input inputVoucher {

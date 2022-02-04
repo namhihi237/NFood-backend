@@ -111,6 +111,15 @@ const buyerMutation = {
     }
 
     return true;
+  },
+
+  updateBuyerProfile: async (parent, args, context, info) => {
+    global.logger.info('buyerMutation::updateBuyerProfile' + JSON.stringify(args));
+
+    // check has login
+    if (!context.user) {
+      throw new Error('Vui lòng đăng nhập');
+    }
   }
 
 }
