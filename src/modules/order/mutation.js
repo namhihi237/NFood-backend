@@ -258,6 +258,11 @@ const orderMutation = {
     // update status shipper
     await Shipper.findOneAndUpdate({ accountId: context.user.id }, { isReceiveOrder: false, currentOrderId: null });
 
+    // charge money to shipper if payment is cre
+    if (order.paymentMethod === 'CRE') {
+      await Shipper.findOneAndUpdate({ accountId: context.user.id }, { $inc: { money: order.shipping } });
+    }
+
     return true;
   },
 
