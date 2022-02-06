@@ -17,6 +17,7 @@ export default gql`
     numberOfNotifications: Int
     identityCard: IdentityCard
     birthday: String
+    timeOpen: [TimeOpen]
   }
 
   type Category {
