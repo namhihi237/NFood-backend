@@ -41,22 +41,24 @@ const VendorSchema = new mongoose.Schema(
       default: 0,
     },
     timeOpen: {
-      type: [{
-        day: {
-          type: String,
-          enum: ['2', '3', '4', '5', '6', '7', '8'],
-        },
-        openTime: {
-          type: Number,
-        },
-        closeTime: {
-          type: Number,
-        },
-        isOpen: {
-          type: Boolean,
-          default: true,
+      type: [
+        {
+          day: {
+            type: String,
+            enum: ['2', '3', '4', '5', '6', '7', '8'],
+          },
+          openTime: {
+            type: Number,
+          },
+          closeTime: {
+            type: Number,
+          },
+          isOpen: {
+            type: Boolean,
+            default: true,
+          }
         }
-      }],
+      ],
     },
     numberOfNotifications: {
       type: Number,

@@ -1,6 +1,6 @@
-import { bcryptUtils, emailUtils, jwtUtils, smsUtils } from '../../utils';
+import { bcryptUtils, jwtUtils, smsUtils } from '../../utils';
 import { Accounts, CodeResets, Buyer, Vendor, Shipper } from "../../models";
-import { envVariable } from '../../configs';
+import { constants } from '../../configs';
 import _ from 'lodash';
 const LIMIT_TIME_SEND_SMS = 2 * 60 * 1000;
 
@@ -33,7 +33,7 @@ const authenticationMutation = {
     if (role === 'buyer') {
       await Buyer.create({ accountId: newUser.id, phoneNumber });
     } else if (role === 'vendor') {
-      await Vendor.create({ accountId: newUser.id, phoneNumber, timeOpen: envVariable.TIME_OPEN_DEFAULT });
+      await Vendor.create({ accountId: newUser.id, phoneNumber, timeOpen: constants.TIME_OPEN_DEFAULT });
     } else if (role === 'shipper') {
       await Shipper.create({ accountId: newUser.id, phoneNumber });
     }
