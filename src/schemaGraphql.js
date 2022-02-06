@@ -26,6 +26,13 @@ export default gql`
     items: [Item]
   }
 
+  type TimeOpen {
+    day: String
+    openTime: Int
+    closeTime: Int
+    isOpen: Boolean
+  }
+
   type Vendor {
     _id: ID!
     name: String
@@ -38,6 +45,7 @@ export default gql`
     location: Location
     isActive: Boolean
     phoneNumber: String
+    timeOpen: [TimeOpen]
   }
 
   type Location {
@@ -252,6 +260,7 @@ export default gql`
     numberOfNotifications(userType: roleEnum!): Int!
     locationShipper(orderId: ID!):[Float]
   }
+
  
   type Mutation {
     register(phoneNumber: String!, password: String!, role: roleEnum!): User!
@@ -295,6 +304,7 @@ export default gql`
     verifyCode(code: String!, phoneNumber: String!): Boolean!
     updatePassword(password: String!, code: String!): Boolean!
     updateBuyerProfile(name: String!, image: String!): User!
+    updateTimeOpen(timeOpen: openTime!): Boolean!
   }
 
   input inputVoucher {
@@ -306,6 +316,13 @@ export default gql`
     discountType: discountType!
     maxDiscount: Float
     minTotal: Float
+  }
+
+  input openTime {
+    day: String!
+    openTime: Int!
+    closeTime: Int!
+    isOpen: Boolean!
   }
 
   type JWTResponse {

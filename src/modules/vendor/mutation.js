@@ -91,6 +91,55 @@ const vendorMutation = {
 
     return vendor.isReceiveOrder;
   },
+
+  updateTimeOpen: async (parent, args, context, info) => {
+    global.logger.info('vendorMutation::updateTimeOpen' + JSON.stringify(args));
+
+    const newTimeOpen = args.timeOpen;
+
+    // check login
+    if (!context.user) {
+      throw new Error('Vui lòng đăng nhập');
+    }
+
+    let vendor = await Vendor.findOne({ accountId: context.user.id });
+
+    if (!vendor) {
+      throw new Error('Bạn chưa là cửa hàng');
+    }
+
+    // check valid time
+    if (!constants.DAYS.includes(newTimeOpen.day)) {
+      throw new Error('Thứ không hợp lệ');
+    }
+
+    if (newTimeOpen.openTime < 0 || newTimeOpen.openTime > 24) {
+      throw new Error('Thời gian mở cửa không hợp lệ');
+    }
+
+    if (newTimeOpen.closeTime < 0 || newTimeOpen.closeTime > 24) {
+      throw new Error('Thời gian đóng cửa không hợp lệ');
+    }
+
+    if (newTimeOpen.openTime >= newTimeOpen.closeTime) {
+      throw new Error('Thời gian mở cửa phải nhỏ hơn thời gian đóng cửa');
+    }
+
+    let timeOpen = vendor.timeOpen;
+
+    for (let i = 0; i < timeOpen.length; i++) {
+      if (timeOpen[i].day === newTimeOpen.day) {
+        timeOpen[i].openTime = newTimeOpen.openTime;
+        timeOpen[i].closeTime = newTimeOpen.closeTime;
+        timeOpen[i].isOpen = newTimeOpen.isOpen;
+        break;
+      }
+    }
+
+    vendor = await Vendor.findOneAndUpdate({ _id: vendor._id }, { timeOpen }, { new: true });
+
+    return true;
+  }
 }
 
 

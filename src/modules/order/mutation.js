@@ -33,6 +33,31 @@ const orderMutation = {
 
       const vendor = await Vendor.findOne({ _id: vendorId });
 
+      // check timeOpen
+      const timeOpen = vendor.timeOpen;
+      const currentTime = new Date();
+      const currentDay = currentTime.getDay();
+      const currentHour = currentTime.getHours();
+
+      // convert currentDay to string
+      let currentDayString = "";
+      if (currentDay === 0) {
+        currentDayString = "8";
+      } else {
+        currentDayString = (currentDay + 1).toString();
+      }
+
+      // check timeOpen
+      const timeOpenItem = _.find(timeOpen, { day: currentDayString, isOpen: true });
+      if (!timeOpenItem) {
+        throw new Error("Cửa hàng này hiện không mở cửa");
+      }
+
+      // check timeOpen
+      if (currentHour < timeOpenItem.openTime || currentHour > timeOpenItem.closeTime) {
+        throw new Error("Cửa hàng này hiện không mở cửa");
+      }
+
       // check vendor is ready to accept order
       if (!vendor.isReceiveOrder) {
         throw new Error("Cửa hàng này hiện không nhận đơn hàng");
