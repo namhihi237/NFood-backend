@@ -54,7 +54,8 @@ const vendorMutation = {
           address,
           image,
           phoneNumber: account.phoneNumber,
-          location: { type: 'Point', coordinates }
+          location: { type: 'Point', coordinates },
+          timeOpen: constants.TIME_OPEN_DEFAULT
         });
       }
       await Accounts.findByIdAndUpdate(context.user.id, { isVendor: true, });
