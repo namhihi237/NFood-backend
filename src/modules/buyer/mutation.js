@@ -116,12 +116,28 @@ const buyerMutation = {
   updateBuyerProfile: async (parent, args, context, info) => {
     global.logger.info('buyerMutation::updateBuyerProfile' + JSON.stringify(args));
 
+    const { name, image } = args;
+
     // check has login
     if (!context.user) {
       throw new Error('Vui lòng đăng nhập');
     }
-  }
 
+    // check has buyer
+    if (!context.user.isBuyer) {
+      throw new Error('Bạn chưa đăng ký là người mua');
+    }
+
+    const buyer = await Buyer.findOne({ accountId: context.user.id });
+    // check has buyer
+    if (!buyer) {
+      throw new Error('Bạn chưa đăng ký là người mua');
+    }
+
+    // update buyer
+    return await Buyer.findOneAndUpdate({ accountId: context.user.id }, { name, image }, { new: true });
+
+  }
 }
 
 export default buyerMutation;
