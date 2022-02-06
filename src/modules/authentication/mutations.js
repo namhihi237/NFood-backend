@@ -3,50 +3,6 @@ import { Accounts, CodeResets, Buyer, Vendor, Shipper } from "../../models";
 import { constants } from '../../configs';
 import _ from 'lodash';
 const LIMIT_TIME_SEND_SMS = 2 * 60 * 1000;
-const TIME_OPEN_DEFAULT = [
-  {
-    day: '2',
-    openTime: 8,
-    closeTime: 22,
-    isOpen: true,
-  },
-  {
-    day: '3',
-    openTime: 8,
-    closeTime: 22,
-    isOpen: true,
-  },
-  {
-    day: '4',
-    openTime: 8,
-    closeTime: 22,
-    isOpen: true,
-  },
-  {
-    day: '5',
-    openTime: 8,
-    closeTime: 22,
-    isOpen: true,
-  },
-  {
-    day: '6',
-    openTime: 8,
-    closeTime: 22,
-    isOpen: true,
-  },
-  {
-    day: '7',
-    openTime: 8,
-    closeTime: 22,
-    isOpen: true,
-  },
-  {
-    day: '8',
-    openTime: 8,
-    closeTime: 22,
-    isOpen: true,
-  },
-];
 
 const authenticationMutation = {
   register: async (parent, args, context, info) => {
@@ -77,7 +33,7 @@ const authenticationMutation = {
     if (role === 'buyer') {
       await Buyer.create({ accountId: newUser.id, phoneNumber });
     } else if (role === 'vendor') {
-      await Vendor.create({ accountId: newUser.id, phoneNumber, timeOpen: TIME_OPEN_DEFAULT });
+      await Vendor.create({ accountId: newUser.id, phoneNumber, timeOpen: constants.TIME_OPEN_DEFAULT });
     } else if (role === 'shipper') {
       await Shipper.create({ accountId: newUser.id, phoneNumber });
     }

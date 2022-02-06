@@ -1,6 +1,7 @@
-import { bcryptUtils, emailUtils, jwtUtils, smsUtils, hereUtils } from '../../utils';
-import { Accounts, VendorFavorite, Buyer, Vendor, Shipper } from "../../models";
+import { hereUtils } from '../../utils';
+import { Accounts, Vendor } from "../../models";
 import _ from 'lodash';
+import { constants } from '../../configs';
 
 const vendorMutation = {
   activeVendor: async (parent, args, context, info) => {
@@ -37,7 +38,15 @@ const vendorMutation = {
 
       let vendor = await Vendor.findOne({ accountId: account._id });
       if (vendor) {
-        await Vendor.findOneAndUpdate({ accountId: context.user.id }, { name, address, image, location: { type: 'Point', coordinates } });
+        await Vendor.findOneAndUpdate({
+          accountId: context.user.id
+        }, {
+          name,
+          address,
+          image,
+          location: { type: 'Point', coordinates },
+          timeOpen: constants.TIME_OPEN_DEFAULT
+        });
       } else {
         await Vendor.create({
           accountId: context.user.id,
