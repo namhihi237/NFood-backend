@@ -1,6 +1,6 @@
 import { authenticationMutation, authenticationQuery } from './authentication';
 import { buyerMutation, buyerQuery } from './buyer';
-import { vendorMutation, vendorQuery } from './vendor';
+import { vendorMutation, vendorQuery, TimeOpen } from './vendor';
 import { ImageQuery } from './image';
 import { categoryMutation, categoryQuery, Category } from './category';
 import { itemQuery, itemMutation } from './item';
@@ -15,6 +15,7 @@ export default {
   Category,
   Cart,
   Order,
+  TimeOpen,
 
   Query: {
     ...ImageQuery,

@@ -29,8 +29,8 @@ export default gql`
 
   type TimeOpen {
     day: String
-    openTime: Int
-    closeTime: Int
+    openTime: String
+    closeTime: String
     isOpen: Boolean
   }
 
@@ -321,8 +321,8 @@ export default gql`
 
   input openTime {
     day: String!
-    openTime: Int!
-    closeTime: Int!
+    openTime: String!
+    closeTime: String!
     isOpen: Boolean!
   }
 

@@ -95,7 +95,7 @@ const vendorMutation = {
   updateTimeOpen: async (parent, args, context, info) => {
     global.logger.info('vendorMutation::updateTimeOpen' + JSON.stringify(args));
 
-    const newTimeOpen = args.timeOpen;
+    let newTimeOpen = args.timeOpen;
 
     // check login
     if (!context.user) {
@@ -113,20 +113,17 @@ const vendorMutation = {
       throw new Error('Thứ không hợp lệ');
     }
 
-    if (newTimeOpen.openTime < 0 || newTimeOpen.openTime > 24) {
-      throw new Error('Thời gian mở cửa không hợp lệ');
-    }
+    const start = parseFloat(`${newTimeOpen.openTime.split(':')[0]}.${newTimeOpen.openTime.split(':')[1]}`);
+    const end = parseFloat(`${newTimeOpen.closeTime.split(':')[0]}.${newTimeOpen.closeTime.split(':')[1]}`);
 
-    if (newTimeOpen.closeTime < 0 || newTimeOpen.closeTime > 24) {
-      throw new Error('Thời gian đóng cửa không hợp lệ');
-    }
-
-    if (newTimeOpen.openTime >= newTimeOpen.closeTime) {
+    if (start >= end) {
       throw new Error('Thời gian mở cửa phải nhỏ hơn thời gian đóng cửa');
     }
 
-    let timeOpen = vendor.timeOpen;
+    newTimeOpen.openTime = new Date(`2020-01-01T${newTimeOpen.openTime}:00.000Z`);
+    newTimeOpen.closeTime = new Date(`2021-01-01T${newTimeOpen.closeTime}:00.000Z`);
 
+    let timeOpen = vendor.timeOpen;
     for (let i = 0; i < timeOpen.length; i++) {
       if (timeOpen[i].day === newTimeOpen.day) {
         timeOpen[i].openTime = newTimeOpen.openTime;

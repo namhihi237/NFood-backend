@@ -38,6 +38,7 @@ const orderMutation = {
       const currentTime = new Date();
       const currentDay = currentTime.getDay();
       const currentHour = currentTime.getHours();
+      const currentMinute = currentTime.getMinutes();
 
       // convert currentDay to string
       let currentDayString = "";
@@ -54,7 +55,10 @@ const orderMutation = {
       }
 
       // check timeOpen
-      if (currentHour < timeOpenItem.openTime || currentHour > timeOpenItem.closeTime) {
+      const start = parseFloat(timeOpen.openTime.getHours() + "." + timeOpen.openTime.getMinutes());
+      const end = parseFloat(timeOpen.closeTime.getHours() + "." + timeOpen.closeTime.getMinutes());
+      const current = parseFloat(currentHour + "." + currentMinute);
+      if (current < start || current > end) {
         throw new Error("Cửa hàng này hiện không mở cửa");
       }
 
@@ -147,7 +151,6 @@ const orderMutation = {
       return order;
 
     } catch (error) {
-      console.log(error);
       await session.abortTransaction();
       session.endSession();
       throw error;

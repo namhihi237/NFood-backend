@@ -48,10 +48,10 @@ const VendorSchema = new mongoose.Schema(
             enum: ['2', '3', '4', '5', '6', '7', '8'],
           },
           openTime: {
-            type: Number,
+            type: Date
           },
           closeTime: {
-            type: Number,
+            type: Date,
           },
           isOpen: {
             type: Boolean,

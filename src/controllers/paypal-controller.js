@@ -122,6 +122,35 @@ class PayPalController {
       const vendorId = _.uniq(_.map(cartItems, 'item.vendorId'))[0];
       const vendor = await Vendor.findOne({ _id: vendorId });
 
+      // check timeOpen
+      const timeOpen = vendor.timeOpen;
+      const currentTime = new Date();
+      const currentDay = currentTime.getDay();
+      const currentHour = currentTime.getHours();
+      const currentMinute = currentTime.getMinutes();
+
+      // convert currentDay to string
+      let currentDayString = "";
+      if (currentDay === 0) {
+        currentDayString = "8";
+      } else {
+        currentDayString = (currentDay + 1).toString();
+      }
+
+      // check timeOpen
+      const timeOpenItem = _.find(timeOpen, { day: currentDayString, isOpen: true });
+      if (!timeOpenItem) {
+        throw new Error("Cửa hàng này hiện không mở cửa");
+      }
+
+      // check timeOpen
+      const start = parseFloat(timeOpen.openTime.getHours() + "." + timeOpen.openTime.getMinutes());
+      const end = parseFloat(timeOpen.closeTime.getHours() + "." + timeOpen.closeTime.getMinutes());
+      const current = parseFloat(currentHour + "." + currentMinute);
+      if (current < start || current > end) {
+        throw new HttpError("Cửa hàng này hiện không mở cửa", 400);
+      }
+
       // calculate total price
       let subTotal = 0;
       cartItems.forEach(cartItem => {
