@@ -160,6 +160,7 @@ const vendorMutation = {
     let newData = {
       name,
       image,
+      email
     }
 
     if (address !== vendor.address) {
@@ -172,7 +173,7 @@ const vendorMutation = {
 
       newData.address = address;
     }
-    
+
     await Vendor.findOneAndUpdate({ _id: vendor._id }, newData);
 
     return true;
