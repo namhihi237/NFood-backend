@@ -8,6 +8,7 @@ export default gql`
     name: String
     address: String
     image: String
+    email: String
     isVendor: Boolean
     isBuyer: Boolean
     isShipper: Boolean
