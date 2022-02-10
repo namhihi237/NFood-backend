@@ -136,6 +136,46 @@ const vendorMutation = {
     vendor = await Vendor.findOneAndUpdate({ _id: vendor._id }, { timeOpen }, { new: true });
 
     return true;
+  },
+
+  updateVendorProfile: async (parent, args, context, info) => {
+    global.logger.info('vendorMutation::updateVendorProfile' + JSON.stringify(args));
+
+    // check login
+    if (!context.user) {
+      throw new Error('Vui lòng đăng nhập');
+    }
+
+    let vendor = await Vendor.findOne({ accountId: context.user.id });
+
+    if (!vendor) {
+      throw new Error('Bạn chưa là cửa hàng');
+    }
+
+    let { name, address, image, email } = args;
+    name = name.trim();
+    address = address.trim();
+    email = email.trim();
+
+    let newData = {
+      name,
+      image,
+    }
+
+    if (address !== vendor.address) {
+      const geocode = await hereUtils.getGeoLocation(address);
+      let coordinates = null;
+      if (geocode) {
+        coordinates = [geocode.lng, geocode.lat];
+      }
+      newData.location = { type: 'Point', coordinates };
+
+      newData.address = address;
+    }
+    
+    await Vendor.findOneAndUpdate({ _id: vendor._id }, newData);
+
+    return true;
   }
 }
 

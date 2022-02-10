@@ -305,6 +305,7 @@ export default gql`
     verifyCode(code: String!, phoneNumber: String!): Boolean!
     updatePassword(password: String!, code: String!): Boolean!
     updateBuyerProfile(name: String!, image: String!): User!
+    updateVendorProfile(name: String!, address: String!, image: String!, email: String): Boolean!
     updateTimeOpen(timeOpen: openTime!): Boolean!
   }
 
