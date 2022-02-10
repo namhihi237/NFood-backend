@@ -317,6 +317,8 @@ export default gql`
     updateVendorProfile(name: String!, address: String!, image: String!, email: String): Boolean!
     updateTimeOpen(timeOpen: openTime!): Boolean!
     addBankAccount(bankName: String!,  accountName: String!, accountNumber: String!, type: roleEnum!): Boolean!
+    requestWithdraw(amount: Float!, type: roleEnum!): Boolean!
+    confirmWithdraw(amount: Float!, type: roleEnum!, code: String!): Boolean!
   }
 
   input inputVoucher {
