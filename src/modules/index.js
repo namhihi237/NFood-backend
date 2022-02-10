@@ -11,6 +11,8 @@ import { notificationQuery, notificationSubscribe, notificationMutation } from "
 import { voucherMutation, voucherQuery } from "./voucher";
 import { reviewMutation, reviewQuery } from './review';
 import { transactionQuery } from './transaction';
+import { bankMutation } from './bank';
+
 export default {
   Category,
   Cart,
@@ -44,7 +46,8 @@ export default {
     ...shipperMutation,
     ...notificationMutation,
     ...voucherMutation,
-    ...reviewMutation
+    ...reviewMutation,
+    ...bankMutation,
   },
 
   Subscription: {

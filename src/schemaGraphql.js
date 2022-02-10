@@ -19,6 +19,7 @@ export default gql`
     identityCard: IdentityCard
     birthday: String
     timeOpen: [TimeOpen]
+    bank: Bank
   }
 
   type Category {
@@ -26,6 +27,13 @@ export default gql`
     name: String
     isActive: Boolean
     items: [Item]
+  }
+
+  type Bank {
+    _id: ID!
+    accountNumber: String
+    accountName: String
+    bankName: String
   }
 
   type TimeOpen {
@@ -308,6 +316,7 @@ export default gql`
     updateBuyerProfile(name: String!, image: String!): User!
     updateVendorProfile(name: String!, address: String!, image: String!, email: String): Boolean!
     updateTimeOpen(timeOpen: openTime!): Boolean!
+    addBankAccount(bankName: String!,  accountName: String!, accountNumber: String!, type: roleEnum!): Boolean!
   }
 
   input inputVoucher {

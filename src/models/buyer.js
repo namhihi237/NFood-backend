@@ -49,6 +49,17 @@ const BuyerSchema = new mongoose.Schema(
     isActive: {
       type: Boolean,
       default: true,
+    },
+    bank: {
+      accountNumber: {
+        type: String,
+      },
+      bankName: {
+        type: String,
+      },
+      accountName: {
+        type: String,
+      },
     }
   },
   { timestamps: true }

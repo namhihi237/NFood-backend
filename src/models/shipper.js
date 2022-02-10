@@ -87,6 +87,17 @@ const ShipperSchema = new mongoose.Schema(
     currentOrderId: {
       type: mongoose.Types.ObjectId,
       ref: 'Order',
+    },
+    bank: {
+      accountNumber: {
+        type: String,
+      },
+      bankName: {
+        type: String,
+      },
+      accountName: {
+        type: String,
+      },
     }
   },
   { timestamps: true }

@@ -37,7 +37,7 @@ const authenticationQuery = {
     logger.info('user: ' + JSON.stringify(user));
 
     return {
-      ..._.pick(account, ['_id', 'isVendor', 'isShipper', 'isBuyer', 'phoneNumber', 'role']),
+      ..._.pick(account, ['_id', 'isVendor', 'isShipper', 'isBuyer', 'phoneNumber', 'role', 'bank']),
       ..._.pick(user, ['_id', 'email', 'address', 'location.coordinates', 'name', 'image', 'isReceiveOrder', 'isShippingOrder', 'timeOpen']),
     };
   }
