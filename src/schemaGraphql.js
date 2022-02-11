@@ -233,6 +233,14 @@ export default gql`
     createdAt: String
   }
 
+  type WithdrawalResponse {
+    money: Float
+    maxWithdrawal: Float
+    minWithdrawal: Float
+    fee: Float
+    bank: Bank
+  }
+
   type Query {
     getUser(role: roleEnum!): User
     getSignatureImage: String!
@@ -263,6 +271,7 @@ export default gql`
     getIncomesByShipper(type: reportType!, time: String!): IncomeShipper!
     getTransactions(type: String!): [Transaction]!
     getReportItem(type: reportType!, time: String!): [Item]!
+    getWithdrawal(type: roleEnum!): WithdrawalResponse!
   }
 
   type Subscription {
