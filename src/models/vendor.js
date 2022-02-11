@@ -73,15 +73,17 @@ const VendorSchema = new mongoose.Schema(
       default: true,
     },
     bank: {
-      accountNumber: {
-        type: String,
-      },
-      bankName: {
-        type: String,
-      },
-      accountName: {
-        type: String,
-      },
+      type: {
+        accountNumber: {
+          type: String,
+        },
+        bankName: {
+          type: String,
+        },
+        accountName: {
+          type: String,
+        },
+      }
     }
   },
   { timestamps: true },
