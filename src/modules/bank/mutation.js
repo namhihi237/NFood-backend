@@ -7,7 +7,7 @@ const bankMutation = {
   addBankAccount: async (parent, args, context, info) => {
     global.logger.info('bankMutation.addBankAccount', JSON.stringify(args));
 
-    let { type, accountNumber, accountName, } = args;
+    let { type, accountNumber, accountName, bankName } = args;
 
     // check login
     if (!context.user) {
