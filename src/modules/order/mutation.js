@@ -35,11 +35,14 @@ const orderMutation = {
 
       // check timeOpen
       const timeOpen = vendor.timeOpen;
-      const currentTime = new Date();
+      let currentTime = new Date();
+      // add 7 hours to current time
+      currentTime.setHours(currentTime.getHours() + 7);
       const currentDay = currentTime.getDay();
-      const currentHour = currentTime.getHours();
+      const currentHour = currentTime.getHours() + 7; // timezone + 7
       const currentMinute = currentTime.getMinutes();
 
+      console.log(`currentTime: ${currentTime}`);
       // convert currentDay to string
       let currentDayString = "";
       if (currentDay === 0) {

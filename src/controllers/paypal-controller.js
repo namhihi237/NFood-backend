@@ -126,7 +126,7 @@ class PayPalController {
       const timeOpen = vendor.timeOpen;
       const currentTime = new Date();
       const currentDay = currentTime.getDay();
-      const currentHour = currentTime.getHours();
+      const currentHour = currentTime.getHours() + 7; // timezone + 7
       const currentMinute = currentTime.getMinutes();
 
       // convert currentDay to string
