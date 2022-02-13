@@ -58,8 +58,8 @@ const orderMutation = {
       }
 
       // check timeOpen
-      const start = parseFloat(timeOpenItem.openTime.getHours() + "." + timeOpenItem.openTime.getMinutes());
-      const end = parseFloat(timeOpenItem.closeTime.getHours() + "." + timeOpenItem.closeTime.getMinutes());
+      const start = parseFloat(timeOpenItem.openTime.split(':')[0] + "." + timeOpenItem.openTime.split(':')[1]);
+      const end = parseFloat(timeOpenItem.closeTime.split(':')[0] + "." + timeOpenItem.closeTime.split(':')[1]);
       const current = parseFloat(currentHour + "." + currentMinute);
       if (current < start || current > end) {
         throw new Error("Cửa hàng này hiện không mở cửa");
