@@ -17,6 +17,8 @@ const transactionQuery = {
       user = await Shipper.findOne({ accountId: context.user.id });
     } else if (type === 'buyer') {
       user = await Buyer.findOne({ accountId: context.user.id });
+    } else if (type === 'vendor') {
+      user = await Vendor.findOne({ accountId: context.user.id });
     }
 
     if (!user) {
