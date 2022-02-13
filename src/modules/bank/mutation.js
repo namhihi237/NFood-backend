@@ -1,5 +1,7 @@
 import { bcryptUtils, emailUtils, jwtUtils, smsUtils, hereUtils } from '../../utils';
 import { Accounts, VendorFavorite, Buyer, Vendor, Shipper, Transaction } from "../../models";
+const FEE = 3300; // vnd
+const MIN_WITHDRAWAL = 50000; // vnd
 
 import _ from 'lodash';
 
@@ -38,6 +40,10 @@ const bankMutation = {
     // check amount
     if (amount <= 0) {
       throw new Error('Số tiền rút không hợp lệ');
+    }
+
+    if (amount < MIN_WITHDRAWAL) {
+      throw new Error('Số tiền rút phải lớn hơn ' + MIN_WITHDRAWAL + ' VNĐ');
     }
 
     let user = null;
@@ -98,7 +104,8 @@ const bankMutation = {
       amount,
       type: 'withdraw',
       status: 'pending',
-      bank: user.bank
+      bank: user.bank,
+      fee: FEE,
     });
 
     return true;

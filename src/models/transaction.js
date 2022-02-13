@@ -19,6 +19,9 @@ const Transaction = new Schema(
     currency: {
       type: String,
     },
+    fee: {
+      type: Number,
+    },
     bank: {
       type: {
         accountNumber: {
