@@ -229,7 +229,10 @@ export default gql`
     amount: Float!
     type: String!
     status: String!
-    currency: String!
+    currency: String
+    bank: Bank
+    fee: Float
+    
     createdAt: String
   }
 
