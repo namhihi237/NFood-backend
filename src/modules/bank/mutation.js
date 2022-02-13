@@ -1,5 +1,5 @@
 import { bcryptUtils, emailUtils, jwtUtils, smsUtils, hereUtils } from '../../utils';
-import { Accounts, VendorFavorite, Buyer, Vendor, Shipper } from "../../models";
+import { Accounts, VendorFavorite, Buyer, Vendor, Shipper, Transaction } from "../../models";
 
 import _ from 'lodash';
 
