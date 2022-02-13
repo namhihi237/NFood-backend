@@ -145,8 +145,8 @@ class PayPalController {
       }
 
       // check timeOpen
-      const start = parseFloat(timeOpenItem.openTime.split(':')[0] + "." + timeOpenItem.openTime.split(':')[1]);
-      const end = parseFloat(timeOpenItem.closeTime.split(':')[0] + "." + timeOpenItem.closeTime.split(':')[1]);
+      const start = parseFloat(timeOpenItem.openTime.getHours() + "." + timeOpenItem.openTime.getMinutes());
+      const end = parseFloat(timeOpenItem.closeTime.getHours() + "." + timeOpenItem.closeTime.getMinutes());
       const current = parseFloat(currentHour + "." + currentMinute);
       if (current < start || current > end) {
         throw new HttpError("Cửa hàng này hiện không mở cửa", 400);
