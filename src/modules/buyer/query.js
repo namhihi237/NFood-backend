@@ -24,7 +24,7 @@ const buyerQuery = {
 
     const vendorFavoritesIds = vendorFavorites.map(vendorFavorite => vendorFavorite.vendorId);
 
-    let vendors = Vendor.find({ _id: { $in: vendorFavoritesIds } });
+    let vendors = await Vendor.find({ _id: { $in: vendorFavoritesIds } });
 
     vendors = await Promise.all(vendors.map(async (vendor) => {
       let menu = await Category.find({ vendorId: vendor._id, isActive: true });
