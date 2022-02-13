@@ -55,8 +55,8 @@ const reviewMutation = {
     }
 
     // validate rating
-    if (args.rating < 1 || args.rating > 5) {
-      throw new Error('Đánh giá phải từ 1 đến 5');
+    if (args.rating < 1 || args.rating > 3) {
+      throw new Error('Đánh giá không hợp lệ');
     }
 
     await Review.create({
