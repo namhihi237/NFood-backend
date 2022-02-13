@@ -18,6 +18,19 @@ const Transaction = new Schema(
     },
     currency: {
       type: String,
+    },
+    bank: {
+      type: {
+        accountNumber: {
+          type: String,
+        },
+        bankName: {
+          type: String,
+        },
+        accountName: {
+          type: String,
+        },
+      }
     }
   },
   { timestamps: true },

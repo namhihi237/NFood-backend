@@ -40,70 +40,65 @@ const bankMutation = {
       throw new Error('Số tiền rút không hợp lệ');
     }
 
-    let userId = null;
+    let user = null;
     if (type === 'shipper') {
-      const shipper = await Shipper.findOne({ accountId: context.user.id });
-      if (!shipper) {
+      user = await Shipper.findOne({ accountId: context.user.id });
+      if (!user) {
         throw new Error('Tài khoản không tồn tại');
       }
 
-      if (!shipper.bank.accountNumber) {
+      if (!user.bank.accountNumber) {
         throw new Error('Vui lòng thêm thông tin tài khoản ngân hàng');
       }
 
-      if (shipper.money < amount) {
+      if (user.money < amount) {
         throw new Error('Số tiền trong tài khoản không đủ để thực hiện giao dịch');
       }
-
-      userId = shipper._id;
 
       await Shipper.findOneAndUpdate({ accountId: context.user.id }, { $inc: { money: -amount } });
 
     } else if (type === 'buyer') {
-      const buyer = await Buyer.findOne({ accountId: context.user.id });
+      user = await Buyer.findOne({ accountId: context.user.id });
 
-      if (!buyer) {
+      if (!user) {
         throw new Error('Tài khoản không tồn tại');
       }
 
-      if (!buyer.bank.accountNumber) {
+      if (!user.bank.accountNumber) {
         throw new Error('Vui lòng thêm thông tin tài khoản ngân hàng');
       }
 
-      if (buyer.money < amount) {
+      if (user.money < amount) {
         throw new Error('Số tiền trong tài khoản không đủ để thực hiện giao dịch');
       }
-
-      // create requestWithdraw
-      userId = buyer._id;
 
       await Buyer.findOneAndUpdate({ accountId: context.user.id }, { $inc: { money: -amount } });
 
     } else if (type === 'vendor') {
-      const vendor = await Vendor.findOne({ accountId: context.user.id });
+      user = await Vendor.findOne({ accountId: context.user.id });
 
-      if (!vendor) {
+      if (!user) {
         throw new Error('Tài khoản không tồn tại');
       }
 
-      if (!vendor.bank.accountNumber) {
+      if (!user.bank.accountNumber) {
         throw new Error('Vui lòng thêm thông tin tài khoản ngân hàng');
       }
 
-      if (vendor.money < amount) {
+      if (user.money < amount) {
         throw new Error('Số tiền trong tài khoản không đủ để thực hiện giao dịch');
       }
 
-      userId = vendor._id;
       await Vendor.findOneAndUpdate({ accountId: context.user.id }, { $inc: { money: -amount } });
     }
 
     // create the transaction 
     await Transaction.create({
-      userId,
+      userId: user._id,
       amount,
       type: 'withdraw',
       status: 'pending',
+      bank: user.bank
     });
 
     return true;
