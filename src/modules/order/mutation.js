@@ -39,7 +39,7 @@ const orderMutation = {
       // add 7 hours to current time
       currentTime.setHours(currentTime.getHours() + 7);
       const currentDay = currentTime.getDay();
-      const currentHour = currentTime.getHours() + 7; // timezone + 7
+      const currentHour = currentTime.getHours();
       const currentMinute = currentTime.getMinutes();
 
       console.log(`currentTime: ${currentTime}`);
@@ -110,8 +110,6 @@ const orderMutation = {
         })
       });
 
-      await session.startTransaction();
-
       let order = null;
 
       const invoiceNumber = await orderService.generateInvoiceNumber();
@@ -138,7 +136,7 @@ const orderMutation = {
             type: 'Point',
             coordinates: [vendor.location.coordinates[0], vendor.location.coordinates[1]]
           }
-        }], { session });
+        }]);
 
         order = order[0];
 
@@ -148,14 +146,9 @@ const orderMutation = {
 
       await Cart.deleteMany({ userId: account._id }, { session });
 
-      await session.commitTransaction();
-      session.endSession();
-
       return order;
 
     } catch (error) {
-      await session.abortTransaction();
-      session.endSession();
       throw error;
     }
   },
