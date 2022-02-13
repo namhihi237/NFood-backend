@@ -291,6 +291,11 @@ const orderMutation = {
       await Shipper.findOneAndUpdate({ accountId: context.user.id }, { $inc: { money: order.shipping } });
     }
 
+    // update quantityPurchased item 
+    order.orderItems.forEach(async (item) => {
+      await Item.findByIdAndUpdate(item.itemId, { $inc: { quantityPurchased: +item.quantity } });
+    });
+
     return true;
   },
 

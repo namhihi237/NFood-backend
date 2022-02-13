@@ -38,6 +38,10 @@ const ItemSchema = new mongoose.Schema(
     price: {
       type: Number,
       required: true,
+    },
+    quantityPurchased: {
+      type: Number,
+      default: 0,
     }
   },
   { timestamps: true }
