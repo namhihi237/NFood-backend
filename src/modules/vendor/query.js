@@ -1,5 +1,5 @@
 import { bcryptUtils, emailUtils, jwtUtils, logger, smsUtils } from '../../utils';
-import { Accounts, CodeResets, Buyer, Vendor, Order, Category } from "../../models";
+import { Voucher, CodeResets, Buyer, Vendor, Order, Category } from "../../models";
 import mongoose from 'mongoose';
 import _ from 'lodash';
 import queue from 'bee-queue';
@@ -106,8 +106,11 @@ const vendorQuery = {
 
     // get menu of vendor
     const menu = await Category.find({ vendorId: vendor._id, isActive: true });
-
     vendor.menu = menu;
+
+    // get all voucher of vendor
+    const vouchers = await Voucher.find({ vendorId: vendor._id, isActive: true });
+    vendor.vouchers = vouchers;
 
     return vendor;
   },

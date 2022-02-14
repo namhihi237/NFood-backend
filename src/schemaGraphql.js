@@ -56,6 +56,7 @@ export default gql`
     isActive: Boolean
     phoneNumber: String
     timeOpen: [TimeOpen]
+    vouchers: [Voucher]
   }
 
   type Location {
