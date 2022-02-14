@@ -165,6 +165,8 @@ export default gql`
     startDate: String
     endDate: String
     discountType: discountType
+    maxDiscount: Float
+    minTotal: Float
     createdAt: String
   }
 
