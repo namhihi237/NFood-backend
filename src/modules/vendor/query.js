@@ -270,7 +270,6 @@ const vendorQuery = {
             $match: {
               isReceiveOrder: true,
               isActive: true,
-              _id: { $in: vouchers.map(v => v.vendorId) }
             }
           },
         ]
