@@ -254,7 +254,7 @@ export default gql`
     getAllItem: [Item]!
     vendors(latitude: Float, longitude: Float, distance: Float, offset: Int, limit: Int): resultVendor!
     vendor(id: ID!): Vendor!
-    getAllVendors(keyword: String, offset: Int, limit: Int, distance: Float): resultVendor!
+    getAllVendors(keyword: String, offset: Int, limit: Int, distance: Float, isPromotion: Boolean): resultVendor!
     carts: resultCart!
     getQuantityOfCart: Int!
     calculateShipping(vendorId: ID!): Float! 
