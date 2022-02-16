@@ -5,6 +5,8 @@ export default {
   MAX_DISTANCE_FOR_FREE_SHIPPING: 2000, // in meters
   SHIPPING_RATES_OVER_10KM: 3000, // vietnam dong,
   EXCHANGE_RATE: 0.000044,
+  VENDOR_PERCENT_PER_ORDER: 0.8,
+  SHIPPING_RATES_PER_ORDER: 0.8,
   TIME_OPEN_DEFAULT: [
     {
       day: '2',

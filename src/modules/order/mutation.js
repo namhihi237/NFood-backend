@@ -4,6 +4,7 @@ import _ from 'lodash';
 import mongoose from 'mongoose';
 import orderService from "./orderService";
 import { notificationService } from "../notification";
+import { constants } from '../../configs';
 
 const orderMutation = {
   checkout: async (path, args, context, info) => {
@@ -207,13 +208,20 @@ const orderMutation = {
     const content_vendor = `Bạn vừa có đơn hàng mới vui lòng chuẩn bị để người giao hàng đến lấy hàng`;
 
     // charge money to system
-    await Shipper.findOneAndUpdate({ accountId: context.user.id }, { $inc: { money: -order.subTotal } });
+    let subMoney = 0;
+    if (order.paymentMethod === 'CRE') {
+      subMoney = order.subTotal - order.discount;
+      await Shipper.findOneAndUpdate({ accountId: context.user.id }, { $inc: { money: -subMoney } });
+    } else if (order.paymentMethod === 'COD') {
+      subMoney = order.subTotal - order.discount + order.shipping * (1 - constants.SHIPPING_RATES_PER_ORDER);
+      await Shipper.findOneAndUpdate({ accountId: context.user.id }, { $inc: { money: -subMoney } });
+    }
 
     // create transaction
     await Transaction.create({
       userId: shipper._id,
       type: 'payment',
-      amount: order.subTotal,
+      amount: subMoney,
       currency: 'VND',
     });
 
@@ -249,7 +257,7 @@ const orderMutation = {
     await Order.findByIdAndUpdate({ _id: orderId }, { orderStatus: 'Shipping', pickedUpAt: new Date() });
 
     // charge money to vendor
-    await Vendor.findByIdAndUpdate(order.vendorId, { $inc: { money: order.subTotal } });
+    await Vendor.findByIdAndUpdate(order.vendorId, { $inc: { money: order.subTotal * constants.VENDOR_PERCENT_PER_ORDER } });
 
     return true;
   },
@@ -284,10 +292,14 @@ const orderMutation = {
 
     // charge money to shipper if payment is cre
     if (order.paymentMethod === 'CRE') {
-      await Shipper.findOneAndUpdate({ accountId: context.user.id }, { $inc: { money: order.shipping } });
+      const totalMoney = order.subTotal - order.discount + constants.SHIPPING_RATES_PER_ORDER * order.shipping;
+      await Shipper.findOneAndUpdate({ accountId: context.user.id }, { $inc: { money: totalMoney } });
+    } else if (order.paymentMethod === 'COD') {
+      const totalMoney = order.subTotal - order.discount;
+      await Shipper.findOneAndUpdate({ accountId: context.user.id }, { $inc: { money: totalMoney } });
     }
 
-    // update quantityPurchased item 
+    // update quantityPurchased item  
     order.orderItems.forEach(async (item) => {
       await Item.findByIdAndUpdate(item.itemId, { $inc: { quantityPurchased: +item.quantity } });
     });
