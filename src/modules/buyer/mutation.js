@@ -124,7 +124,7 @@ const buyerMutation = {
     }
 
     // check has buyer
-    if (!context.user.isBuyer) {
+    if (!context.user) {
       throw new Error('Bạn chưa đăng ký là người mua');
     }
 
