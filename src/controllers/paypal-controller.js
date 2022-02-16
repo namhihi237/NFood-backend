@@ -141,7 +141,10 @@ class PayPalController {
       // check timeOpen
       const timeOpenItem = _.find(timeOpen, { day: currentDayString, isOpen: true });
       if (!timeOpenItem) {
-        throw new Error("Cửa hàng này hiện không mở cửa");
+        // throw new Error("Cửa hàng này hiện không mở cửa");
+        return res.render(`${this.rootModule}cancel`, {
+          titlePage: 'not-open'
+        });
       }
 
       // check timeOpen
@@ -149,7 +152,10 @@ class PayPalController {
       const end = parseFloat(timeOpenItem.closeTime.getHours() + "." + timeOpenItem.closeTime.getMinutes());
       const current = parseFloat(currentHour + "." + currentMinute);
       if (current < start || current > end) {
-        throw new HttpError("Cửa hàng này hiện không mở cửa", 400);
+        // throw new HttpError("Cửa hàng này hiện không mở cửa", 400);
+        return res.render(`${this.rootModule}cancel`, {
+          titlePage: 'not-open'
+        });
       }
 
       // calculate total price
@@ -196,7 +202,10 @@ class PayPalController {
       let amount = 0;
       paypal.payment.get(paymentId, (err, payment) => {
         if (err) {
-          throw new HttpError('Error some error occurred', 500);
+          // throw new HttpError('Error some error occurred', 500);
+          return res.render(`${this.rootModule}cancel`, {
+            titlePage: 'cancel'
+          });
         }
         amount = payment.transactions[0].amount.total;
 
@@ -215,7 +224,11 @@ class PayPalController {
         };
 
         paypal.payment.execute(paymentId, execute_payment_json, async (error, payment) => {
-          if (error) throw new HttpError(error.message, 500);
+          if (error) {
+            return res.render(`${this.rootModule}cancel`, {
+              titlePage: 'cancel'
+            });
+          }
 
           const invoiceNumber = await orderService.generateInvoiceNumber();
 
