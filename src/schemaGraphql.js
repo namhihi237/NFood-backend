@@ -328,7 +328,7 @@ export default gql`
     forgotPassword(phoneNumber: String!): Boolean!
     verifyCode(code: String!, phoneNumber: String!): Boolean!
     updatePassword(password: String!, code: String!): Boolean!
-    updateBuyerProfile(name: String, image: String, email: String): User!
+    updateBuyerProfile(name: String, image: String, email: String, gender: String, birthday: String): User!
     updateVendorProfile(name: String!, address: String!, image: String!, email: String): Boolean!
     updateTimeOpen(timeOpen: openTime!): Boolean!
     addBankAccount(bankName: String!,  accountName: String!, accountNumber: String!, type: roleEnum!): Boolean!

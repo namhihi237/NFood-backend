@@ -16,6 +16,13 @@ const BuyerSchema = new mongoose.Schema(
     email: {
       type: String,
     },
+    gender: {
+      type: String,
+      enum: ['Male', 'Female']
+    },
+    birthday: {
+      type: Date,
+    },
     address: {
       type: String,
     },
