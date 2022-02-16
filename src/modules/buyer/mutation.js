@@ -116,7 +116,7 @@ const buyerMutation = {
   updateBuyerProfile: async (parent, args, context, info) => {
     global.logger.info('buyerMutation::updateBuyerProfile' + JSON.stringify(args));
 
-    const { name, image } = args;
+    const { name, image, email } = args;
 
     // check has login
     if (!context.user) {
@@ -133,9 +133,14 @@ const buyerMutation = {
     if (!buyer) {
       throw new Error('Bạn chưa đăng ký là người mua');
     }
+    let newDataUpdate = {};
+
+    if (name) newDataUpdate.name = name;
+    if (image) newDataUpdate.image = image;
+    if (email) newDataUpdate.email = email;
 
     // update buyer
-    return await Buyer.findOneAndUpdate({ accountId: context.user.id }, { name, image }, { new: true });
+    return await Buyer.findOneAndUpdate({ accountId: context.user.id }, newDataUpdate, { new: true });
 
   }
 }
