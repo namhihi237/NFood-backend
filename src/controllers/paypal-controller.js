@@ -260,7 +260,9 @@ class PayPalController {
   }
 
   async chargeOrderCancel(req, res, next) {
-    return res.render(`${this.rootModule}cancel`);
+    return res.render(`${this.rootModule}cancel`, {
+      titlePage: 'cancel'
+    });
   }
 
   async createChargeOrder(req, res, next) {
