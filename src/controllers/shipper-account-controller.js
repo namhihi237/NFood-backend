@@ -1,40 +1,42 @@
-import { Vendor, Accounts } from '../models';
-class VendorAccountController {
+import { Shipper, Accounts, Order } from '../models';
+class ShipperAccountController {
   constructor(db) {
     this.db = db;
     this.rootModule = 'admin/modules/'
   }
 
-  async renderListVendors(req, res) {
+  async renderListShippers(req, res) {
     try {
       let { page = 1 } = req.query;
       page = parseInt(page);
       const limit = 10;
 
-      let vendors = await Vendor.find({
+      let shippers = await Shipper.find({
         isDeleted: {
           $ne: true
         }
       }).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
 
       // add field phoneNumber
-      vendors = await Promise.all(vendors.map(async vendor => {
-        const account = await Accounts.findById({ _id: vendor.accountId });
-        vendor.phoneNumber = account.phoneNumber;
-        return vendor;
+      shippers = await Promise.all(shippers.map(async shipper => {
+        const account = await Accounts.findById({ _id: shipper.accountId });
+        const numberOfOrders = await Order.countDocuments({ shipperId: shipper._id });
+        shipper.phoneNumber = account.phoneNumber;
+        shipper.numberOfOrders = numberOfOrders;
+        return shipper;
       }));
 
-      const totalRow = await Vendor.countDocuments({ isDeleted: { $ne: true } });
+      const totalRow = await Shipper.countDocuments({ isDeleted: { $ne: true } });
       const totalPages = Math.ceil(totalRow / limit);
 
       // build prePage and nextPage
       let prePage = page > 1 ? page - 1 : 1;
       let nextPage = page < totalPages ? page + 1 : totalPages;
 
-      res.render(`${this.rootModule}account/list-vendor`,
+      res.render(`${this.rootModule}account/list-shipper`,
         {
-          titlePage: 'Danh sách người bán hàng',
-          vendors,
+          titlePage: 'Danh sách người giao hàng',
+          shippers,
           page,
           totalPages,
           totalRow,
@@ -52,34 +54,34 @@ class VendorAccountController {
     try {
       const { id } = req.params;
       const { page = 1 } = req.query;
-      const vendor = await Vendor.findById(id);
+      const shipper = await Shipper.findById(id);
 
-      if (!vendor) {
+      if (!shipper) {
         return res.render(`${this.rootModule}404`, {});
       }
 
-      await Vendor.findOneAndUpdate({ _id: id }, { $set: { isActive: !vendor.isActive } });
+      await Shipper.findOneAndUpdate({ _id: id }, { $set: { isActive: !shipper.isActive } });
 
-      return res.redirect(`/vendor?page=${page}`);
+      return res.redirect(`/shipper?page=${page}`);
     } catch (error) {
       return res.render(`${this.rootModule}error`, {});
     }
   }
 
   //soft erase
-  async deleteVendor(req, res) {
+  async deleteShipper(req, res) {
     try {
       const { id } = req.params;
       const { page = 1 } = req.query;
-      const vendor = await Vendor.findById(id);
+      const shipper = await Shipper.findById(id);
 
-      if (!vendor) {
+      if (!shipper) {
         return res.render(`${this.rootModule}404`, {});
       }
 
-      await Vendor.findByIdAndUpdate({ _id: id }, { $set: { isDeleted: true } });
+      await Shipper.findByIdAndUpdate({ _id: id }, { $set: { isDeleted: true } });
 
-      return res.redirect(`/vendor?page=${page}`);
+      return res.redirect(`/shipper?page=${page}`);
     } catch (error) {
       res.render(`${this.rootModule}error`, {});
     }
@@ -87,4 +89,4 @@ class VendorAccountController {
 
 }
 
-export default VendorAccountController;
+export default ShipperAccountController;

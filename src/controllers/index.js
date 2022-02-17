@@ -3,11 +3,13 @@ import AdminDashboardController from "./admin-dashboard-controller";
 import PayPalController from "./paypal-controller";
 import BuyerAccountController from "./buyer-account-controller";
 import VendorAccountController from "./vendor-account-controller";
+import ShipperAccountController from "./shipper-account-controller";
 
 export {
   AdminAuthenticationController,
   AdminDashboardController,
   PayPalController,
   BuyerAccountController,
-  VendorAccountController
+  VendorAccountController,
+  ShipperAccountController
 };
