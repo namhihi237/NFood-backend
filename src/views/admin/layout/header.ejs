@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html class="no-js" lang="en" dir="ltr">
+<html  lang="en" >
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Dashboard</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <title><%=titlePage %> </title>
+    <link href="favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="./assets/plugin/datatables/responsive.dataTables.min.css" />
     <link rel="stylesheet" href="./assets/plugin/datatables/dataTables.bootstrap5.min.css" />
     <link rel="stylesheet" href="./assets/css/ebazar.style.min.css" />
@@ -24,7 +24,7 @@
           <!-- Menu: main ul -->
           <ul class="menu-list flex-grow-1 mt-3">
             <li>
-              <a class="m-link active" href="index.html"><i class="icofont-home fs-5"></i> <span>Dashboard</span></a>
+              <a class="m-link" href="index.html"><i class="icofont-home fs-5"></i> <span>Dashboard</span></a>
             </li>
             <li class="collapsed">
               <a class="m-link" data-bs-toggle="collapse" data-bs-target="#menu-product" href="#">
@@ -84,14 +84,14 @@
             </li>
             <li class="collapsed">
               <a class="m-link" data-bs-toggle="collapse" data-bs-target="#menu-Componentsone" href="#"
-                ><i class="icofont-ui-calculator"></i> <span>Accounts</span>
+                ><i class="icofont-ui-calculator"></i> <span>Quản lý tài khoản</span>
                 <span class="arrow icofont-rounded-down ms-auto text-end fs-5"></span
               ></a>
               <!-- Menu: Sub menu ul -->
               <ul class="sub-menu collapse" id="menu-Componentsone">
-                <li><a class="ms-link" href="invoices.html">Invoices </a></li>
-                <li><a class="ms-link" href="expenses.html">Expenses </a></li>
-                <li><a class="ms-link" href="salaryslip.html">Salary Slip </a></li>
+                <li><a class="ms-link" href="/buyer">Người mua </a></li>
+                <li><a class="ms-link" href="/vendor">Người bán </a></li>
+                <li><a class="ms-link" href="/shipper">Người giao hàng </a></li>
               </ul>
             </li>
           </ul>
@@ -150,9 +150,4 @@
 
         <!-- Body: Body -->
         <div class="body d-flex py-3">
-          <div class="container-xxl"></div>
-        </div>
-      </div>
-    </div>
-  </body>
-</html>
+          <div class="container-xxl">
