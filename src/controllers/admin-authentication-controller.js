@@ -50,11 +50,11 @@ class AdminAuthenticationController {
     }
   }
 
-  // logout(req, res) {
-  //   global.logger.info('AdminAuthenticationController::logout');
-  //   req.session.destroy();
-  //   res.redirect('/login');
-  // }
+  logout(req, res) {
+    global.logger.info('AdminAuthenticationController::logout');
+    req.session.destroy();
+    res.redirect('/login');
+  }
 }
 
 export default AdminAuthenticationController;

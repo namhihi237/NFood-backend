@@ -13,7 +13,7 @@ export default () => {
   // authentication routes
   router.route('/login').get((req, res) => adminAuthenticationController.login(req, res));
   router.route('/login').post((req, res) => adminAuthenticationController.postLogin(req, res));
-  // router.route('/logout').get((req, res) => adminAuthenticationController.logout(req, res));
+  router.route('/logout').get((req, res) => adminAuthenticationController.logout(req, res));
 
 
   // dashboard routes
