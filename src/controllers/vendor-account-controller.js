@@ -1,4 +1,4 @@
-import {  Vendor, Accounts } from '../models';
+import { Vendor, Accounts } from '../models';
 class VendorAccountController {
   constructor(db) {
     this.db = db;
@@ -18,7 +18,7 @@ class VendorAccountController {
       }).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
 
       // add field phoneNumber
-      vendors = await Promise.all(vendors.map(async vendor => { 
+      vendors = await Promise.all(vendors.map(async vendor => {
         const account = await Accounts.findById({ _id: vendor.accountId });
         vendor.phoneNumber = account.phoneNumber;
         return vendor;
@@ -56,7 +56,7 @@ class VendorAccountController {
       console.log(vendor);
 
       if (!vendor) {
-         return res.render(`${this.rootModule}404`, {});
+        return res.render(`${this.rootModule}404`, {});
       }
 
       await Vendor.findOneAndUpdate({ _id: id }, { $set: { isActive: !vendor.isActive } });
@@ -66,7 +66,6 @@ class VendorAccountController {
       return res.render(`${this.rootModule}error`, {});
     }
   }
-
 
   //soft erase
   async deleteVendor(req, res) {
