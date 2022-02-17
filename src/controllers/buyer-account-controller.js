@@ -15,7 +15,7 @@ class BuyerAccountController {
         isDeleted: {
           $ne: true
         }
-      }).skip((page - 1) * limit).limit(limit);
+      }).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
 
       // add field number of orders
       buyers = await Promise.all(buyers.map(async buyer => {
@@ -56,7 +56,7 @@ class BuyerAccountController {
       const buyer = await Buyer.findById(id);
 
       if (!buyer) {
-        res.render(`${this.rootModule}404`, {});
+        return res.render(`${this.rootModule}404`, {});
       }
 
       await Buyer.findOneAndUpdate({ _id: id }, { $set: { isActive: !buyer.isActive } });
@@ -76,7 +76,7 @@ class BuyerAccountController {
       const buyer = await Buyer.findById(id);
 
       if (!buyer) {
-        res.render(`${this.rootModule}404`, {});
+        return res.render(`${this.rootModule}404`, {});
       }
 
       await Buyer.findByIdAndUpdate({ _id: id }, { $set: { isDeleted: true } });
