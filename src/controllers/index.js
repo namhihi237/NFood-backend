@@ -4,6 +4,7 @@ import PayPalController from "./paypal-controller";
 import BuyerAccountController from "./buyer-account-controller";
 import VendorAccountController from "./vendor-account-controller";
 import ShipperAccountController from "./shipper-account-controller";
+import AdminTransactionController from "./admin-transaction-controller";
 
 export {
   AdminAuthenticationController,
@@ -11,5 +12,6 @@ export {
   PayPalController,
   BuyerAccountController,
   VendorAccountController,
-  ShipperAccountController
+  ShipperAccountController,
+  AdminTransactionController,
 };

@@ -1,0 +1,65 @@
+<%- include('../../layout/header.ejs'); -%>
+<div class="row align-items-center">
+  <div class="border-0 mb-4">
+    <div class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom flex-wrap">
+      <h3 class="fw-bold mb-0">Danh sách yêu cầu rút tiền của người bán hàng</h3>
+      <div class="col-auto d-flex w-sm-100">
+        <button type="button" class="btn btn-primary btn-set-task w-sm-100" data-bs-toggle="modal" data-bs-target="#expadd">
+          <i class="icofont-download me-2 fs-6"></i>Tải CSV
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Row end  -->
+<div class="row clearfix g-3">
+  <div class="col-sm-12">
+    <div class="card mb-3">
+      <div class="card-body">
+        <table id="myProjectTable" class="table table-hover align-middle mb-0" style="width: 100%">
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Họ và tên</th>
+              <th>Sô tiền</th>
+              <th>Phí</th>
+              <th>Tiền tệ</th>
+              <th>Thời gian yêu cầu</th>
+              <th>Số tài khoản</th>
+              <th>Tên ngân hàng</th>
+              <th>Tên chủ tài khoản</th>
+              <th>Trạng thái</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <strong>1</strong>
+              </td>
+              <td>Nam Le</td>
+              <td>1000000</td>
+              <td>3300</td>
+              <td>VND</td>
+              <td>12/03/2021 21:23</td>
+              <td>627666222773</td>
+              <td>VCB</td>
+              <td>LE TRUNG NAM</td>
+              <td><span class="badge bg-warning">Pending</span></td>
+              <td>
+                <div class="btn-group" role="group" aria-label="Basic outlined example">
+                  <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#expedit" data-toggle="tooltip" data-placement="bottom" title="Đã chuyển tiền">
+                    <i class="icofont-check-circled text-success"></i>
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary deleterow" data-toggle="tooltip" data-placement="bottom" title="Từ chối yêu cầu"><i class="icofont-close-line-circled text-danger"></i></button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../../layout/footer.ejs'); -%>
