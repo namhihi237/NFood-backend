@@ -8,7 +8,8 @@
   "scripts": {
     "dev": "nodemon -r esm ./src/app.js",
     "start": "node -r esm ./src/app.js",
-    "deploy": "pm2 deploy ecosystem.config.js production"
+    "deploy": "pm2 deploy ecosystem.config.js production",
+    "deploy-test": "pm2 deploy ecosystem.config.js test"
   },
   "dependencies": {
     "@graphql-tools/schema": "^8.3.1",
