@@ -335,6 +335,7 @@ export default gql`
     addBankAccount(bankName: String!,  accountName: String!, accountNumber: String!, type: roleEnum!): Boolean!
     requestWithdraw(amount: Float!, type: roleEnum!): Boolean!
     confirmWithdraw(amount: Float!, type: roleEnum!, code: String!): Boolean!
+    updateShipperProfile(address: String, birthday: String, gender: String, identifier: IdentityCardInput ): Boolean!
   }
 
   input inputVoucher {
@@ -346,6 +347,12 @@ export default gql`
     discountType: discountType!
     maxDiscount: Float
     minTotal: Float
+  }
+
+  input IdentityCardInput {
+    number: String!
+    place: String!
+    date: String!
   }
 
   input openTime {

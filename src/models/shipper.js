@@ -19,6 +19,10 @@ const ShipperSchema = new mongoose.Schema(
     birthday: {
       type: Date,
     },
+    gender: {
+      type: String,
+      enum: ['Male', 'Female']
+    },
     identityCard: {
       number: {
         type: String,

@@ -117,6 +117,34 @@ const shipperMutation = {
     });
 
     return true;
+  },
+
+  updateShipperProfile: async (parent, args, context, info) => {
+    global.logger.info('shipperMutation::updateShipperProfile' + JSON.stringify(args));
+
+    if (!context.user) {
+      throw new Error('Bạn chưa đăng nhập');
+    }
+
+    let shipper = await Shipper.findOne({ accountId: context.user.id });
+
+    if (!shipper) {
+      throw new Error('Bạn chưa đăng ký là người giao hàng');
+    }
+
+    let { address, gender, birthday, identityCard } = args;
+
+    birthday = new Date(birthday);
+
+    await Shipper.findOneAndUpdate({ _id: shipper._id }, {
+      address,
+      gender,
+      birthday,
+      identityCard
+    })
+
+    return true;
+
   }
 };
 
