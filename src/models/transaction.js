@@ -5,6 +5,9 @@ const Transaction = new Schema(
     userId: {
       type: String,
     },
+    userType: {
+      type: String,
+    },
     amount: {
       type: Number,
     },

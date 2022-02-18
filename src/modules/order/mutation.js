@@ -220,6 +220,7 @@ const orderMutation = {
     // create transaction
     await Transaction.create({
       userId: shipper._id,
+      userType: 'shipper',
       type: 'payment',
       amount: subMoney,
       currency: 'VND',

@@ -482,6 +482,7 @@ class PayPalController {
 
             await Transaction.create({
               userId: shipper._id,
+              userType: 'shipper',
               type: 'deposit',
               amount: amount,
               status: 'success',
@@ -492,6 +493,7 @@ class PayPalController {
 
             await Transaction.create({
               userId: buyer._id,
+              userType: 'buyer',
               type: 'deposit',
               amount: amount,
               status: 'success',

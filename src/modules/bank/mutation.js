@@ -101,6 +101,7 @@ const bankMutation = {
     // create the transaction 
     await Transaction.create({
       userId: user._id,
+      userType: type,
       amount,
       type: 'withdraw',
       status: 'pending',
