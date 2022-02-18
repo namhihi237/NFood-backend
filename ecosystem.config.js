@@ -13,6 +13,10 @@ module.exports = {
       NODE_ENV: "production",
       PORT: 8000
     },
+    env_test: { // khi deploy với option --env test
+      NODE_ENV: "test",
+      PORT: 8000
+    }
   }],
 
   deploy: {
@@ -24,6 +28,13 @@ module.exports = {
       path: '/home/doan/backend', // sẽ deploy vào thư mục này
       'post-deploy': 'npm install && pm2 startOrRestart ecosystem.config.js --env production' // cmd để deploy
     },
+    test: {
+      user: 'doantn', // user để ssh
+      host: '20.37.243.102', // IP của server này (theo sơ đồ)
+      repo: 'git@github.com:namhihi237/NFood-backend.git',
+      path: '/home/doantn/backend',
+      'post-deploy': 'npm install && pm2 startOrRestart ecosystem.config.js --env test'
+    }
   }
 };
 //pm2 deploy ecosystem.config.js production setup
