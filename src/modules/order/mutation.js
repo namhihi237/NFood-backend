@@ -43,7 +43,6 @@ const orderMutation = {
       const currentHour = currentTime.getHours();
       const currentMinute = currentTime.getMinutes();
 
-      console.log(`currentTime: ${currentTime}`);
       // convert currentDay to string
       let currentDayString = "";
       if (currentDay === 0) {

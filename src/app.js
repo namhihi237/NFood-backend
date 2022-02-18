@@ -99,7 +99,6 @@ export const startServer = async () => {
     execute,
     subscribe,
     async onConnect(connectionParams, webSocket, context) {
-      console.log('Connected!');
       let token = null,
         user = null;
       token = connectionParams.Authorization;
@@ -111,7 +110,6 @@ export const startServer = async () => {
       return { user, pubsub };
     },
     onDisconnect(webSocket, context) {
-      console.log('Disconnected!')
     },
   }, {
     server: httpServer,

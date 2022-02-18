@@ -46,7 +46,6 @@ class AdminAuthenticationController {
       return res.redirect('/dashboard');
 
     } catch (error) {
-      console.log(error);
     }
   }
 

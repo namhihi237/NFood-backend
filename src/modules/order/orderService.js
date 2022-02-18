@@ -120,7 +120,6 @@ class OrderService {
     // calculate discount
     let discount = 0;
     if (voucher.discountType === 'PERCENT') {
-      console.log(subTotal + " " + voucher.discount);
       discount = subTotal * voucher.discount / 100;
     } else if (voucher.discountType === 'FIXED') {
       discount = voucher.discount;
