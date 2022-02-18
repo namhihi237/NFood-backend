@@ -29,7 +29,7 @@ module.exports = {
       'post-deploy': 'npm install && pm2 startOrRestart ecosystem.config.js --env production' // cmd để deploy
     },
     test: {
-      user: 'doantn', // user để ssh
+      user: 'azureuser', // user để ssh
       host: '20.37.243.102', // IP của server này (theo sơ đồ)
       ref: 'origin/master', // branch để pull source
       repo: 'git@github.com:namhihi237/NFood-backend.git',
