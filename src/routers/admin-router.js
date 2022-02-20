@@ -48,6 +48,10 @@ export default () => {
 
   // transaction routes
   router.route('/transaction').get((req, res, next) => adminMiddleware.isLoggedIn(req, res, next), (req, res) => adminTransactionController.renderListTransactions(req, res));
+  router.route('/transaction/:id/complete').get((req, res, next) => adminMiddleware.isLoggedIn(req, res, next), (req, res) => adminTransactionController.completeTransactions(req, res));
+  router.route('/transaction/:id/reject').get((req, res, next) => adminMiddleware.isLoggedIn(req, res, next), (req, res) => adminTransactionController.rejectTransactions(req, res));
+
+  router.route('/transaction/download').get((req, res, next) => adminMiddleware.isLoggedIn(req, res, next), (req, res) => adminTransactionController.exportTransactions(req, res));
 
   return router;
 }

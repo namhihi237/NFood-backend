@@ -40,13 +40,17 @@
               <td><%=item.gender ? item.gender : '--' %></td>
               <td><%=item.numberOfOrders %></td>
               <td>
-                <a type="button" class="btn btn-<%=item.isActive ? 'info' : 'secondary' %>" href="/buyer/<%=item._id  %>/toggle">
+                <a
+                  type="button"
+                  class="btn btn-<%=item.isActive ? 'info' : 'secondary' %>"
+                  href="/buyer/<%=item._id  %>/toggle?page=<%=page  %> "
+                >
                   <%=item.isActive ? 'Hoạt đông' : 'Không hoạt động' %>
                 </a>
               </td>
               <td>
                 <div class="btn-group" role="group" aria-label="Basic outlined example">
-                  <a type="button" class="btn btn-outline-secondary deleterow" href="/buyer/<%=item._id  %>/delete">
+                  <a type="button" class="btn btn-outline-secondary deleterow" href="/buyer/<%=item._id  %>/delete?page=<%=page  %> ">
                     <i class="icofont-ui-delete text-danger"></i>
                   </a>
                 </div>
