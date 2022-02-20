@@ -329,6 +329,11 @@ const orderMutation = {
     // update status order
     await Order.findByIdAndUpdate({ _id: args.id }, { orderStatus: 'Cancelled', cancelledAt: new Date() });
 
+    // refund money to buyer if method is cre
+    if (order.paymentMethod === 'CRE') {
+      await Buyer.findOneAndUpdate({ accountId: order.ownerId }, { $inc: { money: order.total } });
+    }
+
     return true;
   }
 
