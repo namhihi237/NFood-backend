@@ -5,6 +5,7 @@ import BuyerAccountController from "./buyer-account-controller";
 import VendorAccountController from "./vendor-account-controller";
 import ShipperAccountController from "./shipper-account-controller";
 import AdminTransactionController from "./admin-transaction-controller";
+import OrderController from "./order-controller";
 
 export {
   AdminAuthenticationController,
@@ -14,4 +15,5 @@ export {
   VendorAccountController,
   ShipperAccountController,
   AdminTransactionController,
+  OrderController
 };

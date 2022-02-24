@@ -39,7 +39,8 @@ class BuyerAccountController {
           totalPages,
           totalRow,
           prePage,
-          nextPage
+          nextPage,
+          limit
         }
       );
 

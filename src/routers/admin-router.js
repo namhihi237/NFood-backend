@@ -6,6 +6,7 @@ import {
   VendorAccountController,
   ShipperAccountController,
   AdminTransactionController,
+  OrderController
 } from '../controllers';
 import AdminMiddleware from '../middlewares/adminMiddleware';
 
@@ -18,6 +19,7 @@ export default () => {
   const vendorAccountController = new VendorAccountController();
   const shipperAccountController = new ShipperAccountController();
   const adminTransactionController = new AdminTransactionController();
+  const orderController = new OrderController();
 
   const adminMiddleware = new AdminMiddleware();
   // authentication routes
@@ -50,8 +52,9 @@ export default () => {
   router.route('/transaction').get((req, res, next) => adminMiddleware.isLoggedIn(req, res, next), (req, res) => adminTransactionController.renderListTransactions(req, res));
   router.route('/transaction/:id/complete').get((req, res, next) => adminMiddleware.isLoggedIn(req, res, next), (req, res) => adminTransactionController.completeTransactions(req, res));
   router.route('/transaction/:id/reject').get((req, res, next) => adminMiddleware.isLoggedIn(req, res, next), (req, res) => adminTransactionController.rejectTransactions(req, res));
-
   router.route('/transaction/download').get((req, res, next) => adminMiddleware.isLoggedIn(req, res, next), (req, res) => adminTransactionController.exportTransactions(req, res));
+
+  router.route('/order').get((req, res, next) => adminMiddleware.isLoggedIn(req, res, next), (req, res) => orderController.renderListBuyers(req, res));
 
   return router;
 }

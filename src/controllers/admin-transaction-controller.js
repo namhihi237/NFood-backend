@@ -58,7 +58,8 @@ class AdminTransactionController {
           prePage,
           nextPage,
           status,
-          type
+          type,
+          limit
         }
       );
 

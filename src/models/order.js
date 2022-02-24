@@ -78,7 +78,7 @@ const OrderSchema = new mongoose.Schema(
     },
     orderStatus: {
       type: String,
-      enum: ['Pending', 'Processing', 'Shipping', 'Delivered', 'Cancelled'],
+      enum: ['Pending', 'Processing', 'Shipping', 'Delivered', 'Cancelled', 'Failed'],
       default: 'Pending',
     },
     acceptedShippingAt: {
@@ -151,6 +151,9 @@ const OrderSchema = new mongoose.Schema(
     isReviewedShipper: {
       type: Boolean,
       default: false,
+    },
+    reasonCancelled: {
+      type: String,
     }
   },
   { timestamps: true }

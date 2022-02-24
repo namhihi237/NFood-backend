@@ -27,7 +27,7 @@
           <tbody>
             <% shippers.forEach((item, index) =>{%>
             <tr>
-              <td><strong><%=index + 1 %> </strong></td>
+              <td><strong><%- (page - 1)*limit + index + 1 %></strong></td>
               <td>
                 <a href="#">
                   <span class="fw-bold ms-1"><%=item.name %> </span>
@@ -59,7 +59,10 @@
         </table>
         <div class="mt-3 d-flex justify-content-between">
           <div>
-            <p class="mb-0">Hiển thị từ 1 đến 10 trong tổng số <strong><%=totalRow %></strong> kết quả</p>
+            <p class="mb-0">
+              Hiển thị từ <%=(page - 1)*limit + 1 %> đến <%=(page - 1)*limit + shippers.length %> trong tổng số
+              <strong><%=totalRow %></strong> kết quả
+            </p>
           </div>
           <nav aria-label="Page navigation example">
             <ul class="pagination">
