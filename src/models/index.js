@@ -14,6 +14,7 @@ import Admin from './admin';
 import VendorFavorite from './vendor-favorite';
 import Review from './review';
 import Transaction from './transaction';
+import Feedback from './feedback';
 
 export {
   Accounts,
@@ -32,4 +33,5 @@ export {
   VendorFavorite,
   Review,
   Transaction,
+  Feedback
 }

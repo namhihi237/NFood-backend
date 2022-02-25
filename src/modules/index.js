@@ -12,6 +12,7 @@ import { voucherMutation, voucherQuery } from "./voucher";
 import { reviewMutation, reviewQuery } from './review';
 import { transactionQuery } from './transaction';
 import { bankMutation, bankQuery } from './bank';
+import { feedbackMutation } from './feedback';
 
 export default {
   Category,
@@ -49,6 +50,7 @@ export default {
     ...voucherMutation,
     ...reviewMutation,
     ...bankMutation,
+    ...feedbackMutation
   },
 
   Subscription: {
