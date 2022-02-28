@@ -38,7 +38,7 @@ const authenticationQuery = {
 
     return {
       ..._.pick(account, ['_id', 'isVendor', 'isShipper', 'isBuyer', 'phoneNumber', 'role']),
-      ..._.pick(user, ['_id', 'email', 'address', 'location.coordinates', 'name', 'image', 'isReceiveOrder', 'isShippingOrder', 'timeOpen', 'bank', 'gender', 'birthDay']),
+      ..._.pick(user, ['_id', 'email', 'address', 'location.coordinates', 'name', 'image', 'isReceiveOrder', 'isShippingOrder', 'timeOpen', 'bank', 'gender', 'birthday']),
     };
   }
 };
