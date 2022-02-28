@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import orderService from "./orderService";
 import { notificationService } from "../notification";
 import { constants } from '../../configs';
+import { hereUtils } from '../../utils';
 
 const orderMutation = {
   checkout: async (path, args, context, info) => {
@@ -113,6 +114,12 @@ const orderMutation = {
       let order = null;
 
       const invoiceNumber = await orderService.generateInvoiceNumber();
+      // convert address to location
+      // let geocode = await hereUtils.getGeoLocation(args.address);
+      // let coordinates = null;
+      // if (geocode) {
+      //    coordinates = [geocode.lat, geocode.lng];
+      // }
 
       if (method === 'COD') {
         global.logger.info('cartMutation::checkout::order::COD' + JSON.stringify({ total, shipping, discount, subTotal }));
@@ -134,7 +141,7 @@ const orderMutation = {
           paymentMethod: 'COD',
           location: {
             type: 'Point',
-            coordinates: [vendor.location.coordinates[0], vendor.location.coordinates[1]]
+            coordinates: [buyer.location.coordinates[0], buyer.location.coordinates[1]]
           }
         }]);
 
