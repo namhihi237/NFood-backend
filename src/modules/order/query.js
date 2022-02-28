@@ -249,6 +249,20 @@ const orderQuery = {
           preserveNullAndEmptyArrays: true
         }
       },
+      {
+        $lookup: {
+          from: 'buyer',
+          localField: 'ownerId',
+          foreignField: '_id',
+          as: 'buyer'
+        }
+      },
+      {
+        $unwind: {
+          path: '$buyer',
+          preserveNullAndEmptyArrays: true
+        }
+      }
     ]);
 
     if (orders.length == 0) {
