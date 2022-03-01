@@ -376,6 +376,11 @@ const orderQuery = {
           path: '$buyer',
           preserveNullAndEmptyArrays: true
         }
+      },
+      {
+        $sort: {
+          createdAt: -1
+        }
       }
     ]);
 
