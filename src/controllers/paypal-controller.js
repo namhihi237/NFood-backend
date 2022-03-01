@@ -3,7 +3,7 @@ import { Accounts, Buyer, Vendor, Shipper, Transaction, Cart, Order } from '../m
 const EXCHANGE_RATE = 0.000044;
 import orderService from "../modules/order/orderService";
 import { notificationService } from "../modules/notification";
-import { envVariable } from '../configs';
+import { envVariable, constants } from '../configs';
 import mongoose from 'mongoose';
 import _ from 'lodash';
 
@@ -256,6 +256,9 @@ class PayPalController {
             orderItems,
             paymentMethod: 'CRE',
             paymentStatus: 'Paid',
+            totalForVendor: (subTotal - discount) * constants.VENDOR_PERCENT_PER_ORDER,
+            totalForSystem: (subTotal - discount) * (1 - constants.SYSTEM_PERCENT_PER_ORDER) + shipping * constants.SHIPPING_RATES_PER_ORDER,
+            totalForShipment: shipping * constants.SHIPPER_PERCENT_PER_ORDER,
             location: {
               type: 'Point',
               coordinates: [buyer.location.coordinates[0], buyer.location.coordinates[1]]

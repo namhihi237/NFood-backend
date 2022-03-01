@@ -46,7 +46,19 @@ const OrderSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    total: {
+    total: { // subTotal - discount + shipping
+      type: Number,
+      required: true,
+    },
+    totalForVendor: { // (subTotal - discount)*(1 - commissionRateVendor)
+      type: Number,
+      required: true,
+    },
+    totalForSystem: { // (subTotal - discount) * commissionRateShipper
+      type: Number,
+      required: true,
+    },
+    totalForShipment: { // shipping * (1- commissionRateShipper)
       type: Number,
       required: true,
     },
