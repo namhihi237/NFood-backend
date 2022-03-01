@@ -256,9 +256,9 @@ class PayPalController {
             orderItems,
             paymentMethod: 'CRE',
             paymentStatus: 'Paid',
-            totalForVendor: (subTotal - discount) * constants.VENDOR_PERCENT_PER_ORDER,
-            totalForSystem: (subTotal - discount) * (1 - constants.SYSTEM_PERCENT_PER_ORDER) + shipping * constants.SHIPPING_RATES_PER_ORDER,
-            totalForShipment: shipping * constants.SHIPPER_PERCENT_PER_ORDER,
+            // totalForVendor: (subTotal - discount) * constants.VENDOR_PERCENT_PER_ORDER,
+            // totalForSystem: (subTotal - discount) * (1 - constants.SYSTEM_PERCENT_PER_ORDER) + shipping * constants.SHIPPING_RATES_PER_ORDER,
+            // totalForShipment: shipping * constants.SHIPPER_PERCENT_PER_ORDER,
             location: {
               type: 'Point',
               coordinates: [buyer.location.coordinates[0], buyer.location.coordinates[1]]
