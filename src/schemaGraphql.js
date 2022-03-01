@@ -284,6 +284,7 @@ export default gql`
     getTransactions(type: String!): [Transaction]!
     getReportItem(type: reportType!, time: String!): [Item]!
     getWithdrawal(type: roleEnum!): WithdrawalResponse!
+    getNewOrderByVendor: [Order]!
   }
 
   type Subscription {

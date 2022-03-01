@@ -35,7 +35,6 @@ const orderQuery = {
       {
         $match: {
           vendorId: vendor._id,
-          orderStatus: { $ne: 'Pending' },
         }
       },
       {
@@ -325,6 +324,62 @@ const orderQuery = {
 
     return orders[0]
 
+  },
+
+  getNewOrderByVendor: async (parent, args, context, info) => {
+    global.logger.info('orderQuery::getNewOrderByVendor' + JSON.stringify(args));
+
+    // check login and role
+    if (!context.user) {
+      throw new Error('Bạn chưa đăng nhập');
+    }
+
+    const vendor = await Vendor.findOne({ accountId: context.user.id });
+
+    if (!vendor) {
+      throw new Error('Bạn không phải là người bán hàng');
+    }
+
+    const orders = await Order.aggregate([
+      {
+        $match: {
+          vendorId: mongoose.Types.ObjectId(vendor._id),
+          orderStatus: {
+            $in: ['Pending', 'Processing']
+          }
+        }
+      },
+      {
+        $lookup: {
+          from: 'shipper',
+          localField: 'shipperId',
+          foreignField: '_id',
+          as: 'shipper'
+        },
+      },
+      {
+        $unwind: {
+          path: '$shipper',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'buyer',
+          localField: 'ownerId',
+          foreignField: '_id',
+          as: 'buyer'
+        },
+      },
+      {
+        $unwind: {
+          path: '$buyer',
+          preserveNullAndEmptyArrays: true
+        }
+      }
+    ]);
+
+    return orders;
   }
 };
 
