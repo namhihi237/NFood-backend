@@ -11,7 +11,7 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-body">
-        <table id="myDataTable" class="table table-hover align-middle mb-0" style="width: 100%">
+        <table id="myDataTable" class="table table-hover align-middle mb-0 table-responsive">
           <thead>
             <tr>
               <th>STT</th>
@@ -25,6 +25,9 @@
               <th>Tổng hóa đơn</th>
               <th>Thanh toán</th>
               <th>Trạng thái</th>
+              <th>Thời gian tạo</th>
+              <th>Thời gian nhận giao</th>
+              <th>Thời gian giao</th>
             </tr>
           </thead>
           <tbody>
@@ -32,7 +35,7 @@
             <tr>
               <td><%- (page - 1)*limit + index + 1 %></td>
               <td>
-                <a href="#"><strong>#<%=item.invoiceNumber %> </strong></a>
+                <a href="#" id="<%=item._id  %> "><strong>#<%=item.invoiceNumber %> </strong></a>
               </td>
               <td><%=item.name %></td>
               <td><%=item.vendor?.name %></td>
@@ -46,6 +49,18 @@
                 <span class="badge bg-<%=item.orderStatus === 'Pending' ? 'warning' : item.orderStatus === 'Processing' ? 'primary' : item.orderStatus === 'Shipping' ? 'info' : item.orderStatus === 'Delivered' ? 'success' : item.orderStatus === 'Cancelled' ? 'danger' : 'dark' %>"
                   ><%=item.orderStatus === 'Pending' ? 'Đang chờ' : item.orderStatus === 'Processing' ? 'Đang xử lý' : item.orderStatus === 'Shipping' ? 'Đang giao hàng' : item.orderStatus === 'Delivered' ? 'Đã giao hàng' : item.orderStatus === 'Cancelled' ? 'Đã hủy' : 'Giao hàng thất bại' %>
                 </span>
+              </td>
+              <td>
+                <%=`${item.createdAt.getDate()}/${item.createdAt.getMonth()}/${item.createdAt.getFullYear()}
+                ${item.createdAt.getHours()}:${item.createdAt.getMinutes()}` %>
+              </td>
+              <td>
+                <%=item.pickedUpAt ?  `${item.pickedUpAt.getDate()}/${item.pickedUpAt.getMonth()}/${item.pickedUpAt.getFullYear()}
+                ${item.pickedUpAt.getHours()}:${item.pickedUpAt.getMinutes()}` : '' %>
+              </td>
+               <td>
+                <%= item.deliveredAt ? `${item.deliveredAt.getDate()}/${item.deliveredAt.getMonth()}/${item.deliveredAt.getFullYear()}
+                ${item.deliveredAt.getHours()}:${item.deliveredAt.getMinutes()}` : null %>
               </td>
             </tr>
             <% }); %>
@@ -67,8 +82,29 @@
           </nav>
         </div>
       </div>
+       <a href="#" data-bs-toggle="modal" data-bs-target="#modalOrder"><i class="icofont-gear-alt fs-5"></i></a>
     </div>
   </div>
+  <%- include('./modal.ejs', {
+  }); -%>
 </div>
 <!-- Row end  -->
 <%- include('../../layout/footer.ejs'); -%>
+<script type="text/javascript">
+   var orders = JSON.parse('<%- JSON.stringify(orders) %>');
+
+   	$(document).ready(function () {
+			orders.forEach( (order) => {
+        console.log(order);
+        $('#'+order._id).addListeners('onClick',loadModal(order._id));
+		});
+    });
+
+  function loadModal(id) {
+    console.log("loadModal", id);
+		// const idModal = '#modalOrder';
+		// const order = orders.find(e => e._id == id);
+    // console.log(order);
+		// $(idModal).empty();
+	}
+</script>
