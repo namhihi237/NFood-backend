@@ -3,6 +3,7 @@ import { Accounts, CodeResets, Buyer, Vendor, Shipper, Category, Item, Cart, Ord
 import _ from 'lodash';
 import mongoose from 'mongoose';
 import moment from 'moment';
+import { constants } from '../../configs';
 
 const shipperQuery = {
   getMaxDistanceFindOrder: async (parent, args, context, info) => {
@@ -80,7 +81,7 @@ const shipperQuery = {
     });
 
     return {
-      deliveryMoney: deliveryMoney[0].deliveryMoney || 0,
+      deliveryMoney: parent(deliveryMoney[0].deliveryMoney) || 0,
       buyOrderMoney: buyOrderMoney[0].buyOrderMoney || 0,
       rewardMoney: 0,
       balanceWallet: shipper.money || 0,

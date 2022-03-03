@@ -3,6 +3,7 @@ import { Voucher, CodeResets, Buyer, Vendor, Order, Category } from "../../model
 import mongoose from 'mongoose';
 import _ from 'lodash';
 import queue from 'bee-queue';
+import { constants } from '../../configs';
 
 const vendorQuery = {
   vendors: async (parent, args, context, info) => {
@@ -198,7 +199,8 @@ const vendorQuery = {
     accountBalance = vendor.money;
 
     return {
-      totalRevenue, totalOrder, totalOrderCompleted, accountBalance
+      totalRevenue: parseInt(totalRevenue * constants.VENDOR_PERCENT_PER_ORDER),
+      totalOrder, totalOrderCompleted, accountBalance
     };
   },
 
