@@ -1,7 +1,7 @@
-import { hereUtils } from '../../utils';
-import { Accounts, Vendor } from "../../models";
+import { hereUtils, bcryptUtils } from '../../utils';
+import { Accounts, Vendor, Category, Item } from "../../models";
 import _ from 'lodash';
-import { constants } from '../../configs';
+import { constants, vendorData } from '../../configs';
 
 const vendorMutation = {
   activeVendor: async (parent, args, context, info) => {
@@ -177,6 +177,69 @@ const vendorMutation = {
     await Vendor.findOneAndUpdate({ _id: vendor._id }, newData);
 
     return true;
+  },
+
+  initDataVendor: async (parent, args, context, info) => {
+    global.logger.info('vendorMutation::initDataVendor' + JSON.stringify(args));
+    let { password, category, account, timeOpen, items } = vendorData;
+    password = await bcryptUtils.hashPassword(password);
+
+    // add password hashPassword
+    account = account.map(item => {
+      item.password = password;
+      return item;
+    });
+
+    // remove account
+    account.map(async item => {
+      let vendorExists = await Accounts.findOne({ phoneNumber: item.phoneNumber });
+      if (vendorExists) {
+        await Accounts.findByIdAndRemove(vendorExists._id);
+        const vendorE = await Vendor.findOneAndRemove({ accountId: vendorExists._id });
+        if (vendorE) {
+          await Category.remove({ vendorId: vendorE._id });
+          await Item.remove({ vendorId: vendorE._id });
+        }
+      }
+    });
+
+    // create account
+    await Promise.all(account.map(async item => {
+
+      let newAccount = await Accounts.create(item);
+
+      console.log(item.vendor.address);
+      let address = await hereUtils.getGeoLocation(item.vendor.address);
+      console.log(address);
+
+      let vendor = await Vendor.create({
+        accountId: newAccount._id,
+        ...item.vendor,
+        location: { type: 'Point', coordinates: [address.lng, address.lat] },
+      });
+
+      category = category.map(item => {
+        item.vendorId = vendor._id;
+        return item;
+      });
+
+      await Promise.all(category.map(async cate => {
+        let newCategory = await Category.create(cate);
+
+        items = items.map(item => {
+          item.categoryId = newCategory._id;
+          item.vendorId = vendor._id;
+          return item;
+        });
+
+        await Promise.all(items.map(async item => {
+          await Item.create(item);
+        }));
+      }));
+    }))
+
+    return true;
+
   }
 }
 

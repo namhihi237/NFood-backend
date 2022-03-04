@@ -345,6 +345,7 @@ export default gql`
     confirmWithdraw(amount: Float!, type: roleEnum!, code: String!): Boolean!
     updateShipperProfile(address: String, birthday: String, gender: String, identifier: IdentityCardInput ): Boolean!
     addFeedback(message: String!, type: roleEnum!): Boolean!
+    initDataVendor: Boolean!
   }
 
   input inputVoucher {
