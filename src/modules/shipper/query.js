@@ -81,7 +81,7 @@ const shipperQuery = {
     });
 
     return {
-      deliveryMoney: parent(deliveryMoney[0].deliveryMoney) || 0,
+      deliveryMoney: parseFloat(deliveryMoney[0].deliveryMoney).toFixed(2) || 0,
       buyOrderMoney: buyOrderMoney[0].buyOrderMoney || 0,
       rewardMoney: 0,
       balanceWallet: shipper.money || 0,
