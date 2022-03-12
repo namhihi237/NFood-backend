@@ -127,6 +127,7 @@ export default gql`
     paymentMethod: methodEnum
     isReviewedShipper: Boolean
     isReviewVendor: Boolean
+    location: Location
     # totalForVendor: Float
     # totalForSystem: Float
     # totalForShipment: Float
