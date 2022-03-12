@@ -1,4 +1,4 @@
-import { Buyer, Notification, Transaction, Vendor, Shipper } from '../models';
+import { Buyer, Notification, Transaction, Vendor, Shipper, Accounts } from '../models';
 import { Parser } from 'json2csv';
 class AdminTransactionController {
   constructor(db) {
@@ -81,8 +81,17 @@ class AdminTransactionController {
 
       await Transaction.findByIdAndUpdate(id, { status: 'success' });
 
+      let userId = null;
+      if (transaction.userType === 'shipper') {
+        const shipper = await Shipper.findById(transaction.userId);
+        userId = shipper.accountId;
+      } else if (transaction.userType === 'vendor') {
+        const vendor = await Vendor.findById(transaction.userId);
+        userId = vendor.accountId;
+      }
+
       await Notification.create({
-        userId: transaction.userId,
+        userId,
         type: 'success-withdraw',
         content: `Bạn đã thành công rút số tiền ${transaction.amount} về tài khoản ${transaction.bank.accountNumber}`,
         userType: transaction.userType,
@@ -119,8 +128,17 @@ class AdminTransactionController {
 
       await Transaction.findByIdAndUpdate(id, { status: 'reject' });
 
+      let userId = null;
+      if (transaction.userType === 'shipper') {
+        const shipper = await Shipper.findById(transaction.userId);
+        userId = shipper.accountId;
+      } else if (transaction.userType === 'vendor') {
+        const vendor = await Vendor.findById(transaction.userId);
+        userId = vendor.accountId;
+      }
+
       await Notification.create({
-        userId: transaction.userId,
+        userId,
         type: 'reject-withdraw',
         content: `Bạn đã bỊ từ chối yêu cầu rút số tiền ${transaction.amount} về tài khoản ${transaction.bank.accountNumber}`,
         userType: transaction.userType,
