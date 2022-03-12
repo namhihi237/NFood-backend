@@ -61,7 +61,7 @@ const bankMutation = {
         throw new Error('Số tiền trong tài khoản không đủ để thực hiện giao dịch');
       }
 
-      await Shipper.findOneAndUpdate({ accountId: context.user.id }, { $inc: { money: -amount } });
+      await Shipper.findOneAndUpdate({ accountId: context.user.id }, { $inc: { money: -(amount + FEE) } });
 
     } else if (type === 'buyer') {
       user = await Buyer.findOne({ accountId: context.user.id });
@@ -78,7 +78,7 @@ const bankMutation = {
         throw new Error('Số tiền trong tài khoản không đủ để thực hiện giao dịch');
       }
 
-      await Buyer.findOneAndUpdate({ accountId: context.user.id }, { $inc: { money: -amount } });
+      await Buyer.findOneAndUpdate({ accountId: context.user.id }, { $inc: { money: -(amount + FEE) } });
 
     } else if (type === 'vendor') {
       user = await Vendor.findOne({ accountId: context.user.id });
@@ -95,7 +95,7 @@ const bankMutation = {
         throw new Error('Số tiền trong tài khoản không đủ để thực hiện giao dịch');
       }
 
-      await Vendor.findOneAndUpdate({ accountId: context.user.id }, { $inc: { money: -amount } });
+      await Vendor.findOneAndUpdate({ accountId: context.user.id }, { $inc: { money: -(amount + FEE) } });
     }
 
     // create the transaction 

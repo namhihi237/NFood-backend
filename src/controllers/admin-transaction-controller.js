@@ -99,6 +99,17 @@ class AdminTransactionController {
         return res.render(`${this.rootModule}404`, {});
       }
 
+      // refund money
+      if (transaction.userType === 'shipper') {
+        await Shipper.findByIdAndUpdate(transaction.userId, {
+          $inc: { money: (transaction.amount + transaction.fee) }
+        });
+      } else if (transaction.userType === 'vendor') {
+        await Vendor.findByIdAndUpdate(transaction.userId, {
+          $inc: { money: (transaction.amount + transaction.fee) }
+        });
+      }
+
       await Transaction.findByIdAndUpdate(id, { status: 'reject' });
 
       res.redirect(`/transaction?type=${transaction.userType}&page=${page}`);

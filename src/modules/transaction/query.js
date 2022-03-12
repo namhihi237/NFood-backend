@@ -27,7 +27,7 @@ const transactionQuery = {
 
     const transactions = await Transaction.find({
       userId: user._id
-    });
+    }).sort({ createdAt: -1 });
 
     return transactions;
   }
