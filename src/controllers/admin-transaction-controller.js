@@ -140,7 +140,7 @@ class AdminTransactionController {
       await Notification.create({
         userId,
         type: 'reject-withdraw',
-        content: `Bạn đã bỊ từ chối yêu cầu rút số tiền ${transaction.amount} về tài khoản ${transaction.bank.accountNumber}`,
+        content: `Bạn đã bị từ chối yêu cầu rút số tiền ${transaction.amount} về tài khoản ${transaction.bank.accountNumber}`,
         userType: transaction.userType,
       });
 
