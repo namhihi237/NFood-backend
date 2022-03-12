@@ -1,5 +1,4 @@
-import { bcryptUtils, emailUtils, jwtUtils, smsUtils } from '../../utils';
-import { Accounts, Order, Buyer, Vendor, Shipper, Notification, Item } from "../../models";
+import { Transaction, Order, Buyer, Vendor, Shipper, Notification, Item } from "../../models";
 import _ from 'lodash';
 import mongoose from 'mongoose';
 import { constants } from "../../configs";
@@ -42,6 +41,24 @@ class NotificationService {
     });
   }
 
+  async createNotificationShipper(content, orderId, shipperId, pubsub) {
+    const shipper = await Shipper.findOne({ _id: shipperId });
+
+    await Notification.create({
+      content,
+      orderId,
+      userId: shipper.accountId,
+      userType: 'shipper'
+    });
+
+    const numberOfNotifications = shipper.numberOfNotifications ? shipper.numberOfNotifications + 1 : 1;
+
+    await Shipper.updateOne({ _id: shipperId }, { numberOfNotifications });
+
+    pubsub.publish(`NUMBER_OF_NOTIFICATIONS_${shipper.accountId}_shipper`, {
+      numberOfNotifications
+    });
+  }
 }
 
 export default new NotificationService();

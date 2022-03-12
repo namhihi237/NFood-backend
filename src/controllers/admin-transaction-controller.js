@@ -1,4 +1,4 @@
-import { Buyer, Order, Transaction, Vendor, Shipper } from '../models';
+import { Buyer, Notification, Transaction, Vendor, Shipper } from '../models';
 import { Parser } from 'json2csv';
 class AdminTransactionController {
   constructor(db) {
@@ -81,6 +81,13 @@ class AdminTransactionController {
 
       await Transaction.findByIdAndUpdate(id, { status: 'success' });
 
+      await Notification.create({
+        userId: transaction.userId,
+        type: 'success-withdraw',
+        content: `Bạn đã thành công rút số tiền ${transaction.amount} về tài khoản ${transaction.bank.accountNumber}`,
+        userType: transaction.userType,
+      });
+
       res.redirect(`/transaction?type=${transaction.userType}&page=${page}`);
 
     } catch (error) {
@@ -111,6 +118,13 @@ class AdminTransactionController {
       }
 
       await Transaction.findByIdAndUpdate(id, { status: 'reject' });
+
+      await Notification.create({
+        userId: transaction.userId,
+        type: 'reject-withdraw',
+        content: `Bạn đã bỊ từ chối yêu cầu rút số tiền ${transaction.amount} về tài khoản ${transaction.bank.accountNumber}`,
+        userType: transaction.userType,
+      });
 
       res.redirect(`/transaction?type=${transaction.userType}&page=${page}`);
 
