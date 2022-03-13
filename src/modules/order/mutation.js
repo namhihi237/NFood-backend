@@ -139,9 +139,6 @@ const orderMutation = {
           estimatedDeliveryTime,
           orderItems,
           paymentMethod: 'COD',
-          // totalForVendor: (subTotal - discount) * constants.VENDOR_PERCENT_PER_ORDER,
-          // totalForSystem: (subTotal - discount) * (1 - constants.SYSTEM_PERCENT_PER_ORDER) + shipping * constants.SHIPPING_RATES_PER_ORDER,
-          // totalForShipment: shipping * constants.SHIPPER_PERCENT_PER_ORDER,
           location: {
             type: 'Point',
             coordinates: [buyer.location.coordinates[0], buyer.location.coordinates[1]]
@@ -150,8 +147,38 @@ const orderMutation = {
 
         order = order[0];
 
-      } else if (method === 'CRE') {
-        throw new Error('Not implemented')
+      } else if (method === 'WALLET') {
+        // check money in wallet
+        if (buyer.money < total) {
+          throw new Error("Số dư trong ví của bạn không đủ để thanh toán");
+        }
+
+        order = await Order.create([{
+          ownerId: buyer._id,
+          vendorId,
+          name: buyer.name,
+          address: buyer.address,
+          phoneNumber: account.phoneNumber,
+          invoiceNumber,
+          discount,
+          shipping,
+          subTotal,
+          promoCode: args.promoCode,
+          total,
+          estimatedDeliveryTime,
+          orderItems,
+          paymentMethod: 'WALLET',
+          location: {
+            type: 'Point',
+            coordinates: [buyer.location.coordinates[0], buyer.location.coordinates[1]]
+          }
+        }]);
+
+        order = order[0];
+
+        // update money in wallet
+        await Buyer.updateOne({ _id: buyer._id }, { $inc: { money: -total } });
+
       }
 
       await Cart.deleteMany({ userId: account._id }, { session });
@@ -339,8 +366,8 @@ const orderMutation = {
     // update status order
     await Order.findByIdAndUpdate({ _id: args.id }, { orderStatus: 'Cancelled', cancelledAt: new Date() });
 
-    // refund money to buyer if method is cre
-    if (order.paymentMethod === 'CRE') {
+    // refund money to buyer if method is cre or wallet
+    if (order.paymentMethod === 'CRE' || order.paymentMethod === 'WALLET') {
       await Buyer.findOneAndUpdate({ _id: order.ownerId }, { $inc: { money: order.total } });
     }
 

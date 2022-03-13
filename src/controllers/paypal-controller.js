@@ -1,5 +1,5 @@
 import { paypal, HttpError } from '../utils';
-import { Accounts, Buyer, Vendor, Shipper, Transaction, Cart, Order } from '../models';
+import { Notification, Buyer, Vendor, Shipper, Transaction, Cart, Order } from '../models';
 const EXCHANGE_RATE = 0.000044;
 import orderService from "../modules/order/orderService";
 import { notificationService } from "../modules/notification";
@@ -230,6 +230,15 @@ class PayPalController {
             });
           }
 
+          // create transaction
+          const transaction = await Transaction.create({
+            userId,
+            userType: 'buyer',
+            amount: total,
+            type: 'payment',
+            currency: 'VND',
+          });
+
           const invoiceNumber = await orderService.generateInvoiceNumber();
 
           // create order
@@ -262,7 +271,8 @@ class PayPalController {
             location: {
               type: 'Point',
               coordinates: [buyer.location.coordinates[0], buyer.location.coordinates[1]]
-            }
+            },
+            transactionId: transaction._id
           });
 
           await Cart.deleteMany({ userId });

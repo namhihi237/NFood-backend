@@ -69,7 +69,7 @@ const OrderSchema = new mongoose.Schema(
     },
     paymentMethod: {
       type: String,
-      enum: ['COD', 'CRE'],
+      enum: ['COD', 'CRE', 'WALLET'],
     },
     infoPaypal: {
       email: {
@@ -166,6 +166,10 @@ const OrderSchema = new mongoose.Schema(
     },
     reasonCancelled: {
       type: String,
+    },
+    transactionId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Transaction',
     }
   },
   { timestamps: true }

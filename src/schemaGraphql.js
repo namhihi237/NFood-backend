@@ -393,6 +393,7 @@ export default gql`
   enum methodEnum {
     COD
     CRE
+    WALLET
   }
 
   enum discountType {
