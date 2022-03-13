@@ -21,6 +21,7 @@ export default gql`
     birthday: String
     timeOpen: [TimeOpen]
     bank: Bank
+    money: Float
   }
 
   type Category {
