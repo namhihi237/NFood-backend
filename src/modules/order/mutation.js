@@ -341,7 +341,7 @@ const orderMutation = {
 
     // refund money to buyer if method is cre
     if (order.paymentMethod === 'CRE') {
-      await Buyer.findOneAndUpdate({ accountId: order.ownerId }, { $inc: { money: order.total } });
+      await Buyer.findOneAndUpdate({ _id: order.ownerId }, { $inc: { money: order.total } });
     }
 
     return true;
