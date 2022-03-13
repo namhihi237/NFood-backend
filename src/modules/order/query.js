@@ -1,8 +1,6 @@
-import { bcryptUtils, emailUtils, jwtUtils, smsUtils } from '../../utils';
 import { Accounts, Order, Buyer, Vendor, Shipper, Category, Item } from "../../models";
 import _ from 'lodash';
 import mongoose, { mongo } from 'mongoose';
-import { constants } from "../../configs";
 import orderService from "./orderService";
 
 const orderQuery = {
@@ -145,7 +143,7 @@ const orderQuery = {
       throw new Error('Bạn không phải là người giao hàng');
     }
 
-    const orders = await Order.find({ shipperId: shipper._id });
+    const orders = await Order.find({ shipperId: shipper._id }).sort({ createdAt: -1 });
 
     return orders;
   },
@@ -194,6 +192,11 @@ const orderQuery = {
           preserveNullAndEmptyArrays: true
         }
       },
+      {
+        $sort: {
+          createdAt: -1
+        }
+      }
     ]);
 
     return orders;
@@ -261,6 +264,11 @@ const orderQuery = {
           path: '$buyer',
           preserveNullAndEmptyArrays: true
         }
+      },
+      {
+        $sort: {
+          createdAt: -1
+        }
       }
     ]);
 
@@ -320,7 +328,12 @@ const orderQuery = {
           preserveNullAndEmptyArrays: true
         }
       },
-    ]);
+      {
+        $sort: {
+          createdAt: -1
+        }
+      }
+    ])
 
     return orders[0]
 
