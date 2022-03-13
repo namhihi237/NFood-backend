@@ -179,6 +179,13 @@ const orderMutation = {
         // update money in wallet
         await Buyer.updateOne({ _id: buyer._id }, { $inc: { money: -total } });
 
+        // create transaction
+        await Transaction.create({
+          userId: buyer._id,
+          userType: 'buyer',
+          type: 'wallet',
+          amount: total,
+        })
       }
 
       await Cart.deleteMany({ userId: account._id }, { session });
