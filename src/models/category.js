@@ -19,4 +19,6 @@ const CategorySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// create index search index for name
+CategorySchema.index({ name: 'text' });
 export default mongoose.model('category', CategorySchema, 'category');

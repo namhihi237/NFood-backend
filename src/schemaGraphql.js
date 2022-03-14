@@ -264,7 +264,7 @@ export default gql`
     getAllItem: [Item]!
     vendors(latitude: Float, longitude: Float, distance: Float, offset: Int, limit: Int): resultVendor!
     vendor(id: ID!): Vendor!
-    getAllVendors(keyword: String, offset: Int, limit: Int, distance: Float, isPromotion: Boolean): resultVendor!
+    getAllVendors(keyword: String, offset: Int, limit: Int, distance: Float, isPromotion: Boolean, categoryKeyword: CategoryKeyword): resultVendor!
     carts: resultCart!
     getQuantityOfCart: Int!
     calculateShipping(vendorId: ID!): Float! 
@@ -410,5 +410,10 @@ export default gql`
     vendor
     item
     shipper
+  }
+
+  enum CategoryKeyword {
+    do_uong
+    an_vat
   }
 `;

@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import _ from 'lodash';
 import queue from 'bee-queue';
 import { constants } from '../../configs';
+import { categoryEnum } from './enum';
 
 const vendorQuery = {
   vendors: async (parent, args, context, info) => {
@@ -206,7 +207,7 @@ const vendorQuery = {
 
   getAllVendors: async (parent, args, context, info) => {
     global.logger.info('vendorQuery::getAllVendors::' + JSON.stringify(args));
-    const { page = 1, limit = 20, keyword, isPromotion } = args;
+    const { page = 1, limit = 20, keyword, isPromotion, categoryKeyword } = args;
 
     // check login
     if (!context.user) {
@@ -343,13 +344,27 @@ const vendorQuery = {
     }
 
     // get menu of vendor
+
+    let conditionCategory = {
+      isActive: true,
+      isDelete: false,
+    }
+
+    if (categoryKeyword) {
+      conditionCategory.$text = {
+        $search: categoryEnum[categoryKeyword].join(' ')
+      }
+    }
+
     vendors = await Promise.all(vendors.map(async (vendor) => {
-      const menu = await Category.find({ vendorId: vendor._id, isActive: true }, {
+      const menu = await Category.find({ ...conditionCategory, vendorId: vendor._id }, {
         _id: 1, name: 1
       });
       vendor.menu = menu;
       return vendor;
     }));
+
+    vendors = vendors.filter(vendor => vendor.menu && vendor.menu.length > 0);
 
     return {
       items: vendors, total
