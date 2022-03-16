@@ -17,7 +17,7 @@ import resolvers from './modules';
 import { envVariable } from './configs';
 import { logger, jwtUtils, connectDb, HttpError } from './utils';
 import { Accounts } from "./models";
-import { adminRouter, paymentRouter } from './routers';
+import { adminRouter, paymentRouter, vendorRouter } from './routers';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
 const Redis = require('ioredis');
 const pathServer = '/api/v1/graphql';
@@ -73,6 +73,7 @@ export const startServer = async () => {
 
   app.use('/', adminRouter());
   app.use('/api/v1/payment', paymentRouter());
+  app.use('/api/v1/vendor', vendorRouter());
 
   // view engine setup
   app.set('views', path.join(process.cwd(), './src/views'));
