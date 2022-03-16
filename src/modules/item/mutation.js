@@ -14,6 +14,10 @@ const itemMutation = {
       throw new Error('Vui lòng nhập đủ thông tin');
     }
 
+    // check price
+    if (price < 0) {
+      throw new Error('Giá tiền phải lớn hơn 0 đ');
+    }
     // check login
     if (!context.user) {
       throw new Error('Bạn chưa đăng nhập');
@@ -28,12 +32,6 @@ const itemMutation = {
     // check vendor
     if (!vendor) {
       throw new Error('Bạn chưa mở cửa hàng');
-    }
-    // check name exist
-    let item = await Item.findOne({ name, vendorId: vendor._id });
-
-    if (item) {
-      throw new Error('Sản phẩm đã tồn tại');
     }
 
     // check category exist
