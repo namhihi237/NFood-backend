@@ -5,7 +5,7 @@ export default () => {
   const router = Router();
   const vendorController = new VendorAccountController();
 
-  router.route('/vendorId/check-open').get((req, res) => vendorController.checkVendorOpen(req, res));
+  router.route('/:vendorId/check-open').get((req, res) => vendorController.checkVendorOpen(req, res));
 
   return router;
 }
