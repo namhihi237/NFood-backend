@@ -41,6 +41,8 @@ export default () => {
   router.route('/vendor/:id/toggle').get((req, res, next) => adminMiddleware.isLoggedIn(req, res, next), (req, res) => vendorAccountController.toggleStatus(req, res));
   router.route('/vendor/:id/delete').get((req, res, next) => adminMiddleware.isLoggedIn(req, res, next), (req, res) => vendorAccountController.deleteVendor(req, res));
 
+  // api
+  router.route('/api/vendor/:vendorId/check-open').get((req, res, next) => adminMiddleware.isLoggedIn(req, res, next), (req, res) => vendorAccountController.checkVendorOpen(req, res));
 
   // account shipper routes
   router.route('/shipper').get((req, res, next) => adminMiddleware.isLoggedIn(req, res, next), (req, res) => shipperAccountController.renderListShippers(req, res));
