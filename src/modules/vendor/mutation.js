@@ -1,5 +1,5 @@
 import { hereUtils, bcryptUtils } from '../../utils';
-import { Accounts, Vendor, Category, Item } from "../../models";
+import { Accounts, Vendor, Category, Item, Voucher } from "../../models";
 import _ from 'lodash';
 import { constants, vendorData } from '../../configs';
 
@@ -181,7 +181,7 @@ const vendorMutation = {
 
   initDataVendor: async (parent, args, context, info) => {
     global.logger.info('vendorMutation::initDataVendor' + JSON.stringify(args));
-    let { password, category, account, timeOpen, items } = vendorData;
+    let { password, category, account, vouchers, items, items2 } = vendorData;
     password = await bcryptUtils.hashPassword(password);
 
     // add password hashPassword
@@ -199,6 +199,7 @@ const vendorMutation = {
         if (vendorE) {
           await Category.remove({ vendorId: vendorE._id });
           await Item.remove({ vendorId: vendorE._id });
+          await Voucher.remove({ vendorId: vendorE._id });
         }
       }
     });
@@ -223,18 +224,41 @@ const vendorMutation = {
         return item;
       });
 
-      await Promise.all(category.map(async cate => {
+      await Promise.all(category.map(async (cate, index) => {
         let newCategory = await Category.create(cate);
 
-        items = items.map(item => {
-          item.categoryId = newCategory._id;
-          item.vendorId = vendor._id;
-          return item;
-        });
+        if (index == 0) {
+          items = items.map(item => {
+            item.categoryId = newCategory._id;
+            item.vendorId = vendor._id;
+            return item;
+          });
 
-        await Promise.all(items.map(async item => {
-          await Item.create(item);
-        }));
+          await Promise.all(items.map(async item => {
+            await Item.create(item);
+          }));
+        } else {
+          items2 = items2.map(item => {
+            item.categoryId = newCategory._id;
+            item.vendorId = vendor._id;
+            return item;
+          });
+
+          await Promise.all(items2.map(async item => {
+            await Item.create(item);
+          }));
+        }
+
+      }));
+
+      // create a new voucher
+      vouchers = vouchers.map(item => {
+        item.vendorId = vendor._id;
+        return item;
+      });
+
+      await Promise.all(vouchers.map(async item => {
+        await Voucher.create(item);
       }));
     }))
 

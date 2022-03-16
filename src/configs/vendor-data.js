@@ -45,108 +45,84 @@ const TIME_OPEN_DEFAULT = [
 ];
 let account = [
   {
-    phoneNumber: '+84989402030',
+    phoneNumber: '+84989402291',
     password: "",
     isActive: true,
     isVendor: true,
     role: ['vendor'],
     vendor: {
-      name: 'Mì quảng bà Đinh',
-      phoneNumber: '+84989402030',
-      address: '443 Tôn Đức Thắng, Liên Chiểu, Đà Nẵng',
-      email: 'badinh@gmail.com',
+      name: 'Trà Sữa Ăn Vặt Bà Béo',
+      phoneNumber: '+84989402291',
+      address: '126 Hà Huy Giáp, Quận Cẩm Lệ, Đà Nẵng',
+      email: 'piz22za@gmail.com',
       timeOpen: TIME_OPEN_DEFAULT,
+      image: 'https://res.cloudinary.com/do-an-cnpm/image/upload/v1647360956/DoAnTN/tsavt_opnr4p.jpg',
       isReceiveOrder: true,
-      image: 'https://res.cloudinary.com/do-an-cnpm/image/upload/v1646330104/DoAnTN/avatar_sleaht.jpg'
     }
   },
-  {
-    phoneNumber: '+84989402031',
-    password: "",
-    isActive: true,
-    isVendor: true,
-    role: ['vendor'],
-    vendor: {
-      name: 'Mì quảng bà Xuân',
-      phoneNumber: '+84989402031',
-      address: '112 Tôn Đức Thắng, Liên Chiểu, Đà Nẵng',
-      email: '',
-      timeOpen: TIME_OPEN_DEFAULT,
-      isReceiveOrder: true,
-      image: 'https://res.cloudinary.com/do-an-cnpm/image/upload/v1646330104/DoAnTN/avatar_sleaht.jpg'
-    }
-  },
-  {
-    phoneNumber: '+84989402032',
-    password: "",
-    isActive: true,
-    isVendor: true,
-    role: ['vendor'],
-    vendor: {
-      name: 'Mì Nam Xuân',
-      phoneNumber: '+84989402032',
-      address: '22 Nguyễn Lương Bằng, Liên Chiểu, Đà Nẵng',
-      email: '',
-      timeOpen: TIME_OPEN_DEFAULT,
-      image: 'https://res.cloudinary.com/do-an-cnpm/image/upload/v1646330104/DoAnTN/avatar_sleaht.jpg'
-    }
-  },
-  {
-    phoneNumber: '+84989402033',
-    password: "",
-    isActive: true,
-    isVendor: true,
-    role: ['vendor'],
-    vendor: {
-      name: 'Mỳ sáng',
-      phoneNumber: '+84989402033',
-      address: '22 Lạc Long Quân, Liên Chiểu, Đà Nẵng',
-      email: '',
-      timeOpen: TIME_OPEN_DEFAULT,
-      isReceiveOrder: true,
-      image: 'https://res.cloudinary.com/do-an-cnpm/image/upload/v1646330104/DoAnTN/avatar_sleaht.jpg'
-    }
-  },
-  {
-    phoneNumber: '+84989402034',
-    password: "",
-    isActive: true,
-    isVendor: true,
-    role: ['vendor'],
-    vendor: {
-      name: 'Mì quảng bà Xuân',
-      phoneNumber: '+84989402034',
-      address: '22 Nguyễn Chánh, Liên Chiểu, Đà Nẵng',
-      email: '',
-      timeOpen: TIME_OPEN_DEFAULT,
-      isReceiveOrder: true,
-      image: 'https://res.cloudinary.com/do-an-cnpm/image/upload/v1646330104/DoAnTN/avatar_sleaht.jpg'
-    }
-  }
 ]
+
+const vouchers = [{
+  promoCode: 'FHDJUS3',
+  discount: 10,
+  discountType: 'PERCENT',
+  minTotal: 30000,
+  maxDiscount: 30000,
+  quantity: 1000,
+}]
 
 let category = [
   {
-    name: 'Mì quảng',
+    name: 'TRÀ SỮA',
+    isActive: true,
+  },
+  {
+    name: 'ĐỒ ĂN',
     isActive: true,
   }
 ]
 
 let items = [{
-  name: 'Mì quảng tôm',
-  price: 30000,
+  name: 'HỒNG TRÀ SỮA KEM CHESSE size L',
+  price: 13000,
   isActive: true,
-  image: 'https://res.cloudinary.com/do-an-cnpm/image/upload/v1646330629/DoAnTN/myquanggatom_cscvy3.jpg'
+  image: 'https://res.cloudinary.com/do-an-cnpm/image/upload/v1647360955/DoAnTN/ts5_ypobl1.jpg',
+  description: ''
 }, {
-  name: 'Mì quảng trứng',
-  price: 24000,
+  name: 'TRÀ SỮA TCDD KEM TRỨNG L',
+  price: 17000,
   isActive: true,
-  image: 'https://res.cloudinary.com/do-an-cnpm/image/upload/v1646330646/DoAnTN/myquangtrung_ayn8hp.jpg'
+  image: 'https://res.cloudinary.com/do-an-cnpm/image/upload/v1647360954/DoAnTN/ts2_asimnf.jpg',
+  description: ''
+},
+{
+  name: 'SỮA TƯƠI KEM XOÀI SIÊU NGHIỆN SIZE M',
+  price: 23000,
+  isActive: true,
+  image: 'https://res.cloudinary.com/do-an-cnpm/image/upload/v1647360954/DoAnTN/ts1_ehydoz.jpg',
+  description: ''
+},
+{
+  name: 'TRÀ SỮA PUDDING TRỨNG SIZE M',
+  price: 22000,
+  isActive: true,
+  image: 'https://res.cloudinary.com/do-an-cnpm/image/upload/v1647360954/DoAnTN/ts4_y7nkoj.jpg',
+  description: ''
+}]
+
+let items2 = [{
+  name: 'BÁNH TRÁNG CHẤM BƠ',
+  price: 28000,
+  isActive: true,
+  image: 'https://res.cloudinary.com/do-an-cnpm/image/upload/v1647360954/DoAnTN/ts6_qq7yt8.jpg',
+  description: ''
 }]
 
 export const vendorData = {
   account,
   category,
   items,
-  password
+  items2,
+  password,
+  vouchers,
 }
