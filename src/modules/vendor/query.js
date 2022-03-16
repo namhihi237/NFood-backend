@@ -369,6 +369,57 @@ const vendorQuery = {
     return {
       items: vendors, total
     }
+  },
+
+  checkVendorOpen: async (parent, args, context, info) => {
+    global.logger.info('vendorQuery::checkVendorOpen::' + JSON.stringify(args));
+
+    const { vendorId } = args;
+
+    // find the vendor
+    const vendor = await Vendor.findOne({ _id: vendorId });
+
+    if (!vendor) {
+      throw new Error('Cừa hàng không tồn tại');
+    }
+
+    if (!vendor.isReceiveOrder) {
+      return false;
+    }
+
+    // check timeOpen
+    const timeOpen = vendor.timeOpen;
+    let currentTime = new Date();
+    // add 7 hours to current time
+    currentTime.setHours(currentTime.getHours() + 7);
+    const currentDay = currentTime.getDay();
+    const currentHour = currentTime.getHours();
+    const currentMinute = currentTime.getMinutes();
+
+    // convert currentDay to string
+    let currentDayString = "";
+    if (currentDay === 0) {
+      currentDayString = "8";
+    } else {
+      currentDayString = (currentDay + 1).toString();
+    }
+
+    // check timeOpen
+    const timeOpenItem = _.find(timeOpen, { day: currentDayString, isOpen: true });
+    if (!timeOpenItem) {
+      return false
+    }
+
+    // check timeOpen
+    const start = parseFloat(timeOpenItem.openTime.getHours() + "." + timeOpenItem.openTime.getMinutes());
+    const end = parseFloat(timeOpenItem.closeTime.getHours() + "." + timeOpenItem.closeTime.getMinutes());
+    const current = parseFloat(currentHour + "." + currentMinute);
+
+    if (current < start || current > end) {
+      return false;
+    }
+
+    return true;
   }
 }
 

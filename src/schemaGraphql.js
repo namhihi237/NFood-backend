@@ -289,6 +289,7 @@ export default gql`
     getReportItem(type: reportType!, time: String!): [Item]!
     getWithdrawal(type: roleEnum!): WithdrawalResponse!
     getNewOrderByVendor: [Order]!
+    checkVendorOpen(vendorId: ID): Boolean!
   }
 
   type Subscription {
