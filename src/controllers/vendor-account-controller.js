@@ -100,7 +100,9 @@ class VendorAccountController {
       }
 
       if (!vendor.isReceiveOrder) {
-        return false;
+        return res.status(200).json({
+          status: false,
+        });
       }
 
       // check timeOpen
@@ -123,7 +125,9 @@ class VendorAccountController {
       // check timeOpen
       const timeOpenItem = _.find(timeOpen, { day: currentDayString, isOpen: true });
       if (!timeOpenItem) {
-        return false
+        return res.status(200).json({
+          status: false,
+        });
       }
 
       // check timeOpen
@@ -132,10 +136,15 @@ class VendorAccountController {
       const current = parseFloat(currentHour + "." + currentMinute);
 
       if (current < start || current > end) {
-        return false;
+        return res.status(200).json({
+          status: false,
+        });
       }
 
-      return true;
+      return res.status(200).json({
+        status: true,
+      });
+
     } catch (error) {
       next(error);
     }
