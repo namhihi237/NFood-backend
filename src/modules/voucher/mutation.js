@@ -9,6 +9,19 @@ const voucherMutation = {
 
     let { promoCode, discount, startDate, endDate, discountType, quantity, minTotal, maxDiscount } = args.inputVoucher;
 
+    // validate quantity, minTotal, maxDiscount
+    if (quantity && quantity < 0) {
+      throw new Error('Số lượng phải lớn hơn 0');
+    }
+
+    if (minTotal && minTotal < 0) {
+      throw new Error('Giá trị đơn hàng tối thiểu phải lớn hơn 0');
+    }
+
+    if (maxDiscount && maxDiscount < 0) {
+      throw new Error('Giá trị giảm giá tối đa phải lớn hơn 0');
+    }
+
     // check login and role
     if (!context.user || !context.user.role.includes('vendor')) {
       throw new Error('Bạn không có quyền thực hiện hành động này');
