@@ -21,4 +21,4 @@ export default {
     }
     return moment(parent.acceptedShippingAt).format('DD/MM/YYYY HH:mm');
   }
-}
+}//
