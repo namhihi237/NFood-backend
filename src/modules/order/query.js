@@ -398,6 +398,64 @@ const orderQuery = {
     ]);
 
     return orders;
+  },
+
+  getOderDetail: async (parent, args, context, info) => {
+    const orders = await Order.aggregate([
+      {
+        $match: {
+          _id: mongoose.Types.ObjectId(args.id),
+        }
+      },
+      {
+        $lookup: {
+          from: 'vendor',
+          localField: 'vendorId',
+          foreignField: '_id',
+          as: 'vendor'
+        },
+      },
+      {
+        $unwind: {
+          path: '$vendor',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'shipper',
+          localField: 'shipperId',
+          foreignField: '_id',
+          as: 'shipper'
+        },
+      },
+      {
+        $unwind: {
+          path: '$shipper',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'buyer',
+          localField: 'ownerId',
+          foreignField: '_id',
+          as: 'buyer'
+        }
+      },
+      {
+        $unwind: {
+          path: '$buyer',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+    ]);
+
+    if (orders.length == 0) {
+      throw new Error('Không tìm thấy đơn hàng');
+    }
+
+    return orders[0];
   }
 };
 

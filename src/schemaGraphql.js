@@ -290,6 +290,8 @@ export default gql`
     getWithdrawal(type: roleEnum!): WithdrawalResponse!
     getNewOrderByVendor: [Order]!
     checkVendorOpen(vendorId: ID): Boolean!
+    initDataBuyer: Boolean!
+    getOderDetail(id: ID): Order!
   }
 
   type Subscription {

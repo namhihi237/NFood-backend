@@ -1,6 +1,6 @@
 import { bcryptUtils, emailUtils, jwtUtils, smsUtils } from '../../utils';
 import { Accounts, VendorFavorite, Buyer, Vendor, Shipper, Category } from "../../models";
-
+import { buyerData } from '../../configs';
 import _ from 'lodash';
 
 const buyerQuery = {
@@ -34,6 +34,32 @@ const buyerQuery = {
 
     return vendors;
 
+  },
+
+  initDataBuyer: async (parent, args, context, info) => {
+    let { account, password } = buyerData
+
+    // generate password
+    password = await bcryptUtils.hashPassword(password);
+
+    account = account.map(async (account) => {
+      return {
+        ...account,
+        password: password
+      }
+    });
+
+    // create account
+
+    account.map(async (acc) => {
+      let account = await Accounts.create(acc);
+      await Buyer.create({
+        accountId: account._id,
+        ...account.buyer
+      });
+    });
+
+    return true;
   }
 }
 

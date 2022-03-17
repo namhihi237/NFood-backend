@@ -1,5 +1,5 @@
 import { envVariable } from './env';
 import constants from './constants';
 import { vendorData } from './vendor-data';
-
-export { envVariable, constants, vendorData };
+import { buyerData } from './buyer-data';
+export { envVariable, constants, vendorData, buyerData };
