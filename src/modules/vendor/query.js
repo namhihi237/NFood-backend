@@ -156,7 +156,7 @@ const vendorQuery = {
       // get orders
       orders = await Order.find({
         vendorId: vendor._id,
-        createdAt: {
+        pickedUpAt: {
           $gte: startDate,
           $lt: endDate
         }
@@ -175,7 +175,7 @@ const vendorQuery = {
       // get orders
       orders = await Order.find({
         vendorId: vendor._id,
-        createdAt: {
+        pickedUpAt: {
           $gte: startDate,
           $lt: endDate
         }
