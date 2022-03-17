@@ -126,7 +126,7 @@ const shipperQuery = {
     const orders = await Order.find({
       shipperId: shipper._id,
       orderStatus: 'Delivered',
-      createdAt: {
+      deliveredAt: {
         $gte: startDate,
         $lte: endDate
       }
