@@ -104,7 +104,7 @@ class PayPalController {
 
     const paymentId = req.query.paymentId;
     const PayerID = req.query.PayerID;
-    const { userId, promoCode } = req.query;
+    let { userId, promoCode } = req.query;
 
     global.logger.info(JSON.stringify(req.query));
 
