@@ -257,6 +257,11 @@ export default gql`
     bank: Bank
   }
 
+  type ShipperResponse {
+    maxDistance: Float
+    numberOfOrdersToDay: Int
+  }
+
   type Query {
     getUser(role: roleEnum!): User
     getSignatureImage: String!
@@ -278,7 +283,7 @@ export default gql`
     getVouchers: [Voucher]!
     checkPromoCode(promoCode: String!, vendorId: ID!, subTotal: Float!): Voucher!
     getOrderByIdBuyer(id: ID!): Order!
-    getMaxDistanceFindOrder: Float!
+    getMaxDistanceFindOrder: ShipperResponse!
     getVendorFavorite: [Vendor]!
     vendorReport(type: reportType!, time: String!): Report!
     getReviews(type: reviewEnum!): ReviewResult!

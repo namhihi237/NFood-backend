@@ -20,7 +20,19 @@ const shipperQuery = {
       throw new Error('Bạn chưa là người giao hàng');
     }
 
-    return shipper.maxReceiveOrderDistance;
+    // number of orders to day
+    const numberOfOrdersToDay = await Order.countDocuments({
+      shipperId: shipper.id,
+      deliveredAt: {
+        $gte: moment().startOf('day').toDate(),
+        $lt: moment().endOf('day').toDate()
+      }
+    });
+
+    return {
+      maxDistance: shipper.maxReceiveOrderDistance,
+      numberOfOrdersToDay: numberOfOrdersToDay
+    }
   },
 
   // type Report {
