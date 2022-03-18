@@ -87,7 +87,7 @@ class OrderService {
     return invoiceNumber;
   }
 
-  async calculateDiscount(vendorId, buyerId, promoCode, subTotal) {
+  async calculateDiscount(vendorId, buyerId, promoCode, subTotal, create) {
     global.logger.info('OrderService::calculateDiscount:: ');
     const voucher = await Voucher.findOne({ promoCode, vendorId });
     if (!voucher) {
@@ -132,14 +132,16 @@ class OrderService {
       discount = voucher.discount;
     }
 
-    await UserVoucher.create({
-      buyerId,
-      voucherId: voucher._id,
-      promoCode: voucher.promoCode,
-    });
+    if (create) {
+      await UserVoucher.create({
+        buyerId,
+        voucherId: voucher._id,
+        promoCode: voucher.promoCode,
+      });
 
-    if (voucher.quantity) {
-      await Voucher.updateOne({ _id: voucher._id }, { $inc: { quantity: -1 } });
+      if (voucher.quantity) {
+        await Voucher.updateOne({ _id: voucher._id }, { $inc: { quantity: -1 } });
+      }
     }
 
     return discount;

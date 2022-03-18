@@ -169,7 +169,7 @@ class PayPalController {
       // calculate discount
       let discount = 0;
       if (promoCode) {
-        discount = await orderService.calculateDiscount(vendorId, buyer._id, promoCode, subTotal);
+        discount = await orderService.calculateDiscount(vendorId, buyer._id, promoCode, subTotal, true);
         if (!discount) {
           promoCode = null;
           discount = 0;
@@ -328,7 +328,7 @@ class PayPalController {
       // calculate discount
       let discount = 0;
       if (promoCode) {
-        discount = await orderService.calculateDiscount(vendorId, buyer._id, promoCode, subTotal);
+        discount = await orderService.calculateDiscount(vendorId, buyer._id, promoCode, subTotal, false);
         if (!discount) {
           promoCode = null;
           discount = 0;
