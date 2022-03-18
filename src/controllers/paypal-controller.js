@@ -293,7 +293,7 @@ class PayPalController {
 
   async createChargeOrder(req, res, next) {
     global.logger.info('PayPalController::chargeOrder' + JSON.stringify(req.body));
-    const { promoCode } = req.body;
+    let { promoCode } = req.body;
 
     try {
       const buyer = await Buyer.findOne({ accountId: req.user.id });
@@ -384,6 +384,7 @@ class PayPalController {
 
     } catch (error) {
       global.logger.error('PayPalController::chargeOrder' + error);
+      console.log(error);
       next(error);
     }
   }
