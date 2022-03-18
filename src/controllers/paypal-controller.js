@@ -232,10 +232,10 @@ class PayPalController {
 
           // create transaction
           const transaction = await Transaction.create({
-            userId,
+            userId: buyer._id,
             userType: 'buyer',
             amount: total,
-            type: 'payment',
+            type: 'payment_paypal',
             currency: 'VND',
           });
 
