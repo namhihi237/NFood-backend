@@ -55,11 +55,11 @@
                 ${item.createdAt.getHours()}:${item.createdAt.getMinutes()}` %>
               </td>
               <td>
-                <%=item.pickedUpAt ?  `${item.pickedUpAt.getDate()}/${item.pickedUpAt.getMonth()}/${item.pickedUpAt.getFullYear()}
+                <%=item.pickedUpAt ?  `${item.pickedUpAt.getDate()}/${item.pickedUpAt.getMonth() + 1}/${item.pickedUpAt.getFullYear()}
                 ${item.pickedUpAt.getHours()}:${item.pickedUpAt.getMinutes()}` : '' %>
               </td>
                <td>
-                <%= item.deliveredAt ? `${item.deliveredAt.getDate()}/${item.deliveredAt.getMonth()}/${item.deliveredAt.getFullYear()}
+                <%= item.deliveredAt ? `${item.deliveredAt.getDate()}/${item.deliveredAt.getMonth() + 1}/${item.deliveredAt.getFullYear()}
                 ${item.deliveredAt.getHours()}:${item.deliveredAt.getMinutes()}` : null %>
               </td>
             </tr>

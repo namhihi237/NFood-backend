@@ -43,7 +43,7 @@ class AdminAuthenticationController {
 
       // create session
       req.session.user = user;
-      return res.redirect('/dashboard');
+      return res.redirect('/order');
 
     } catch (error) {
     }

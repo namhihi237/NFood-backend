@@ -43,7 +43,7 @@
               <td><%=item.fee %></td>
               <td><%=item.currency || 'VND' %></td>
               <td>
-                <%=`${item.createdAt.getDate()}/${item.createdAt.getMonth()}/${item.createdAt.getFullYear()}
+                <%=`${item.createdAt.getDate()}/${item.createdAt.getMonth() + 1}/${item.createdAt.getFullYear()}
                 ${item.createdAt.getHours()}:${item.createdAt.getMinutes()}` %>
               </td>
               <td><%=item.bank.accountNumber %></td>
