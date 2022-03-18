@@ -115,11 +115,15 @@ const itemMutation = {
   updateItem: async (root, args, context, info) => {
     global.logger.info('=========itemMutation::updateItem========' + JSON.stringify(args));
 
-    let { id, name } = args;
+    let { id, price } = args;
 
     // check login
     if (!context.user) {
       throw new Error('Bạn chưa đăng nhập');
+    }
+
+    if (price && price <= 0) {
+      throw new Error('Vui lòng nhập giá tiền lớn hơn 0');
     }
 
     // check id valid
@@ -141,19 +145,6 @@ const itemMutation = {
       throw new Error('Bạn không có quyền thực hiện hành động này');
     }
 
-    // check name exist
-    let itemExist = await Item.findOne({ name, vendorId: vendor._id });
-
-    if (itemExist && itemExist._id != id) {
-      throw new Error('Sản phẩm đã tồn tại');
-    }
-
-    // check category exist
-    // let category = await Category.findById(categoryId);
-
-    // if (!category) {
-    //   throw new Error('Danh mục không tồn tại');
-    // }
 
     // delete attribute empty string
     for (let key in args) {
