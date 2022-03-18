@@ -3,6 +3,7 @@ import { Accounts, Order, Buyer, Vendor, Shipper, UserVoucher, Voucher } from ".
 import _ from 'lodash';
 import mongoose from 'mongoose';
 import { constants } from "../../configs";
+import moment from 'moment';
 class OrderService {
   async calculateShippingCost(userId, vendorId) {
     global.logger.info('OrderService::calculateShippingCost:: ' + JSON.stringify({ userId }) + ' ' + JSON.stringify({ vendorId }));
@@ -104,11 +105,12 @@ class OrderService {
     }
 
     // check start date and end date
-    const now = new Date();
-    if (voucher.startDate && now < voucher.startDate) {
-      return null;
-    }
-    if (voucher.endDate && now > voucher.endDate) {
+    // check startDate and endDate
+    const startDate = moment(voucher.startDate);
+    const endDate = moment(voucher.endDate);
+    const now = moment();
+
+    if (now.isBefore(startDate) || now.isAfter(endDate)) {
       return null;
     }
 
