@@ -91,16 +91,19 @@ class OrderService {
     global.logger.info('OrderService::calculateDiscount:: ');
     const voucher = await Voucher.findOne({ promoCode, vendorId });
     if (!voucher) {
+      console.log('voucher not found');
       return null;
     }
 
     const userVoucher = await UserVoucher.findOne({ voucherId: voucher._id, buyerId, promoCode: voucher.promoCode });
     if (userVoucher) {
+      console.log('userVoucher  found');
       return null;
     }
 
     // check quantity
     if (voucher.quantity && voucher.quantity <= 0) {
+      console.log('quantity  found');
       return null;
     }
 
@@ -111,11 +114,13 @@ class OrderService {
     const now = moment();
 
     if (now.isBefore(startDate) || now.isAfter(endDate)) {
+      console.log('now  found');
       return null;
     }
 
     // check minTotal
     if (voucher.minTotal && subTotal < voucher.minTotal) {
+      console.log('minTotal  found');
       return null;
     }
 
