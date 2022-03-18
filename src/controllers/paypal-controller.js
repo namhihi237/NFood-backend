@@ -524,6 +524,9 @@ class PayPalController {
     }
   }
 
+  async depositCancel(req, res, next) {
+    return res.render(`api/paypal/cancel`);
+  }
 
 }
 
