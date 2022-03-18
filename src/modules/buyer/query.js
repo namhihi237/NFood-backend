@@ -42,10 +42,24 @@ const buyerQuery = {
     // generate password
     password = await bcryptUtils.hashPassword(password);
 
-    account = account.map(async (account) => {
+    account = account.map( (acc) => {
       return {
-        ...account,
+        ...acc,
         password: password
+      }
+    });
+    console.log(account);
+
+
+    // delete the account in account
+    account.forEach(async (acc) => { 
+      const existing = await Accounts.findOne({ phoneNumber: acc.phoneNumber });
+
+      if (existing) { 
+        await Accounts.findOneAndRemove({ _id: existing._id });
+
+        // delete the buyer
+        await Buyer.findOneAndRemove({ accountId: existing._id });
       }
     });
 
@@ -55,7 +69,7 @@ const buyerQuery = {
       let account = await Accounts.create(acc);
       await Buyer.create({
         accountId: account._id,
-        ...account.buyer
+        ...acc.buyer
       });
     });
 
