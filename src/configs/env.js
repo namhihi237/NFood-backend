@@ -13,7 +13,7 @@ export const envVariable = {
   TWILIO_PHONE_NUMBER: process.env.TWILIO_PHONE_NUMBER || '',
   FIREBASE_URL: process.env.FIREBASE_URL || '',
   CLIENT_ID: process.env.CLIENT_ID || '',
-  DATABASE_URL: process.env.DATABASE_URL || 'mongodb+srv://cnpm:cnpm17t1@cluster0.n1nom.mongodb.net/food?retryWrites=true&w=majority',
+  DATABASE_URL: process.env.DATABASE_URL || '',
   EMAIL: process.env.EMAIL || 'poppy99.dev@gmail.com',
   EMAIL_PASSWORD: process.env.EMAIL_PASSWORD || '',
   clientUrl: NODE_ENV == 'stg' ? process.env.CLIENT_URL : 'http://localhost/',

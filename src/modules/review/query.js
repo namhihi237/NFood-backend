@@ -76,6 +76,22 @@ const reviewQuery = {
     return {
       reviews
     };
+  },
+
+  updateReviewInit: async (parent, args, context, info) => { 
+    // find all vendors
+    const vendors = await Vendor.find({});
+
+    // update number of reviews and rating of vendor
+    vendors.forEach(async (vendor) => { 
+      const numberOfReviews = await Review.countDocuments({ reviewedId: vendor._id });
+
+      const rating = await Review.countDocuments({ reviewedId: vendor._id, rating: 3 });
+
+      await Vendor.updateOne({ _id: vendor._id }, { numberOfReviews, rating });
+    });
+
+    return true;
   }
 };
 

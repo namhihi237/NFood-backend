@@ -297,6 +297,8 @@ export default gql`
     checkVendorOpen(vendorId: ID): Boolean!
     initDataBuyer: Boolean!
     getOderDetail(id: ID): Order!
+    updateReviewInit: Boolean!
+
   }
 
   type Subscription {
